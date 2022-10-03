@@ -8,5 +8,29 @@
     <title><%=htmlWebpackPlugin.options.title%></title>
   </head>
   <body>
+    <nav class="primary-nav">
+      <div class="primary-nav-container">
+        <button class="close primary-nav-button mdi mdi-close" disabled></button>
+        <header class="content-wrap">
+          <div class="logo-icon mdi mdi-format-list-bulleted-square"></div>
+          <h1>Demo</h1>
+        </header>
+        <ul>
+          <li>All</li>
+          <li class="section">
+            <div class="heading content-wrap">
+              <h2>Projects</h2>
+              <button class="icon flex-horizontal-center mdi mdi-pencil"></button>
+            </div>
+            <ul>
+              <li class="default current">default</li>
+              <li>Project 1</li>
+              <li>Project 2</li>
+              <li>Project 3</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </body>
 </html>
