@@ -1,5 +1,6 @@
 import '@mdi/font/css/materialdesignicons.css'
-import './styles.css';
+import './styles/reset.css';
+import './styles/styles.css';
 
 const primaryNav = document.querySelector('.primary-nav');
 const openPrimaryNavButton = document.querySelector('.open.primary-nav-button');
