@@ -38,7 +38,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Keep Do',
+      title: 'Keedo',
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/template.html'),
     }),
