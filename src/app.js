@@ -6,6 +6,7 @@ const primaryNav = document.querySelector('.primary-nav');
 const main = document.querySelector('main');
 const openPrimaryNavButton = document.querySelector('.open.primary-nav-button');
 const closePrimaryNavButton = document.querySelector('.close.primary-nav-button');
+const writeTodoInput = document.querySelector('.write-todo-bar input[type=text]');
 const todos = document.querySelectorAll('.todos li');
 
 openPrimaryNavButton.addEventListener('click', (e) => {
@@ -45,4 +46,30 @@ todos.forEach((todo) => {
     
     todo.classList.remove('check');
   });
+});
+
+// TODO MODAL
+const todoModal = document.querySelector('.todo-modal');
+
+(() => {
+  const backButton = todoModal.querySelector('button.back');
+
+  backButton.addEventListener('click', (e) => {
+    main.inert = false;
+    todoModal.style.display = "none";
+  });
+})();
+
+writeTodoInput.addEventListener('keyup', (e) => {
+  if (e.key !== 'Enter') return;
+
+  const input = writeTodoInput.value;
+  if (!input) return;
+
+  writeTodoInput.value = '';
+
+  main.inert = true;
+  todoModal.style.display = 'flex';
+  todoModal.querySelector('.title').value = input;
+  todoModal.querySelector('.title').focus();
 });

@@ -8,6 +8,30 @@
     <title><%=htmlWebpackPlugin.options.title%></title>
   </head>
   <body>
+    <div class="todo-modal">
+      <nav class="todo-modal-top-nav flex-horizontal-between">
+        <button class="mdi mdi-arrow-left back"></button>
+        <div class="buttons">
+          <button class="mdi mdi-check confirm"></button>
+        </div>
+      </nav>
+      <div class="todo-modal-container">
+        <input class="title" type="text" placeholder="Write to do...">
+        <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
+        <div class="priority flex-horizontal-between">
+          <span>Priority</span>
+          <ul class="priority-list">
+            <li>Low</li>
+            <li>Med</li>
+            <li>High</li>
+          </ul>
+        </div>
+        <div class="due-date flex-horizontal-between">
+          <span>Due date</span>
+          <input type="date">
+        </div>
+      </div>
+    </div>
     <nav class="primary-nav">
       <div class="primary-nav-container">
         <button class="close primary-nav-button mdi mdi-close"></button>
@@ -41,30 +65,6 @@
           </div>
         </div>
       </header>
-      <div class="todo-modal">
-        <nav class="todo-modal-top-nav flex-horizontal-between">
-          <button class="mdi mdi-arrow-left"></button>
-          <div class="buttons">
-            <button class="mdi mdi-check"></button>
-          </div>
-        </nav>
-        <div class="todo-modal-container">
-          <input class="title" type="text" placeholder="Write to do...">
-          <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
-          <div class="priority flex-horizontal-between">
-            <span>Priority</span>
-            <ul class="priority-list">
-              <li>Low</li>
-              <li>Med</li>
-              <li>High</li>
-            </ul>
-          </div>
-          <div class="due-date flex-horizontal-between">
-            <span>Due date</span>
-            <input type="date">
-          </div>
-        </div>
-      </div>
       <ul class="todos">
         <li class="content-wrap">
           <input class="checkbox" type="checkbox">
