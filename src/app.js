@@ -56,6 +56,7 @@ const todoModal = document.querySelector('.todo-modal');
 
   backButton.addEventListener('click', (e) => {
     main.inert = false;
+    primaryNav.inert = false;
     todoModal.style.display = "none";
   });
 })();
@@ -69,6 +70,7 @@ writeTodoInput.addEventListener('keyup', (e) => {
   writeTodoInput.value = '';
 
   main.inert = true;
+  primaryNav.inert = true;
   todoModal.style.display = 'flex';
   todoModal.querySelector('.title').value = input;
   todoModal.querySelector('.title').focus();
