@@ -3,7 +3,7 @@
   --default-fg-color: #e6e6e6;
   --primary-nav-bg-color: #141414;
   --selected-bg-color: #212223;
-  --hover-bg-color: #1e1f21;
+  --hover-bg-color: #272729;
   --hover-transparent-bg-color: rgba(30, 31, 33, 0.8);
   --hover-fg-color: #c8c8c8;
 }
@@ -35,6 +35,12 @@ button {
 .flex-horizontal-center {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.flex-horizontal-between {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -172,6 +178,72 @@ main .content-wrap {
   outline: none;
 }
 
+/* TODO MODAL */
+
+.todo-modal,
+.todo-modal-top-nav,
+.todo-modal-container {
+  width: 100%;
+}
+
+.todo-modal {
+  background-color: var(--default-bg-color);
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+}
+
+.todo-modal-top-nav {
+  padding: 10px;
+}
+
+.todo-modal-top-nav button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  border-radius: 100%;
+}
+
+.todo-modal-top-nav button:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.todo-modal-container {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  gap: 16px;
+}
+
+.todo-modal .priority-list {
+  display: flex;
+  gap: 8px;
+}
+
+.todo-modal input[type=text],
+.todo-modal textarea {
+  background-color: transparent;
+  color: var(--default-fg-color);
+  border: none;
+  font-size: 1rem;
+}
+
+.todo-modal input[type=text]:focus,
+.todo-modal textarea:focus {
+  outline: none;
+}
+
+.todo-modal input[type=text] {
+  font-size: 1.2rem;
+}
+
+.todo-modal textarea {
+  resize: none;
+}
+
 /* TODOS */
 
 .todos {
@@ -285,5 +357,22 @@ main .content-wrap {
   .open.primary-nav-button,
   .close.primary-nav-button {
     display: none;
+  }
+
+  .todo-modal {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    left: 0;
+    z-index: 200;
+  }
+
+  .todo-modal-top-nav,
+  .todo-modal-container {
+    width: 600px;
+    background-color: var(--default-bg-color);
   }
 }

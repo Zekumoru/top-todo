@@ -42,19 +42,27 @@
         </div>
       </header>
       <div class="todo-modal">
-        <input class="title" type="text">
-        <input class="description" type="text">
-        <div class="priority">
-          <span>Priority</span>
-          <ul>
-            <li>Low</li>
-            <li>Med</li>
-            <li>High</li>
-          </ul>
-        </div>
-        <div class="due-date">
-          <span>Due date:</span>
-          <input type="date">
+        <nav class="todo-modal-top-nav flex-horizontal-between">
+          <button class="mdi mdi-arrow-left"></button>
+          <div class="buttons">
+            <button class="mdi mdi-check"></button>
+          </div>
+        </nav>
+        <div class="todo-modal-container">
+          <input class="title" type="text" placeholder="Write to do...">
+          <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
+          <div class="priority flex-horizontal-between">
+            <span>Priority</span>
+            <ul class="priority-list">
+              <li>Low</li>
+              <li>Med</li>
+              <li>High</li>
+            </ul>
+          </div>
+          <div class="due-date flex-horizontal-between">
+            <span>Due date</span>
+            <input type="date">
+          </div>
         </div>
       </div>
       <ul class="todos">
