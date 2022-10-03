@@ -12,3 +12,7 @@ div,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+
+input[type=text] {
+  min-width: 0;
+}
