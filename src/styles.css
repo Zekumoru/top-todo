@@ -175,6 +175,88 @@ main .content-wrap {
   outline: none;
 }
 
+/* TODOS */
+
+.todos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todos li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: 
+    "checkbox top"
+    "checkbox bottom";
+  background-color: var(--selected-bg-color);
+  padding: 12px 24px;
+  column-gap: 16px;
+  border-radius: 4px;
+  align-items: center;
+}
+
+.todos .top,
+.todos .bottom,
+.todos .buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.todos .top,
+.todos .bottom {
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.todos .top {
+  grid-area: top;
+}
+
+.todos .bottom {
+  grid-area: bottom;
+}
+
+.todos .checkbox {
+  grid-area: checkbox;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-color: var(--default-fg-color);
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.todos .checkbox:hover {
+  background-color: var(--hover-fg-color);
+}
+
+.todos .checkbox:checked {
+  background-color: var(--primary-nav-bg-color);
+}
+
+.todos button {
+  font-size: 1rem;
+}
+
+.todos button:hover {
+  color: var(--hover-fg-color);
+}
+
+.todos .description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.todos .deadline {
+  flex-shrink: 0;
+}
+
+.todos .check h3 {
+  text-decoration: line-through;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 768px) {

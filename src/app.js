@@ -4,6 +4,7 @@ import './styles.css';
 const primaryNav = document.querySelector('.primary-nav');
 const openPrimaryNavButton = document.querySelector('.open.primary-nav-button');
 const closePrimaryNavButton = document.querySelector('.close.primary-nav-button');
+const todos = document.querySelectorAll('.todos li');
 
 openPrimaryNavButton.addEventListener('click', (e) => {
   openPrimaryNavButton.disabled = true;
@@ -24,5 +25,18 @@ primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
 
     currentSelected.classList.remove('current');
     navItem.classList.add('current');
+  });
+});
+
+todos.forEach((todo) => {
+  const checkbox = todo.querySelector('.checkbox');
+
+  checkbox.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      todo.classList.add('check');
+      return;
+    }
+    
+    todo.classList.remove('check');
   });
 });
