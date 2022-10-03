@@ -1,2 +1,3 @@
-# top-todo
-The fourth project in the JavaScript course of The Odin Project.
+# Keedo Release Branch
+
+Compilation builds go here using `npm run release` on the `main` branch.
