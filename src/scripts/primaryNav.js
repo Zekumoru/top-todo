@@ -4,8 +4,8 @@ export default primaryNav;
 const openButton = document.querySelector('.open.primary-nav-button');
 const closeButton = document.querySelector('.close.primary-nav-button');
 
-const openEvent = new Event('openPrimaryNav', { bubbles: true });
-const closeEvent = new Event('closePrimaryNav', { bubbles: true });
+const openEvent = new Event('openPrimaryNav');
+const closeEvent = new Event('closePrimaryNav');
 
 primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
   navItem.addEventListener('click', (e) => selectPrimaryNavTab(navItem));
