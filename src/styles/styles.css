@@ -273,6 +273,16 @@ main .content-wrap {
   border-radius: 4px;
 }
 
+/* DUE DATE PICKER */
+
+.due-date-picker {
+  background-color: transparent;
+  color-scheme: dark;
+  border: 1px solid #494848;
+  border-radius: 4px;
+  padding: 4px 10px;
+}
+
 /* TODOS */
 
 .todos {
