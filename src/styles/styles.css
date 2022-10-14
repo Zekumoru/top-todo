@@ -228,8 +228,7 @@ main .content-wrap {
 }
 
 .todo-modal {
-  display: flex;
-  gap: 8px;
+  display: none;
 }
 
 .todo-modal input[type=text],
