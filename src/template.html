@@ -20,10 +20,19 @@
         <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
         <div class="priority flex-horizontal-between">
           <span>Priority</span>
-          <ul class="priority-list">
-            <li>Low</li>
-            <li>Med</li>
-            <li>High</li>
+          <ul class="priority-choice-list">
+            <li>
+              <input type="radio" name="priority-choice" class="priority-choice" id="priority-choice-low" checked>
+              <label for="priority-choice-low">Low</label>
+            </li>
+            <li>
+              <input type="radio" name="priority-choice" class="priority-choice" id="priority-choice-medium">
+              <label for="priority-choice-medium">Med</label>
+            </li>
+            <li>
+              <input type="radio" name="priority-choice" class="priority-choice" id="priority-choice-high">
+              <label for="priority-choice-high">High</label>
+            </li>
           </ul>
         </div>
         <div class="due-date flex-horizontal-between">

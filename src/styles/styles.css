@@ -223,7 +223,7 @@ main .content-wrap {
   gap: 16px;
 }
 
-.todo-modal .priority-list {
+.todo-modal {
   display: flex;
   gap: 8px;
 }
@@ -247,6 +247,30 @@ main .content-wrap {
 
 .todo-modal textarea {
   resize: none;
+}
+
+/* PRIORITY LIST */
+
+.priority-choice-list {
+  display: flex;
+  gap: 8px;
+}
+
+.priority-choice {
+  appearance: none;
+}
+
+.priority-choice + label {
+  cursor: pointer;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  border: 2px solid transparent;
+}
+
+.priority-choice:checked + label {
+  border-color: #0077b6;
+  padding: 2px 12px;
+  border-radius: 4px;
 }
 
 /* TODOS */
