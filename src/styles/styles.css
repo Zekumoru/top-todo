@@ -6,6 +6,10 @@
   --hover-bg-color: #272729;
   --hover-transparent-bg-color: rgba(30, 31, 33, 0.8);
   --hover-fg-color: #c8c8c8;
+  --priority-choice-low-color: #40a94a;
+  --priority-choice-medium-color: #e48b05;
+  --priority-choice-high-color: #e31f1f;
+  --date-picker-border-dark: #494848;
 }
 
 * {
@@ -268,9 +272,20 @@ main .content-wrap {
 }
 
 .priority-choice:checked + label {
-  border-color: #0077b6;
   padding: 2px 12px;
   border-radius: 4px;
+}
+
+#priority-choice-low:checked + label {
+  border-color: var(--priority-choice-low-color);
+}
+
+#priority-choice-medium:checked + label {
+  border-color: var(--priority-choice-medium-color);
+}
+
+#priority-choice-high:checked + label {
+  border-color: var(--priority-choice-high-color);
 }
 
 /* DUE DATE PICKER */
@@ -278,7 +293,7 @@ main .content-wrap {
 .due-date-picker {
   background-color: transparent;
   color-scheme: dark;
-  border: 1px solid #494848;
+  border: 1px solid var(--date-picker-border-dark);
   border-radius: 4px;
   padding: 4px 10px;
 }
