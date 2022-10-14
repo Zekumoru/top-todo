@@ -40,6 +40,8 @@ confirmButton.addEventListener('click', (e) => {
 });
 
 function reset() {
+  title.value = '';
+  description.value = '';
   priorityList.reset();
   dueDatePicker.setDate(new Date());
 }
