@@ -21,6 +21,7 @@ todoModal.show = function (input) {
 
 const backButton = todoModal.querySelector('button.back');
 backButton.addEventListener('click', (e) => {
+  reset();
   todoModal.style.display = 'none';
   todoModal.dispatchEvent(backEvent);
 });
@@ -34,7 +35,6 @@ confirmButton.addEventListener('click', (e) => {
     dueDate: dueDatePicker.value,
   };
 
-  reset();
   backButton.click();
   todoModal.dispatchEvent(new CustomEvent('confirmTodoModal', { detail: result }));
 });
