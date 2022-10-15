@@ -6,6 +6,7 @@ export default todoModal;
 
 const title = todoModal.querySelector('.title');
 const description = todoModal.querySelector('.description');
+const projectSelect = todoModal.querySelector('.project-select');
 const priorityList = new RadioList(todoModal.querySelector('.priority-choice-list'));
 const dueDatePicker = new DatePicker(todoModal.querySelector('.due-date-picker'), new Date(2020, 11, 1), new Date());
 
@@ -31,6 +32,7 @@ confirmButton.addEventListener('click', (e) => {
   const result = {
     title: title.value,
     description: description.value,
+    project: projectSelect.options[projectSelect.selectedIndex].value,
     priority: priorityList.value,
     dueDate: dueDatePicker.value,
   };

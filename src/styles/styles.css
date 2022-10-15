@@ -9,7 +9,7 @@
   --priority-choice-low-color: #40a94a;
   --priority-choice-medium-color: #e48b05;
   --priority-choice-high-color: #e31f1f;
-  --date-picker-border-dark: #494848;
+  --grey-bg-color: #494848;
 }
 
 * {
@@ -228,7 +228,7 @@ main .content-wrap {
 }
 
 .todo-modal {
-  display: none;
+  display: flex;
 }
 
 .todo-modal input[type=text],
@@ -250,6 +250,23 @@ main .content-wrap {
 
 .todo-modal textarea {
   resize: none;
+}
+
+/* PROJECTS */
+
+.project-select {
+  max-width: 160px;
+  background-color: transparent;
+  border: none;
+  color: var(--default-fg-color);
+  padding: 4px 12px 4px 10px;
+  color-scheme: dark;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.project-select option {
+  background-color: var(--grey-bg-color);
 }
 
 /* PRIORITY LIST */
@@ -292,7 +309,7 @@ main .content-wrap {
 .due-date-picker {
   background-color: transparent;
   color-scheme: dark;
-  border: 1px solid var(--date-picker-border-dark);
+  border: 1px solid var(--grey-bg-color);
   border-radius: 4px;
   padding: 4px 10px;
 }
