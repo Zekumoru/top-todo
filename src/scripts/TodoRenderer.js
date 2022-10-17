@@ -2,9 +2,37 @@ import { format, isToday, isTomorrow } from "date-fns";
 
 export default class {
   element;
+  #sections;
 
   constructor(element, todos) {
     this.element = element;
+    this.#sections = [];
+
+    todos.forEach((todo) => this.renderTodo(todo));
+  }
+
+  renderTodo(todo) {
+    let section = this.#sections.find(s => s.date === todo.dueDate);
+    if (!section) {
+      section = this.#createSection(todo.dueDate);
+    }
+
+    const card = new Card(todo);
+    section.list.appendChild(card.element);
+  }
+
+  #createSection(date) {
+    const section = new Section(date);
+
+    let index = this.#sections.findIndex(s => s.date > date);
+    if (index === -1) index = this.#sections.length;
+    
+    const prependTo = this.#sections[index];
+    if (prependTo) this.element.insertBefore(section.element, prependTo.element);
+    else this.element.appendChild(section.element);
+    
+    this.#sections.splice(index, 0, section);
+    return section;
   }
 }
 
