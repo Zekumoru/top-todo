@@ -21,6 +21,16 @@ export default class {
     section.list.appendChild(card.element);
   }
 
+  removeCard(card) {
+    const section = this.#sections.find(s => s.element.contains(card));
+    if (!section) return;
+    
+    section.list.removeChild(card);
+    if (!section.list.hasChildNodes()) {
+      this.element.removeChild(section.element);
+    }
+  }
+
   #createSection(date) {
     const section = new Section(date);
 
@@ -110,5 +120,8 @@ class Card {
 
     this.title.innerText = todo.title;
     this.content.innerText = todo.project;
+
+    const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
+    this.deleteButton.addEventListener('click', () => card.dispatchEvent(deleteEvent));
   }
 }
