@@ -1,5 +1,6 @@
 import DatePicker from "./DatePicker";
 import RadioList from "./RadioList";
+import Todo from "./Todo";
 
 const todoModal = document.querySelector('.todo-modal');
 export default todoModal;
@@ -29,16 +30,16 @@ backButton.addEventListener('click', (e) => {
 
 const confirmButton = todoModal.querySelector('button.confirm');
 confirmButton.addEventListener('click', (e) => {
-  const result = {
+  const todo = new Todo({
     title: title.value,
     description: description.value,
     project: projectSelect.options[projectSelect.selectedIndex].value,
     priority: priorityList.value,
     dueDate: dueDatePicker.value,
-  };
+  });
 
   backButton.click();
-  todoModal.dispatchEvent(new CustomEvent('confirmTodoModal', { detail: result }));
+  todoModal.dispatchEvent(new CustomEvent('confirmTodoModal', { detail: todo }));
 });
 
 function reset() {
