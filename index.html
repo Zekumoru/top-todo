@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keedo</title>
-  <script defer src="build.fe5dc432946bd1426bd2.js"></script></head>
+  <script defer src="build.2a0506fb4d186ad117e7.js"></script></head>
   <body>
     <div class="todo-modal">
       <nav class="todo-modal-top-nav flex-horizontal-between">
@@ -18,6 +18,12 @@
       <div class="todo-modal-container">
         <input class="title" type="text" placeholder="Write to do...">
         <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
+        <div class="project flex-horizontal-between">
+          <span>Projects</span>
+          <select class="project-select">
+            <option value="default">default</option>
+          </select>
+        </div>
         <div class="priority flex-horizontal-between">
           <span>Priority</span>
           <ul class="priority-choice-list">
@@ -76,18 +82,22 @@
       </header>
       <ul class="todos">
         <li class="content-wrap">
-          <input class="checkbox" type="checkbox">
-          <div class="top">
-            <h3>Title</h3>
+          <div class="checkbox-container">
+            <input class="checkbox" type="checkbox">
+            <div class="mdi mdi-check-bold check"></div>
+          </div>
+          <div class="card-top">
+            <h3 class="title">Title</h3>
+            <div class="project">(default)</div>
             <div class="buttons">
               <button class="mdi mdi-delete"></button>
               <button class="mdi mdi-exclamation-thick"></button>
               <button class="mdi mdi-comment-text-outline"></button>
             </div>
           </div>
-          <div class="bottom">
+          <div class="card-bottom">
             <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, earum?</p>
-            <p class="deadline">Deadline: 20/10/2022</p>
+            <p class="due-date">Deadline: 20/10/2022</p>
           </div>
         </li>
       </ul>
