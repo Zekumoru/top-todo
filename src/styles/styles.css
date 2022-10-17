@@ -316,13 +316,23 @@ main .content-wrap {
 
 /* TODOS */
 
-.todos {
+.todos,
+.todo-section ul {
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+.todo-section h2 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.todo-section ul {
   gap: 8px;
 }
 
-.todos li {
+.todo-item {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-areas: 
@@ -335,49 +345,49 @@ main .content-wrap {
   align-items: center;
 }
 
-.todos .buttons {
+.todo-item .buttons {
   display: flex;
   gap: 8px;
 }
 
-.todos .title,
-.todos .content {
+.todo-item .title,
+.todo-item .content {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.todos .title {
+.todo-item .title {
   grid-area: title;
   font-size: 1.1rem;
 }
 
-.todos .content {
+.todo-item .content {
   grid-area: content;
   color: var(--card-content-text-color);
 }
 
-.todos .buttons {
+.todo-item .buttons {
   grid-area: buttons;
 }
 
-.todos button {
+.todo-item button {
   font-size: 1.2rem;
 }
 
-.todos button:hover {
+.todo-item button:hover {
   color: var(--hover-fg-color);
 }
 
-.todos .checkbox-container {
+.todo-item .checkbox-container {
   grid-area: checkbox;
   position: relative;
   width: 24px;
   height: 24px;
 }
 
-.todos .checkbox {
+.todo-item .checkbox {
   width: 100%;
   height: 100%;
   appearance: none;
@@ -386,20 +396,20 @@ main .content-wrap {
   cursor: pointer;
 }
 
-.todos .check {
+.todo-item .check {
   display: none;
 }
 
-.todos .checkbox:hover {
+.todo-item .checkbox:hover {
   background-color: var(--checkbox-bg-hover-color);
 }
 
-.todos .checkbox:checked {
+.todo-item .checkbox:checked {
   background-color: var(--checkbox-checked-bg-color);
   background-image: src();
 }
 
-.todos .checkbox:checked + .check {
+.todo-item .checkbox:checked + .check {
   display: block;
   position: absolute;
   pointer-events: none;
