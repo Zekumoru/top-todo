@@ -18,10 +18,8 @@ class Section {
     const section = document.createElement('li');
     section.className = 'todo-section';
     section.innerHTML = `
-      <li class="todo-section">
-        <h2></h2>
-        <ul></ul>
-      </li>
+      <h2></h2>
+      <ul></ul>
     `;
 
     this.element = section;
