@@ -26,6 +26,10 @@ todoModal.addEventListener('showTodoModal', (e) => {
   primaryNav.inert = true;
 });
 
+todoModal.addEventListener('confirmTodoModal', (e) => {
+  const todo = e.detail;
+});
+
 writeTodoInput.addEventListener('keyup', (e) => {
   if (e.key !== 'Enter') return;
 
@@ -34,17 +38,4 @@ writeTodoInput.addEventListener('keyup', (e) => {
 
   writeTodoInput.value = '';
   todoModal.show(input);
-});
-
-todos.forEach((todo) => {
-  const checkbox = todo.querySelector('.checkbox');
-
-  checkbox.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      todo.classList.add('check');
-      return;
-    }
-    
-    todo.classList.remove('check');
-  });
 });

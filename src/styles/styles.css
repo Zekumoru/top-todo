@@ -227,10 +227,6 @@ main .content-wrap {
   gap: 16px;
 }
 
-.todo-modal {
-  display: flex;
-}
-
 .todo-modal input[type=text],
 .todo-modal textarea {
   background-color: transparent;
@@ -335,35 +331,46 @@ main .content-wrap {
   align-items: center;
 }
 
-.todos .top,
-.todos .bottom,
+.todos .card-top,
+.todos .card-bottom,
 .todos .buttons {
   display: flex;
   gap: 8px;
 }
 
-.todos .top,
-.todos .bottom {
-  justify-content: space-between;
+.todos .card-top,
+.todos .card-bottom {
   min-width: 0;
 }
 
-.todos .top {
+.todos .card-top {
   grid-area: top;
+  align-items: end;
 }
 
-.todos .bottom {
+.todos .card-bottom {
   grid-area: bottom;
+  align-items: start;
+}
+
+.todos .checkbox-container {
+  grid-area: checkbox;
+  position: relative;
+  width: 24px;
+  height: 24px;
 }
 
 .todos .checkbox {
-  grid-area: checkbox;
+  width: 100%;
+  height: 100%;
   appearance: none;
-  width: 24px;
-  height: 24px;
   background-color: var(--default-fg-color);
   border-radius: 100%;
   cursor: pointer;
+}
+
+.todos .check {
+  display: none;
 }
 
 .todos .checkbox:hover {
@@ -371,7 +378,33 @@ main .content-wrap {
 }
 
 .todos .checkbox:checked {
-  background-color: var(--primary-nav-bg-color);
+  background-color: #2f8933;
+  background-image: src();
+}
+
+.todos .checkbox:checked + .check {
+  display: block;
+  position: absolute;
+  pointer-events: none;
+  top: 2.7px;
+  left: 2.5px;
+  width: 100%;
+  height: 100%;
+  font-size: 1.1rem;
+}
+
+.todos .project,
+.todos .description,
+.todos .due-date {
+  color: #aeaeae;
+}
+
+.todos .project {
+  font-size: 0.9rem;
+}
+
+.todos .buttons {
+  margin-left: auto;
 }
 
 .todos button {
@@ -388,12 +421,8 @@ main .content-wrap {
   white-space: nowrap;
 }
 
-.todos .deadline {
+.todos .due-date {
   flex-shrink: 0;
-}
-
-.todos .check h3 {
-  text-decoration: line-through;
 }
 
 /* MEDIA QUERIES */
