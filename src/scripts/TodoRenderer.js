@@ -47,3 +47,42 @@ class Section {
     this.#title.innerText = title;
   }
 }
+
+class Card {
+  element;
+  title;
+  content;
+  checkbox;
+  deleteButton;
+  priorityButton;
+  noteButton;
+
+  constructor(todo) {
+    const card = document.createElement('li');
+    card.className = 'todo-item';
+    card.innerHTML = `
+      <div class="checkbox-container">
+        <input class="checkbox" type="checkbox">
+        <div class="mdi mdi-check-bold check"></div>
+      </div>
+      <h3 class="title"></h3>
+      <p class="content"></p>
+      <div class="buttons">
+        <button class="delete mdi mdi-delete"></button>
+        <button class="priority mdi mdi-exclamation-thick"></button>
+        <button class="note mdi mdi-comment-text-outline"></button>
+      </div>
+    `;
+
+    this.element = card;
+    this.title = card.querySelector('.title');
+    this.content = card.querySelector('.content');
+    this.checkbox = card.querySelector('.checkbox');
+    this.deleteButton = card.querySelector('.delete');
+    this.priorityButton = card.querySelector('.priority');
+    this.noteButton = card.querySelector('.note');
+
+    this.title.innerText = todo.title;
+    this.content.innerText = todo.project;
+  }
+}
