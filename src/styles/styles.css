@@ -10,6 +10,10 @@
   --priority-choice-medium-color: #e48b05;
   --priority-choice-high-color: #e31f1f;
   --grey-bg-color: #494848;
+  --checkbox-bg-color: #505050;
+  --checkbox-bg-hover-color: #484848;
+  --checkbox-checked-bg-color: #2f8933;
+  --card-content-text-color: #aeaeae;
 }
 
 * {
@@ -322,8 +326,8 @@ main .content-wrap {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-areas: 
-    "checkbox top"
-    "checkbox bottom";
+    "checkbox title buttons"
+    "checkbox content buttons";
   background-color: var(--selected-bg-color);
   padding: 12px 24px;
   column-gap: 16px;
@@ -331,26 +335,39 @@ main .content-wrap {
   align-items: center;
 }
 
-.todos .card-top,
-.todos .card-bottom,
 .todos .buttons {
   display: flex;
   gap: 8px;
 }
 
-.todos .card-top,
-.todos .card-bottom {
+.todos .title,
+.todos .content {
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.todos .card-top {
-  grid-area: top;
-  align-items: end;
+.todos .title {
+  grid-area: title;
+  font-size: 1.1rem;
 }
 
-.todos .card-bottom {
-  grid-area: bottom;
-  align-items: start;
+.todos .content {
+  grid-area: content;
+  color: var(--card-content-text-color);
+}
+
+.todos .buttons {
+  grid-area: buttons;
+}
+
+.todos button {
+  font-size: 1.2rem;
+}
+
+.todos button:hover {
+  color: var(--hover-fg-color);
 }
 
 .todos .checkbox-container {
@@ -364,7 +381,7 @@ main .content-wrap {
   width: 100%;
   height: 100%;
   appearance: none;
-  background-color: var(--default-fg-color);
+  background-color: var(--checkbox-bg-color);
   border-radius: 100%;
   cursor: pointer;
 }
@@ -374,11 +391,11 @@ main .content-wrap {
 }
 
 .todos .checkbox:hover {
-  background-color: var(--hover-fg-color);
+  background-color: var(--checkbox-bg-hover-color);
 }
 
 .todos .checkbox:checked {
-  background-color: #2f8933;
+  background-color: var(--checkbox-checked-bg-color);
   background-image: src();
 }
 
@@ -391,38 +408,6 @@ main .content-wrap {
   width: 100%;
   height: 100%;
   font-size: 1.1rem;
-}
-
-.todos .project,
-.todos .description,
-.todos .due-date {
-  color: #aeaeae;
-}
-
-.todos .project {
-  font-size: 0.9rem;
-}
-
-.todos .buttons {
-  margin-left: auto;
-}
-
-.todos button {
-  font-size: 1rem;
-}
-
-.todos button:hover {
-  color: var(--hover-fg-color);
-}
-
-.todos .description {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.todos .due-date {
-  flex-shrink: 0;
 }
 
 /* MEDIA QUERIES */
