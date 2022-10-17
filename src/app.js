@@ -4,9 +4,10 @@ import './styles/styles.css';
 import primaryNav from './scripts/primaryNav';
 import todoModal from './scripts/todoModal';
 import TodoRenderer from './scripts/TodoRenderer';
+import Todo from './scripts/Todo';
 
 const todos = [];
-const todoRenderer = new TodoRenderer(document.querySelector('.todos'));
+const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
 const writeTodoInput = document.querySelector('.write-todo-bar input[type=text]');
@@ -31,8 +32,14 @@ todoModal.addEventListener('showTodoModal', (e) => {
 
 todoModal.addEventListener('confirmTodoModal', (e) => {
   const todo = e.detail;
-  todos.add(todo);
-  TodoRenderer.renderTodo(todo);
+  todos.push(todo);
+  todoRenderer.renderTodo(todo);
+});
+
+main.addEventListener('deleteTodo', (e) => {
+  const indexToRemove = todos.findIndex(t => t === e.detail.todo);
+  todos.splice(indexToRemove, 1);
+  todoRenderer.removeCard(e.detail.card);
 });
 
 writeTodoInput.addEventListener('keyup', (e) => {
