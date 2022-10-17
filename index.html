@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keedo</title>
-  <script defer src="build.2a0506fb4d186ad117e7.js"></script></head>
+  <script defer src="build.5c2edbec2a2c5693d711.js"></script></head>
   <body>
     <div class="todo-modal">
       <nav class="todo-modal-top-nav flex-horizontal-between">
@@ -55,14 +55,14 @@
           <h1>Keedo</h1>
         </header>
         <ul>
-          <li tabindex="0">All</li>
+          <li tabindex="0" class="current">All</li>
           <li class="section">
             <div class="heading content-wrap">
               <h2>Projects</h2>
               <button class="icon flex-horizontal-center mdi mdi-pencil"></button>
             </div>
             <ul>
-              <li tabindex="0" class="default current">default</li>
+              <li tabindex="0" class="default">default</li>
               <li tabindex="0">Project 1</li>
               <li tabindex="0">Project 2</li>
               <li tabindex="0">Project 3</li>
@@ -80,27 +80,7 @@
           </div>
         </div>
       </header>
-      <ul class="todos">
-        <li class="content-wrap">
-          <div class="checkbox-container">
-            <input class="checkbox" type="checkbox">
-            <div class="mdi mdi-check-bold check"></div>
-          </div>
-          <div class="card-top">
-            <h3 class="title">Title</h3>
-            <div class="project">(default)</div>
-            <div class="buttons">
-              <button class="mdi mdi-delete"></button>
-              <button class="mdi mdi-exclamation-thick"></button>
-              <button class="mdi mdi-comment-text-outline"></button>
-            </div>
-          </div>
-          <div class="card-bottom">
-            <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, earum?</p>
-            <p class="due-date">Deadline: 20/10/2022</p>
-          </div>
-        </li>
-      </ul>
+      <ul class="todos content-wrap"></ul>
     </main>
   </body>
 </html>
