@@ -3,10 +3,13 @@ import './styles/reset.css';
 import './styles/styles.css';
 import primaryNav from './scripts/primaryNav';
 import todoModal from './scripts/todoModal';
+import TodoRenderer from './scripts/TodoRenderer';
+
+const todos = [];
+const todoRenderer = new TodoRenderer(document.querySelector('.todos'));
 
 const main = document.querySelector('main');
 const writeTodoInput = document.querySelector('.write-todo-bar input[type=text]');
-const todos = document.querySelectorAll('.todos li');
 
 primaryNav.addEventListener('openPrimaryNav', (e) => {
   main.inert = true;
@@ -28,6 +31,8 @@ todoModal.addEventListener('showTodoModal', (e) => {
 
 todoModal.addEventListener('confirmTodoModal', (e) => {
   const todo = e.detail;
+  todos.add(todo);
+  TodoRenderer.renderTodo(todo);
 });
 
 writeTodoInput.addEventListener('keyup', (e) => {
