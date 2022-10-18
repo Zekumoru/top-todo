@@ -374,6 +374,10 @@ main .content-wrap {
   font-size: 1.1rem;
 }
 
+.todo-item.checked .title {
+  text-decoration: line-through;
+}
+
 .todo-item .content {
   grid-area: content;
   color: var(--card-content-text-color);
@@ -407,7 +411,7 @@ main .content-wrap {
   cursor: pointer;
 }
 
-.todo-item .check {
+.todo-item .check-icon {
   display: none;
   position: absolute;
   pointer-events: none;
@@ -418,7 +422,7 @@ main .content-wrap {
   font-size: 1.1rem;
 }
 
-.todo-item .checkbox:hover + .check {
+.todo-item .checkbox:hover + .check-icon {
   display: block;
 }
 
@@ -427,7 +431,7 @@ main .content-wrap {
   background-image: src();
 }
 
-.todo-item .checkbox:checked + .check {
+.todo-item .checkbox:checked + .check-icon {
   display: block;
 }
 

@@ -21,9 +21,9 @@ export default class {
     const card = new Card(todo);
 
     const insertBefore = Array.from(section.list.children).reduce((before, current) => {
-      const tp = this.#getPriority(todo.priority);
-      const cp = this.#getPriority(current.className);
-      const bp = (!before)? -1 : this.#getPriority(before.className);
+      const tp = this.#getPriority(todo.priority, todo.checked);
+      const cp = this.#getPriority(current.className, current.querySelector('.checkbox').checked);
+      const bp = (!before)? -1 : this.#getPriority(before.className, before.querySelector('.checkbox').checked);
       if (tp >= cp && cp > bp) return current;
       return before;
     }, null);
@@ -31,10 +31,11 @@ export default class {
     section.list.insertBefore(card.element, insertBefore);
   }
 
-  #getPriority(str) {
-    if (str.includes('high')) return 2;
-    if (str.includes('medium')) return 1;
-    return 0;
+  #getPriority(str, checked) {
+    const offset = checked? 0 : 10;
+    if (str.includes('high')) return 2 + offset;
+    if (str.includes('medium')) return 1 + offset;
+    return 0 + offset;
   }
 
   removeCard(card) {
@@ -115,7 +116,7 @@ class Card {
     card.innerHTML = `
       <div class="checkbox-container">
         <input class="checkbox" type="checkbox">
-        <div class="mdi mdi-check-bold check"></div>
+        <div class="mdi mdi-check-bold check-icon"></div>
       </div>
       <h3 class="title"></h3>
       <p class="content"></p>
@@ -138,6 +139,7 @@ class Card {
     this.content.innerText = todo.project;
     this.checkbox.checked = todo.checked;
     card.classList.add(`${todo.priority}-priority`);
+    if (todo.checked) card.classList.add('checked');
 
     const checkedEvent = new CustomEvent('checkedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     const uncheckedEvent = new CustomEvent('uncheckedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
