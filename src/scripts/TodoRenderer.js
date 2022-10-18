@@ -1,4 +1,4 @@
-import { format, isToday, isTomorrow } from "date-fns";
+import { format, isThisISOWeek, isToday, isTomorrow } from "date-fns";
 
 export default class {
   element;
@@ -120,6 +120,7 @@ class Card {
 
     this.title.innerText = todo.title;
     this.content.innerText = todo.project;
+    this.checkbox.checked = todo.checked;
     card.classList.add(`${todo.priority}-priority`);
 
     const checkedEvent = new CustomEvent('checkedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
