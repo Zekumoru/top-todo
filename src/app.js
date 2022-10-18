@@ -5,6 +5,7 @@ import primaryNav from './scripts/primaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import todoModal from './scripts/todoModal';
 import TodoRenderer from './scripts/TodoRenderer';
+import Todo from './scripts/Todo';
 
 const todos = [];
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
@@ -57,5 +58,14 @@ main.addEventListener('deleteTodo', (e) => {
 });
 
 main.addEventListener('enterWriteTodoInput', (e) => {
+  const todo = new Todo({
+    title: e.detail,
+    project: 'default',
+  });
+  todos.push(todo);
+  todoRenderer.renderTodo(todo);
+});
+
+main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.show(e.detail);
 });

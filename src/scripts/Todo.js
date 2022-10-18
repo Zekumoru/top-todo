@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export default class Todo {
   title;
   description;
@@ -8,6 +10,8 @@ export default class Todo {
 
   constructor(properties) {
     this.checked = false;
+    this.priority = 'low';
+    this.dueDate = format(new Date(), 'yyyy-MM-dd');
     
     Object.entries(properties).forEach(([key, value]) => {
       if (!Object.hasOwn(this, key)) return;
