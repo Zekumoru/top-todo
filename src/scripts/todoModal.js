@@ -5,8 +5,8 @@ import Todo from "./Todo";
 const todoModal = document.querySelector('.todo-modal');
 export default todoModal;
 
-const title = todoModal.querySelector('.title');
-const description = todoModal.querySelector('.description');
+const titleInput = todoModal.querySelector('.title');
+const descriptionInput = todoModal.querySelector('.description');
 const projectSelect = todoModal.querySelector('.project-select');
 const priorityList = new RadioList(todoModal.querySelector('.priority-choice-list'));
 const dueDatePicker = new DatePicker(todoModal.querySelector('.due-date-picker'), new Date(2020, 11, 1), new Date());
@@ -14,10 +14,18 @@ const dueDatePicker = new DatePicker(todoModal.querySelector('.due-date-picker')
 const showEvent = new Event('showTodoModal');
 const backEvent = new Event('backTodoModal');
 
-todoModal.show = function (input) {
+let fnOnConfirm;
+
+todoModal.show = function ({ title, description, project, priority, dueDate }, fn) {
+  fnOnConfirm = fn;
   todoModal.style.display = 'flex';
-  todoModal.querySelector('.title').value = input;
-  todoModal.querySelector('.title').focus();
+
+  titleInput.value = title ?? '';
+  descriptionInput.value = description ?? '';
+  if (priority) priorityList.value = priority;
+  if (dueDate) dueDatePicker.value = dueDate;
+  
+  titleInput.focus();
   todoModal.dispatchEvent(showEvent);
 }
 
@@ -31,20 +39,23 @@ backButton.addEventListener('click', (e) => {
 const confirmButton = todoModal.querySelector('button.confirm');
 confirmButton.addEventListener('click', (e) => {
   const todo = new Todo({
-    title: title.value,
-    description: description.value,
+    title: titleInput.value,
+    description: descriptionInput.value,
     project: projectSelect.options[projectSelect.selectedIndex].value,
     priority: priorityList.value,
     dueDate: dueDatePicker.value,
   });
 
   backButton.click();
-  todoModal.dispatchEvent(new CustomEvent('confirmTodoModal', { detail: todo }));
+  if (typeof fnOnConfirm === 'function') {
+    fnOnConfirm(todo);
+    fnOnConfirm = null;
+  }
 });
 
 function reset() {
-  title.value = '';
-  description.value = '';
+  titleInput.value = '';
+  descriptionInput.value = '';
   priorityList.reset();
   dueDatePicker.setDate(new Date());
 }
