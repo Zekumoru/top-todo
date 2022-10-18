@@ -76,12 +76,6 @@ todoModal.addEventListener('showTodoModal', (e) => {
   primaryNav.inert = true;
 });
 
-todoModal.addEventListener('confirmTodoModal', (e) => {
-  const todo = e.detail;
-  todos.push(todo);
-  todoRenderer.renderTodo(todo);
-});
-
 main.addEventListener('checkedTodo', (e) => {
   const { todo, card } = e.detail;
   todo.checked = true;
@@ -97,7 +91,13 @@ main.addEventListener('uncheckedTodo', (e) => {
 });
 
 main.addEventListener('editTodo', (e) => {
-  const { todo } = e.detail;
+  const { todo, card } = e.detail;
+  todoModal.show(todo, (editedTodo) => {
+    todos.splice(todos.findIndex(t => t === todo), 1);
+    todoRenderer.removeCard(card);
+    todos.push(editedTodo);
+    todoRenderer.renderTodo(editedTodo);
+  });
 });
 
 main.addEventListener('deleteTodo', (e) => {
@@ -117,5 +117,8 @@ main.addEventListener('enterWriteTodoInput', (e) => {
 });
 
 main.addEventListener('editWriteTodoInput', (e) => {
-  todoModal.show(e.detail);
+  todoModal.show({ title: e.detail }, (todo) => {
+    todos.push(todo); 
+    todoRenderer.renderTodo(todo);
+  });
 });

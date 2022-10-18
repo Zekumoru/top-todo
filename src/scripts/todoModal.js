@@ -15,9 +15,11 @@ const showEvent = new Event('showTodoModal');
 const backEvent = new Event('backTodoModal');
 
 let fnOnConfirm;
+let checkedTodo;
 
-todoModal.show = function ({ title, description, project, priority, dueDate }, fn) {
+todoModal.show = function ({ title, description, project, priority, dueDate, checked }, fn) {
   fnOnConfirm = fn;
+  checkedTodo = checked;
   todoModal.style.display = 'flex';
 
   titleInput.value = title ?? '';
@@ -44,6 +46,7 @@ confirmButton.addEventListener('click', (e) => {
     project: projectSelect.options[projectSelect.selectedIndex].value,
     priority: priorityList.value,
     dueDate: dueDatePicker.value,
+    checked: !!checkedTodo,
   });
 
   backButton.click();

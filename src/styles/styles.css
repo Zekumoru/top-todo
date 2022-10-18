@@ -2,7 +2,8 @@
   --default-bg-color: #18191a;
   --default-fg-color: #e6e6e6;
   --primary-nav-bg-color: #141414;
-  --selected-bg-color: #212223;
+  --card-bg-color: #212223;
+  --card-bg-hover-color: #1d1e1f;
   --hover-bg-color: #272729;
   --hover-transparent-bg-color: rgba(30, 31, 33, 0.8);
   --hover-fg-color: #c8c8c8;
@@ -141,7 +142,7 @@ button {
 }
 
 .primary-nav .current {
-  background-color: var(--selected-bg-color);
+  background-color: var(--card-bg-color);
 }
 
 .primary-nav .default {
@@ -163,7 +164,7 @@ main .content-wrap {
 
 .write-todo-bar {
   display: flex;
-  background-color: var(--selected-bg-color);
+  background-color: var(--card-bg-color);
   height: 40px;
   border-radius: 100px;
   padding: 0 12px;
@@ -348,11 +349,16 @@ main .content-wrap {
   grid-template-areas: 
     "checkbox title buttons"
     "checkbox content buttons";
-  background-color: var(--selected-bg-color);
+  background-color: var(--card-bg-color);
   padding: 12px 24px;
   column-gap: 16px;
   border-radius: 4px;
   align-items: center;
+  cursor: pointer;
+}
+
+.todo-item:hover {
+  background-color: var(--card-bg-hover-color);
 }
 
 .todo-item.low-priority {
