@@ -36,10 +36,21 @@ todoModal.addEventListener('confirmTodoModal', (e) => {
   todoRenderer.renderTodo(todo);
 });
 
+main.addEventListener('checkedTodo', (e) => {
+  const { todo } = e.detail;
+  todo.checked = true;
+});
+
+main.addEventListener('uncheckedTodo', (e) => {
+  const { todo } = e.detail;
+  todo.checked = false;
+});
+
 main.addEventListener('deleteTodo', (e) => {
-  const indexToRemove = todos.findIndex(t => t === e.detail.todo);
+  const { todo, card } = e.detail;
+  const indexToRemove = todos.findIndex(t => t === todo);
   todos.splice(indexToRemove, 1);
-  todoRenderer.removeCard(e.detail.card);
+  todoRenderer.removeCard(card);
 });
 
 writeTodoInput.addEventListener('keyup', (e) => {

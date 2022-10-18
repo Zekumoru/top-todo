@@ -121,6 +121,17 @@ class Card {
     this.title.innerText = todo.title;
     this.content.innerText = todo.project;
 
+    const checkedEvent = new CustomEvent('checkedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
+    const uncheckedEvent = new CustomEvent('uncheckedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
+    this.checkbox.addEventListener('change', () => {
+      if (this.checkbox.checked) {
+        card.dispatchEvent(checkedEvent);
+        return;
+      }
+
+      card.dispatchEvent(uncheckedEvent);
+    });
+
     const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     this.deleteButton.addEventListener('click', () => card.dispatchEvent(deleteEvent));
   }
