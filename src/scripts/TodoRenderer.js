@@ -45,6 +45,7 @@ export default class {
     section.list.removeChild(card);
     if (!section.list.hasChildNodes()) {
       this.element.removeChild(section.element);
+      this.#sections.splice(this.#sections.findIndex(s => s === section), 1);
     }
   }
 
