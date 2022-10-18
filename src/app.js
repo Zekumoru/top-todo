@@ -7,53 +7,7 @@ import todoModal from './scripts/todoModal';
 import TodoRenderer from './scripts/TodoRenderer';
 import Todo from './scripts/Todo';
 
-const todos = [
-  new Todo({
-    title: 'ok',
-    project: 'default',
-    priority: 'low',
-    dueDate: '2022/10/18',
-  }),
-  new Todo({
-    title: 'hah',
-    project: 'default',
-    priority: 'medium',
-    dueDate: '2022/10/18',
-    checked: true,
-  }),
-  new Todo({
-    title: 'eh',
-    project: 'default',
-    priority: 'medium',
-    dueDate: '2022/10/18',
-  }),
-  new Todo({
-    title: 'lala',
-    project: 'default',
-    priority: 'high',
-    dueDate: '2022/10/18',
-    checked: true,
-  }),
-  new Todo({
-    title: 'zenith',
-    project: 'default',
-    priority: 'low',
-    dueDate: '2022/10/18',
-    checked: true,
-  }),
-  new Todo({
-    title: 'lol',
-    project: 'default',
-    priority: 'high',
-    dueDate: '2022/10/18',
-  }),
-  new Todo({
-    title: 'hmm',
-    project: 'default',
-    priority: 'low',
-    dueDate: '2022/10/18',
-  }),
-];
+const todos = [];
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
