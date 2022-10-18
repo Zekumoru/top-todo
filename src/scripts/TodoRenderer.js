@@ -19,7 +19,22 @@ export default class {
     }
 
     const card = new Card(todo);
-    section.list.appendChild(card.element);
+
+    const insertBefore = Array.from(section.list.children).reduce((before, current) => {
+      const tp = this.#getPriority(todo.priority);
+      const cp = this.#getPriority(current.className);
+      const bp = (!before)? -1 : this.#getPriority(before.className);
+      if (tp >= cp && cp > bp) return current;
+      return before;
+    }, null);
+    
+    section.list.insertBefore(card.element, insertBefore);
+  }
+
+  #getPriority(str) {
+    if (str.includes('high')) return 2;
+    if (str.includes('medium')) return 1;
+    return 0;
   }
 
   removeCard(card) {
