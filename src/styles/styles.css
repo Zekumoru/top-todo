@@ -161,7 +161,7 @@ main .content-wrap {
   padding: 20px 0;
 }
 
-.primary-header .write-todo-bar {
+.write-todo-bar {
   display: flex;
   background-color: var(--selected-bg-color);
   height: 40px;
@@ -171,18 +171,28 @@ main .content-wrap {
   align-items: center;
 }
 
-.open.primary-nav-button {
-  font-size: 24px;
+.write-todo-bar button {
+  font-size: 20px;
   opacity: 0.8;
 }
 
-.primary-header input[type=text] {
+.open.primary-nav-button {
+  font-size: 24px;
+}
+
+.write-todo-bar-input {
   flex: 1;
   background-color: transparent;
   border: none;
   color: var(--default-fg-color);
   font-size: 1.2rem;
   outline: none;
+}
+
+.write-todo-bar .buttons {
+  display: none;
+  gap: 8px;
+  padding-right: 4px;
 }
 
 /* TODO MODAL */

@@ -11,6 +11,7 @@ const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
 const writeTodoInput = document.querySelector('.write-todo-bar input[type=text]');
+const writeTodoButtons = document.querySelector('.write-todo-bar .buttons');
 
 primaryNav.addEventListener('openPrimaryNav', (e) => {
   main.inert = true;
@@ -65,4 +66,12 @@ writeTodoInput.addEventListener('keyup', (e) => {
 
   writeTodoInput.value = '';
   todoModal.show(input);
+});
+
+writeTodoInput.addEventListener('keyup', (e) => {
+  if (!e.target.value || e.key === 'Enter') {
+    writeTodoButtons.style.display = 'none';
+    return;
+  }
+  writeTodoButtons.style.display = 'flex';
 });
