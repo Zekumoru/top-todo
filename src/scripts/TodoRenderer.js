@@ -141,10 +141,15 @@ class Card {
     this.checkbox.checked = todo.checked;
     card.classList.add(`${todo.priority}-priority`);
     if (todo.checked) card.classList.add('checked');
+    
+    const editEvent = new CustomEvent('editTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
+    card.addEventListener('click', (e) => {
+      card.dispatchEvent(editEvent);
+    });
 
     const checkedEvent = new CustomEvent('checkedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     const uncheckedEvent = new CustomEvent('uncheckedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
-    this.checkbox.addEventListener('change', () => {
+    this.checkbox.addEventListener('change', (e) => {
       if (this.checkbox.checked) {
         card.dispatchEvent(checkedEvent);
         return;
@@ -152,6 +157,7 @@ class Card {
 
       card.dispatchEvent(uncheckedEvent);
     });
+    this.checkbox.addEventListener('click', (e) => e.stopPropagation());
 
     const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     this.deleteButton.addEventListener('click', () => card.dispatchEvent(deleteEvent));
