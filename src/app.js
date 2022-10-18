@@ -37,13 +37,17 @@ todoModal.addEventListener('confirmTodoModal', (e) => {
 });
 
 main.addEventListener('checkedTodo', (e) => {
-  const { todo } = e.detail;
+  const { todo, card } = e.detail;
   todo.checked = true;
+  todoRenderer.removeCard(card);
+  todoRenderer.renderTodo(todo);
 });
 
 main.addEventListener('uncheckedTodo', (e) => {
-  const { todo } = e.detail;
+  const { todo, card } = e.detail;
   todo.checked = false;
+  todoRenderer.removeCard(card);
+  todoRenderer.renderTodo(todo);
 });
 
 main.addEventListener('deleteTodo', (e) => {
