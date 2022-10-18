@@ -205,8 +205,9 @@ main .content-wrap {
 
 .todo-modal {
   display: none;
+  min-height: 100vh;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   z-index: 200;
   left: 0;
   background-color: var(--default-bg-color);
@@ -479,7 +480,7 @@ main .content-wrap {
   }
 
   .todo-modal {
-    min-height: 100vh;
+    justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.4);
   }
