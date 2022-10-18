@@ -1,4 +1,4 @@
-import { format, isThisISOWeek, isToday, isTomorrow } from "date-fns";
+import { compareAsc, format, isThisISOWeek, isToday, isTomorrow } from "date-fns";
 
 export default class {
   element;
@@ -12,9 +12,10 @@ export default class {
   }
 
   renderTodo(todo) {
-    let section = this.#sections.find(s => s.date === todo.dueDate);
+    const date = format(new Date(todo.dueDate), 'yyyy-MM-dd');
+    let section = this.#sections.find(s => s.date === date);
     if (!section) {
-      section = this.#createSection(todo.dueDate);
+      section = this.#createSection(date);
     }
 
     const card = new Card(todo);
