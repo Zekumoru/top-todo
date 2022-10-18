@@ -120,6 +120,7 @@ class Card {
 
     this.title.innerText = todo.title;
     this.content.innerText = todo.project;
+    card.classList.add(`${todo.priority}-priority`);
 
     const checkedEvent = new CustomEvent('checkedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     const uncheckedEvent = new CustomEvent('uncheckedTodo', { bubbles: true, cancelable: true, detail: { todo, card } });

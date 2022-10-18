@@ -6,9 +6,9 @@
   --hover-bg-color: #272729;
   --hover-transparent-bg-color: rgba(30, 31, 33, 0.8);
   --hover-fg-color: #c8c8c8;
-  --priority-choice-low-color: #40a94a;
-  --priority-choice-medium-color: #e48b05;
-  --priority-choice-high-color: #e31f1f;
+  --priority-low-color: #267c2f;
+  --priority-medium-color: #ca7c06;
+  --priority-high-color: #ad1616;
   --grey-bg-color: #494848;
   --checkbox-bg-color: #505050;
   --checkbox-checked-bg-color: #2f8933;
@@ -292,15 +292,15 @@ main .content-wrap {
 }
 
 #priority-choice-low:checked + label {
-  border-color: var(--priority-choice-low-color);
+  border-color: var(--priority-low-color);
 }
 
 #priority-choice-medium:checked + label {
-  border-color: var(--priority-choice-medium-color);
+  border-color: var(--priority-medium-color);
 }
 
 #priority-choice-high:checked + label {
-  border-color: var(--priority-choice-high-color);
+  border-color: var(--priority-high-color);
 }
 
 /* DUE DATE PICKER */
@@ -342,6 +342,18 @@ main .content-wrap {
   column-gap: 16px;
   border-radius: 4px;
   align-items: center;
+}
+
+.todo-item.low-priority {
+  border-left: 4px solid var(--priority-low-color);
+}
+
+.todo-item.medium-priority {
+  border-left: 4px solid var(--priority-medium-color);
+}
+
+.todo-item.high-priority {
+  border-left: 4px solid var(--priority-high-color);
 }
 
 .todo-item .buttons {
