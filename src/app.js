@@ -2,16 +2,14 @@ import '@mdi/font/css/materialdesignicons.css'
 import './styles/reset.css';
 import './styles/styles.css';
 import primaryNav from './scripts/primaryNav';
+import writeTodoBar from './scripts/writeTodoBar';
 import todoModal from './scripts/todoModal';
 import TodoRenderer from './scripts/TodoRenderer';
-import Todo from './scripts/Todo';
 
 const todos = [];
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
-const writeTodoInput = document.querySelector('.write-todo-bar input[type=text]');
-const writeTodoButtons = document.querySelector('.write-todo-bar .buttons');
 
 primaryNav.addEventListener('openPrimaryNav', (e) => {
   main.inert = true;
@@ -58,20 +56,6 @@ main.addEventListener('deleteTodo', (e) => {
   todoRenderer.removeCard(card);
 });
 
-writeTodoInput.addEventListener('keyup', (e) => {
-  if (e.key !== 'Enter') return;
-
-  const input = writeTodoInput.value;
-  if (!input) return;
-
-  writeTodoInput.value = '';
-  todoModal.show(input);
-});
-
-writeTodoInput.addEventListener('keyup', (e) => {
-  if (!e.target.value || e.key === 'Enter') {
-    writeTodoButtons.style.display = 'none';
-    return;
-  }
-  writeTodoButtons.style.display = 'flex';
+main.addEventListener('enterWriteTodoInput', (e) => {
+  todoModal.show(e.detail);
 });
