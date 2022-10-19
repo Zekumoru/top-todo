@@ -15,6 +15,7 @@ function enterInput(text) {
   if (!text) return;
 
   input.value = '';
+  buttons.style.display = 'none';
   const enterEvent = new CustomEvent('enterWriteTodoInput', { bubbles: true, cancelable: true, detail: text });
   input.dispatchEvent(enterEvent);
 }
@@ -32,10 +33,8 @@ enterButton.addEventListener('click', (e) => {
 });
 
 editButton.addEventListener('click', (e) => {
-  const text = input.value;
-  if (!text) return;
-
+  const editEvent = new CustomEvent('editWriteTodoInput', { bubbles: true, cancelable: true, detail: input.value });
   input.value = '';
-  const editEvent = new CustomEvent('editWriteTodoInput', { bubbles: true, cancelable: true, detail: text });
+  buttons.style.display = 'none';
   input.dispatchEvent(editEvent);
 });
