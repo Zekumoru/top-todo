@@ -13,6 +13,7 @@
   --grey-bg-color: #494848;
   --checkbox-bg-color: #505050;
   --checkbox-checked-bg-color: #2f8933;
+  --empty-message-text-color: #7a7a7a;
   --card-content-text-color: #aeaeae;
 }
 
@@ -161,6 +162,9 @@ button {
 /* MAIN */
 
 main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   position: relative;
   padding-bottom: 20px;
 }
@@ -352,9 +356,20 @@ main .content-wrap {
 
 .todos,
 .todo-section ul {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.todos .empty-message {
+  text-align: center;
+  color: var(--empty-message-text-color);
+}
+
+.todos:has(.empty-message) {
+  justify-content: center;
+  align-items: center;
 }
 
 .todo-section h2 {

@@ -3,9 +3,12 @@ import { compareAsc, format, isThisISOWeek, isToday, isTomorrow } from "date-fns
 export default class {
   element;
   #sections;
+  #emptyMessage;
 
   constructor(element, todos) {
     this.element = element;
+    this.#emptyMessage = this.element.querySelector('.empty-message');
+
     this.#sections = [];
 
     todos.forEach((todo) => this.renderTodo(todo));
@@ -15,6 +18,7 @@ export default class {
     const date = format(new Date(todo.dueDate), 'yyyy-MM-dd');
     let section = this.#sections.find(s => s.date === date);
     if (!section) {
+      this.#hideEmptyMessage();
       section = this.#createSection(date);
     }
 
@@ -46,6 +50,7 @@ export default class {
     if (!section.list.hasChildNodes()) {
       this.element.removeChild(section.element);
       this.#sections.splice(this.#sections.findIndex(s => s === section), 1);
+      this.#showEmptyMessage();
     }
   }
 
@@ -61,6 +66,16 @@ export default class {
     
     this.#sections.splice(index, 0, section);
     return section;
+  }
+
+  #showEmptyMessage() {
+    if (this.#sections.length) return;
+    this.element.appendChild(this.#emptyMessage);
+  }
+
+  #hideEmptyMessage() {
+    if (this.#sections.length !== 0) return;
+    this.element.removeChild(this.#emptyMessage);
   }
 }
 
