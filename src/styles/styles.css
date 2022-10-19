@@ -52,6 +52,16 @@ button {
   align-items: center;
 }
 
+.disable-scrollbar::-webkit-scrollbar {
+  background: transparent; /* Chrome/Safari/Webkit */
+  width: 0px;
+}
+    
+.disable-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
 /* SIDEBAR NAV */
 
 .primary-nav-button {
@@ -80,8 +90,15 @@ button {
 .primary-nav-container {
   background-color: var(--primary-nav-bg-color);
   width: 300px;
-  height: 100vh;
+  height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.primary-nav .main {
+  flex: 1;
+  overflow-y: auto;
 }
 
 .primary-nav .content-wrap {
@@ -474,7 +491,7 @@ main .content-wrap {
   .primary-nav {
     width: auto;
     background-color: transparent;
-    position: static;
+    position: sticky;
     left: 0;
   }
 
