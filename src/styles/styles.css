@@ -197,6 +197,7 @@ main .content-wrap {
 }
 
 .todo-modal {
+  --border-radius: 4px;
   display: none;
   min-height: 100vh;
   flex-direction: column;
@@ -207,6 +208,14 @@ main .content-wrap {
   overflow-y: auto;
   position: fixed;
   top: 0;
+}
+
+.todo-modal > :first-child {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.todo-modal > :last-child {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
 .todo-modal-top-nav {
