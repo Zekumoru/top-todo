@@ -160,6 +160,10 @@ button {
 
 /* MAIN */
 
+main {
+  padding-bottom: 20px;
+}
+
 main .content-wrap {
   width: calc(100% - 32px);
   margin: 0 auto;
