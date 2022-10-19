@@ -14,6 +14,7 @@ const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 const main = document.querySelector('main');
 
 window.addEventListener('resize', (e) => {
+  if (primaryNav.inert) return;
   if (!primaryNav.style.left) return; // if primary nav is hidden on mobile
   if (window.innerWidth > 768) {
     main.inert = false;
