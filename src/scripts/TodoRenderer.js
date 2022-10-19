@@ -160,6 +160,17 @@ class Card {
     this.checkbox.addEventListener('click', (e) => e.stopPropagation());
 
     const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
-    this.deleteButton.addEventListener('click', () => card.dispatchEvent(deleteEvent));
+    this.deleteButton.addEventListener('click', () => {
+      e.stopPropagation();
+      card.dispatchEvent(deleteEvent);
+    });
+
+    this.priorityButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    this.noteButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
   }
 }
