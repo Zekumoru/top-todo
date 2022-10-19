@@ -1,4 +1,5 @@
 import '@mdi/font/css/materialdesignicons.css'
+import 'normalize.css/normalize.css'
 import './styles/reset.css';
 import './styles/styles.css';
 import primaryNav from './scripts/primaryNav';
