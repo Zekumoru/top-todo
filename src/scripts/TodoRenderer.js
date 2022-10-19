@@ -161,7 +161,6 @@ class Card {
 
     const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     this.deleteButton.addEventListener('click', () => {
-      e.stopPropagation();
       card.dispatchEvent(deleteEvent);
     });
 
