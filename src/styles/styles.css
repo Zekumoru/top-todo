@@ -67,10 +67,6 @@ button {
   right: -56px;
 }
 
-.close.primary-nav-button:hover {
-  background-color: var(--hover-transparent-bg-color);
-}
-
 .primary-nav {
   background-color: rgba(0, 0, 0, 0.4);
   width: 100vw;
@@ -123,10 +119,6 @@ button {
   width: 32px;
   height: 32px;
   border-radius: 100%;
-}
-
-.primary-nav button.icon:hover {
-  background-color: var(--hover-bg-color);
 }
 
 .primary-nav li:not(.section) {
@@ -229,10 +221,6 @@ main .content-wrap {
   height: 32px;
   font-size: 20px;
   border-radius: 100%;
-}
-
-.todo-modal-top-nav button:hover {
-  background-color: var(--hover-bg-color);
 }
 
 .todo-modal-container {
@@ -357,10 +345,6 @@ main .content-wrap {
   cursor: pointer;
 }
 
-.todo-item:hover {
-  background-color: var(--card-bg-hover-color);
-}
-
 .todo-item.low-priority {
   border-left: 4px solid var(--priority-low-color);
 }
@@ -408,10 +392,6 @@ main .content-wrap {
   font-size: 1.2rem;
 }
 
-.todo-item button:hover {
-  color: var(--hover-fg-color);
-}
-
 .todo-item .checkbox-container {
   grid-area: checkbox;
   position: relative;
@@ -439,10 +419,6 @@ main .content-wrap {
   font-size: 1.1rem;
 }
 
-.todo-item .checkbox:hover + .check-icon {
-  display: block;
-}
-
 .todo-item .checkbox:checked {
   background-color: var(--checkbox-checked-bg-color);
   background-image: src();
@@ -453,6 +429,32 @@ main .content-wrap {
 }
 
 /* MEDIA QUERIES */
+
+@media (hover: hover) {
+  .close.primary-nav-button:hover {
+    background-color: var(--hover-transparent-bg-color);
+  }
+
+  .primary-nav button.icon:hover {
+    background-color: var(--hover-bg-color);
+  }
+
+  .todo-modal-top-nav button:hover {
+    background-color: var(--hover-bg-color);
+  }
+
+  .todo-item:hover {
+    background-color: var(--card-bg-hover-color);
+  }
+
+  .todo-item button:hover {
+    color: var(--hover-fg-color);
+  }
+
+  .todo-item .checkbox:hover + .check-icon {
+    display: block;
+  }
+}
 
 @media screen and (min-width: 768px) {
   body {
