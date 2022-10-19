@@ -161,6 +161,7 @@ button {
 /* MAIN */
 
 main {
+  position: relative;
   padding-bottom: 20px;
 }
 
@@ -172,7 +173,11 @@ main .content-wrap {
 /* MAIN HEADER */
 
 .primary-header {
+  top: 0;
+  position: sticky;
   padding: 20px 0;
+  background-color: var(--default-bg-color);
+  z-index: 10;
 }
 
 .write-todo-bar {
