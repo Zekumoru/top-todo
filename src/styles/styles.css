@@ -162,11 +162,15 @@ button {
 /* MAIN */
 
 main {
-  min-height: 100vh;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   position: relative;
   padding-bottom: 20px;
+}
+
+main:has(.empty-message) {
+  min-height: 100vh;
 }
 
 main .content-wrap {
