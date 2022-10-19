@@ -5,6 +5,7 @@ import Todo from "./Todo";
 const todoModal = document.querySelector('.todo-modal');
 export default todoModal;
 
+const checkInput = todoModal.querySelector('.checkbox');
 const titleInput = todoModal.querySelector('.title');
 const descriptionInput = todoModal.querySelector('.description');
 const projectSelect = todoModal.querySelector('.project-select');
@@ -15,18 +16,17 @@ const showEvent = new Event('showTodoModal');
 const backEvent = new Event('backTodoModal');
 
 let fnOnConfirm;
-let checkedTodo;
 
 todoModal.show = function ({ title, description, project, priority, dueDate, checked }, fn) {
   fnOnConfirm = fn;
-  checkedTodo = checked;
-  todoModal.style.display = 'flex';
 
+  checkInput.checked = checked;
   titleInput.value = title ?? '';
   descriptionInput.value = description ?? '';
   if (priority) priorityList.value = priority;
   if (dueDate) dueDatePicker.value = dueDate;
   
+  todoModal.style.display = 'flex';
   titleInput.focus();
   todoModal.dispatchEvent(showEvent);
 }
@@ -46,7 +46,7 @@ confirmButton.addEventListener('click', (e) => {
     project: projectSelect.options[projectSelect.selectedIndex].value,
     priority: priorityList.value,
     dueDate: dueDatePicker.value,
-    checked: !!checkedTodo,
+    checked: checkInput.checked,
   });
 
   backButton.click();

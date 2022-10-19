@@ -63,6 +63,45 @@ button {
   -ms-overflow-style: none;  /* IE 10+ */
 }
 
+/* CHECKBOX */
+
+.checkbox-container {
+  grid-area: checkbox;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.checkbox {
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  background-color: var(--checkbox-bg-color);
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.check-icon {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  top: 2.7px;
+  left: 2.5px;
+  width: 100%;
+  height: 100%;
+  font-size: 1.1rem;
+}
+
+.checkbox:checked {
+  background-color: var(--checkbox-checked-bg-color);
+  background-image: src();
+}
+
+.checkbox:checked + .check-icon {
+  display: block;
+}
+
 /* SIDEBAR NAV */
 
 .primary-nav-button {
@@ -275,8 +314,15 @@ main .content-wrap {
   gap: 16px;
 }
 
+.todo-modal .title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .todo-modal input[type=text],
 .todo-modal textarea {
+  width: 100%;
   background-color: transparent;
   color: var(--default-fg-color);
   border: none;
@@ -456,45 +502,13 @@ main .content-wrap {
   font-size: 1.2rem;
 }
 
-.todo-item .checkbox-container {
-  grid-area: checkbox;
-  position: relative;
-  width: 24px;
-  height: 24px;
-}
-
-.todo-item .checkbox {
-  width: 100%;
-  height: 100%;
-  appearance: none;
-  background-color: var(--checkbox-bg-color);
-  border-radius: 100%;
-  cursor: pointer;
-}
-
-.todo-item .check-icon {
-  display: none;
-  position: absolute;
-  pointer-events: none;
-  top: 2.7px;
-  left: 2.5px;
-  width: 100%;
-  height: 100%;
-  font-size: 1.1rem;
-}
-
-.todo-item .checkbox:checked {
-  background-color: var(--checkbox-checked-bg-color);
-  background-image: src();
-}
-
-.todo-item .checkbox:checked + .check-icon {
-  display: block;
-}
-
 /* MEDIA QUERIES */
 
 @media (hover: hover) {
+  .checkbox:hover + .check-icon {
+    display: block;
+  }
+
   .close.primary-nav-button:hover {
     background-color: var(--hover-transparent-bg-color);
   }
@@ -513,10 +527,6 @@ main .content-wrap {
 
   .todo-item button:hover {
     color: var(--hover-fg-color);
-  }
-
-  .todo-item .checkbox:hover + .check-icon {
-    display: block;
   }
 }
 
