@@ -519,13 +519,13 @@ main .content-wrap {
 @media screen and (min-width: 768px) {
   body {
     display: grid;
-    grid-template-columns: auto 1fr;
+    padding-left: 300px;
   }
 
   .primary-nav {
-    width: auto;
+    width: 300px;
     background-color: transparent;
-    position: sticky;
+    position: fixed;
     left: 0;
   }
 
