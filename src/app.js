@@ -13,6 +13,16 @@ const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
 
+window.addEventListener('resize', (e) => {
+  if (!primaryNav.style.left) return; // if primary nav is hidden on mobile
+  if (window.innerWidth > 768) {
+    main.inert = false;
+    return;
+  }
+
+  main.inert = true;
+});
+
 primaryNav.addEventListener('openPrimaryNav', (e) => {
   main.inert = true;
 });
