@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keedo</title>
-  <script defer src="build.bd646c9e657c7b6d137f.js"></script></head>
+  <script defer src="build.56ad37ae26efd90e60d6.js"></script></head>
   <body>
     <div class="todo-modal">
       <nav class="todo-modal-top-nav flex-horizontal-between">
@@ -54,7 +54,7 @@
           <div class="logo-icon mdi mdi-format-list-bulleted-square"></div>
           <h1>Keedo</h1>
         </header>
-        <ul>
+        <ul class="main disable-scrollbar">
           <li tabindex="0" class="current">All</li>
           <li class="section">
             <div class="heading content-wrap">
@@ -84,7 +84,12 @@
           </div>
         </div>
       </header>
-      <ul class="todos content-wrap"></ul>
+      <ul class="todos content-wrap">
+        <div class="empty-message">
+          <p>Uh oh! You do not have any todos yet!</p>
+          <p>Try adding some by writing one above!</p>
+        </div>
+      </ul>
     </main>
   </body>
 </html>
