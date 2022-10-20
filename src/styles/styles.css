@@ -369,6 +369,7 @@ main .content-wrap {
 
 .priority-choice input {
   display: none;
+  pointer-events: none;
 }
 
 .priority-choice {
@@ -408,7 +409,7 @@ main .content-wrap {
 /* TODOS */
 
 .todos,
-.todo-section ul {
+.todo-section > ul {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -438,7 +439,7 @@ main .content-wrap {
   padding-bottom: 8px;
 }
 
-.todo-section ul {
+.todo-section > ul {
   gap: 8px;
 }
 
@@ -497,6 +498,19 @@ main .content-wrap {
 
 .todo-item .buttons {
   grid-area: buttons;
+}
+
+.todo-item .button-container {
+  position: relative;
+}
+
+.todo-item .priority + .pop-up {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background-color: var(--card-mini-dialog-bg-color);
+  padding: 6px 8px;
+  border-radius: 4px;
 }
 
 .todo-item button {

@@ -138,7 +138,9 @@ class Card {
       <p class="content"></p>
       <div class="buttons">
         <button class="delete mdi mdi-delete"></button>
-        <button class="priority mdi mdi-exclamation-thick"></button>
+        <div class="button-container">
+          <button class="priority mdi mdi-exclamation-thick"></button>
+        </div>
         <button class="note mdi mdi-comment-text-outline"></button>
       </div>
     `;
@@ -163,6 +165,11 @@ class Card {
       if (e.target === this.deleteButton) return;
       if (e.target === this.priorityButton) return;
       if (e.target === this.noteButton) return;
+      let parent = e.target.parentElement;
+      while (parent !== card) {
+        if (parent.classList.contains('pop-up')) return;
+        parent = parent.parentElement;
+      }
       card.dispatchEvent(editEvent);
     });
 
@@ -180,6 +187,28 @@ class Card {
     const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     this.deleteButton.addEventListener('click', () => {
       card.dispatchEvent(deleteEvent);
+    });
+
+    this.priorityButton.addEventListener('click', (e) => {
+      if (card.querySelector('.pop-up')) return;
+
+      const popup = document.createElement('div');
+      popup.className = 'pop-up';
+      popup.innerHTML = `
+        <ul class="priority-choice-list">
+          <li>
+            <label class="priority-choice"><input type="radio" name="priority-choice" value="low" checked>Low</label>
+          </li>
+          <li>
+            <label class="priority-choice"><input type="radio" name="priority-choice" value="medium">Med</label>
+          </li>
+          <li>
+            <label class="priority-choice"><input type="radio" name="priority-choice" value="high">High</label>
+          </li>
+        </ul>
+      `;
+
+      this.priorityButton.parentElement.appendChild(popup);
     });
   }
 }

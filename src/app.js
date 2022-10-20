@@ -13,6 +13,19 @@ const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
 
+document.addEventListener('click', (e) => {
+  const popup = main.querySelector('.pop-up');
+  if (!popup) return;
+
+  let parent = e.target.parentElement;
+  while (parent) {
+    if (parent === popup) return;
+    parent = parent.parentElement;
+  }
+  
+  popup.remove();
+}, true);
+
 window.addEventListener('resize', (e) => {
   if (primaryNav.inert) return;
   if (!primaryNav.style.left) return; // if primary nav is hidden on mobile
