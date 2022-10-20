@@ -31,6 +31,10 @@ todoModal.show = function ({ title, description, project, priority, dueDate, che
   todoModal.dispatchEvent(showEvent);
 }
 
+descriptionInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') e.preventDefault();
+});
+
 const backButton = todoModal.querySelector('button.back');
 backButton.addEventListener('click', (e) => {
   reset();
@@ -42,7 +46,7 @@ const confirmButton = todoModal.querySelector('button.confirm');
 confirmButton.addEventListener('click', (e) => {
   const todo = new Todo({
     title: titleInput.value,
-    description: descriptionInput.value,
+    description: descriptionInput.value.replace(/[\r\n]+/g, ' '),
     project: projectSelect.options[projectSelect.selectedIndex].value,
     priority: priorityList.value,
     dueDate: dueDatePicker.value,
