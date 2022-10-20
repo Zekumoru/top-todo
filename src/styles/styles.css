@@ -504,11 +504,17 @@ main .content-wrap {
   position: relative;
 }
 
-.todo-item .priority + .pop-up {
+.todo-item .pop-up {
+  cursor: initial;
   position: absolute;
   right: 0;
   top: calc(100% + 4px);
   background-color: var(--card-mini-dialog-bg-color);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1;
+}
+
+.todo-item .priority + .pop-up {
   padding: 6px 8px;
   border-radius: 4px;
 }
