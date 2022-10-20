@@ -1,4 +1,5 @@
 import { compareAsc, format, isThisISOWeek, isToday, isTomorrow } from "date-fns";
+import RadioList from "./RadioList";
 
 export default class {
   element;
@@ -201,7 +202,7 @@ class Card {
       popup.innerHTML = `
         <ul class="priority-choice-list">
           <li>
-            <label class="priority-choice"><input type="radio" name="priority-choice" value="low" checked>Low</label>
+            <label class="priority-choice"><input type="radio" name="priority-choice" value="low">Low</label>
           </li>
           <li>
             <label class="priority-choice"><input type="radio" name="priority-choice" value="medium">Med</label>
@@ -211,6 +212,23 @@ class Card {
           </li>
         </ul>
       `;
+
+      const priorityList = new RadioList(popup.querySelector('.priority-choice-list'));
+      priorityList.element.querySelector(`input[value="${todo.priority}"]`).checked = true;
+
+      priorityList.element.addEventListener('change', () => {
+        const changePriorityEvent = new CustomEvent('changeTodoPriority', {
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            todo,
+            card,
+            newPriority: priorityList.value,
+          },
+        });
+        priorityList.element.dispatchEvent(changePriorityEvent);
+        popup.remove();
+      });
 
       this.priorityButton.parentElement.appendChild(popup);
     });

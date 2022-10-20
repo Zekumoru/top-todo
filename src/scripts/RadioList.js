@@ -14,6 +14,10 @@ export default class {
     return this.#listElement.querySelector(':checked').value;
   }
 
+  get element() {
+    return this.#listElement;
+  }
+
   reset() {
     this.#listElement.querySelector(':first-child input').checked = true;
   }

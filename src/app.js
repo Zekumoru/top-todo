@@ -86,6 +86,13 @@ main.addEventListener('deleteTodo', (e) => {
   todoRenderer.removeCard(card);
 });
 
+main.addEventListener('changeTodoPriority', (e) => {
+  const { todo, card, newPriority } = e.detail;
+  todo.priority = newPriority;
+  todoRenderer.removeCard(card);
+  todoRenderer.renderTodo(todo);
+});
+
 main.addEventListener('enterWriteTodoInput', (e) => {
   const todo = new Todo({
     title: e.detail,
