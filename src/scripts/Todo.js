@@ -9,6 +9,9 @@ export default class Todo {
   checked;
 
   constructor(properties) {
+    this.title = '';
+    this.description = '';
+    this.project = '';
     this.checked = false;
     this.priority = 'low';
     this.dueDate = format(new Date(), 'yyyy-MM-dd');
