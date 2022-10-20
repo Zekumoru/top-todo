@@ -1,4 +1,5 @@
 import RadioList from "../RadioList";
+import Popup from "./Popup";
 
 export default class {
   element;
@@ -129,21 +130,19 @@ export default class {
   }
 
   #setChangePriorityEvent(todo) {
-    this.priorityButton.addEventListener('click', (e) => {
-      const popup = this.#showPopup(this.priorityButton.parentElement, `
-        <ul class="priority-choice-list">
-          <li>
-            <label class="priority-choice"><input type="radio" name="priority-choice" value="low">Low</label>
-          </li>
-          <li>
-            <label class="priority-choice"><input type="radio" name="priority-choice" value="medium">Med</label>
-          </li>
-          <li>
-            <label class="priority-choice"><input type="radio" name="priority-choice" value="high">High</label>
-          </li>
-        </ul>
-      `);
-
+    new Popup(this.priorityButton, this.priorityButton.parentElement, `
+      <ul class="priority-choice-list">
+        <li>
+          <label class="priority-choice"><input type="radio" name="priority-choice" value="low">Low</label>
+        </li>
+        <li>
+          <label class="priority-choice"><input type="radio" name="priority-choice" value="medium">Med</label>
+        </li>
+        <li>
+          <label class="priority-choice"><input type="radio" name="priority-choice" value="high">High</label>
+        </li>
+      </ul>
+    `, (popup) => {
       const priorityList = new RadioList(popup.querySelector('.priority-choice-list'));
       priorityList.element.querySelector(`input[value="${todo.priority}"]`).checked = true;
 
@@ -158,27 +157,18 @@ export default class {
           },
         });
         priorityList.element.dispatchEvent(changePriorityEvent);
-        popup.remove();
+        popup.close();
       });
     });
   }
 
   #setShowCommentEvent(todo) {
-    this.commentButton.addEventListener('click', (e) => {
-      const popup = this.#showPopup(this.commentButton.parentElement, `
-        <div class="description-title">Description</div>
-        <p class="description"></p>
-      `);
+    new Popup(this.commentButton, this.commentButton.parentElement, `
+      <div class="description-title">Description</div>
+      <p class="description"></p>
+    `, (popup) => {
       popup.querySelector('.description').innerText = todo.description || 'No description.';
     });
-  }
-
-  #showPopup(parentElement, innerHTML) {
-    const popup = document.createElement('div');
-    popup.className = 'pop-up';
-    popup.innerHTML = innerHTML;
-    parentElement.appendChild(popup);
-    return popup;
   }
 
   #isPopup(element) {

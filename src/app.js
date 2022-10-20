@@ -23,7 +23,7 @@ document.addEventListener('click', (e) => {
     parent = parent.parentElement;
   }
   
-  popup.remove();
+  popup.close(e.target);
 }, true);
 
 window.addEventListener('resize', (e) => {
