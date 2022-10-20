@@ -525,6 +525,7 @@ main .content-wrap {
   left: 0px;
   position: absolute;
   content: "";
+  pointer-events: none;
 }
 
 .todo-item .comment + .pop-up {
