@@ -158,6 +158,14 @@ class Card {
     this.checkbox.checked = todo.checked;
     card.classList.add(`${todo.priority}-priority`);
     if (todo.checked) card.classList.add('checked');
+
+    card.addEventListener('mouseover', (e) => {
+      if (this.#isPopup(e.target)) {
+        card.classList.remove('hoverable');
+        return;
+      }
+      card.classList.add('hoverable');
+    });
     
     const editEvent = new CustomEvent('editTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     card.addEventListener('click', (e) => {
@@ -165,11 +173,7 @@ class Card {
       if (e.target === this.deleteButton) return;
       if (e.target === this.priorityButton) return;
       if (e.target === this.noteButton) return;
-      let parent = e.target.parentElement;
-      while (parent !== card) {
-        if (parent.classList.contains('pop-up')) return;
-        parent = parent.parentElement;
-      }
+      if (this.#isPopup(e.target)) return;
       card.dispatchEvent(editEvent);
     });
 
@@ -210,5 +214,14 @@ class Card {
 
       this.priorityButton.parentElement.appendChild(popup);
     });
+  }
+
+  #isPopup(element) {
+    let parent = element.parentElement;
+    while (parent && parent !== this.element) {
+      if (parent.classList.contains('pop-up')) return true;
+      parent = parent.parentElement;
+    }
+    return false;
   }
 }

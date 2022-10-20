@@ -536,7 +536,7 @@ main .content-wrap {
     background-color: var(--hover-bg-color);
   }
 
-  .todo-item:hover {
+  .todo-item.hoverable:hover {
     background-color: var(--card-bg-hover-color);
   }
 
