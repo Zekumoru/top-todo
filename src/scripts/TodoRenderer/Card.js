@@ -173,7 +173,7 @@ export default class {
   }
 
   #isPopup(element) {
-    let parent = element.parentElement;
+    let parent = element;
     while (parent && parent !== this.element) {
       if (parent.classList.contains('pop-up')) return true;
       parent = parent.parentElement;
