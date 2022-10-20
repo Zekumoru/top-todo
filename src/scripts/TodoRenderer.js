@@ -195,8 +195,6 @@ class Card {
     });
 
     this.priorityButton.addEventListener('click', (e) => {
-      if (card.querySelector('.pop-up')) return;
-
       const popup = document.createElement('div');
       popup.className = 'pop-up';
       popup.innerHTML = `
