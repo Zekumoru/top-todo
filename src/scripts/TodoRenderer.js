@@ -159,6 +159,10 @@ class Card {
     
     const editEvent = new CustomEvent('editTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     card.addEventListener('click', (e) => {
+      if (e.target === this.checkbox) return;
+      if (e.target === this.deleteButton) return;
+      if (e.target === this.priorityButton) return;
+      if (e.target === this.noteButton) return;
       card.dispatchEvent(editEvent);
     });
 
@@ -172,19 +176,10 @@ class Card {
 
       card.dispatchEvent(uncheckedEvent);
     });
-    this.checkbox.addEventListener('click', (e) => e.stopPropagation());
 
     const deleteEvent = new CustomEvent('deleteTodo', { bubbles: true, cancelable: true, detail: { todo, card } });
     this.deleteButton.addEventListener('click', () => {
       card.dispatchEvent(deleteEvent);
-    });
-
-    this.priorityButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    this.noteButton.addEventListener('click', (e) => {
-      e.stopPropagation();
     });
   }
 }
