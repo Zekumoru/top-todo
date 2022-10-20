@@ -9,6 +9,7 @@ textarea,
 button,
 select,
 div,
+li,
 a {
   -webkit-tap-highlight-color: transparent;
 }
