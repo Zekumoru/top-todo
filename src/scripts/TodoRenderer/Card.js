@@ -131,6 +131,7 @@ export default class {
 
   #setChangePriorityEvent(todo) {
     new Popup(this.priorityButton, this.priorityButton.parentElement, `
+      <div class="priority-choice-title">Change priority</div>
       <ul class="priority-choice-list">
         <li>
           <label class="priority-choice"><input type="radio" name="priority-choice" value="low">Low</label>

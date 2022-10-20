@@ -528,13 +528,18 @@ main .content-wrap {
   pointer-events: none;
 }
 
-.todo-item .comment + .pop-up {
-  width: 200px;
-}
-
+.todo-item .priority-choice-title,
 .todo-item .description-title {
   font-size: 0.8rem;
   color: var(--card-content-text-color);
+}
+
+.todo-item .priority-choice-title {
+  padding-bottom: 4px;
+}
+
+.todo-item .comment + .pop-up {
+  width: 200px;
 }
 
 .todo-item .description {
