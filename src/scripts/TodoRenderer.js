@@ -125,7 +125,7 @@ class Card {
   checkbox;
   deleteButton;
   priorityButton;
-  noteButton;
+  commentButton;
 
   constructor(todo) {
     const card = document.createElement('li');
@@ -137,13 +137,17 @@ class Card {
       </div>
       <h3 class="title"></h3>
       <p class="content"></p>
-      <div class="buttons">
-        <button class="delete mdi mdi-delete"></button>
-        <div class="button-container">
+      <ul class="buttons">
+        <li class="button-container">
+          <button class="delete mdi mdi-delete"></button>
+        </li>
+        <li class="button-container">
           <button class="priority mdi mdi-exclamation-thick"></button>
-        </div>
-        <button class="note mdi mdi-comment-text-outline"></button>
-      </div>
+        </li>
+        <li class="button-container">
+          <button class="comment mdi mdi-comment-text-outline"></button>
+        </li>
+      </ul>
     `;
 
     this.element = card;
@@ -152,7 +156,7 @@ class Card {
     this.checkbox = card.querySelector('.checkbox');
     this.deleteButton = card.querySelector('.delete');
     this.priorityButton = card.querySelector('.priority');
-    this.noteButton = card.querySelector('.note');
+    this.commentButton = card.querySelector('.comment');
 
     this.title.innerText = todo.title;
     this.content.innerText = todo.project;
@@ -173,7 +177,7 @@ class Card {
       if (e.target === this.checkbox) return;
       if (e.target === this.deleteButton) return;
       if (e.target === this.priorityButton) return;
-      if (e.target === this.noteButton) return;
+      if (e.target === this.commentButton) return;
       if (this.#isPopup(e.target)) return;
       card.dispatchEvent(editEvent);
     });
@@ -195,9 +199,7 @@ class Card {
     });
 
     this.priorityButton.addEventListener('click', (e) => {
-      const popup = document.createElement('div');
-      popup.className = 'pop-up';
-      popup.innerHTML = `
+      const popup = this.#showPopup(this.priorityButton.parentElement, `
         <ul class="priority-choice-list">
           <li>
             <label class="priority-choice"><input type="radio" name="priority-choice" value="low">Low</label>
@@ -209,7 +211,7 @@ class Card {
             <label class="priority-choice"><input type="radio" name="priority-choice" value="high">High</label>
           </li>
         </ul>
-      `;
+      `);
 
       const priorityList = new RadioList(popup.querySelector('.priority-choice-list'));
       priorityList.element.querySelector(`input[value="${todo.priority}"]`).checked = true;
@@ -227,9 +229,24 @@ class Card {
         priorityList.element.dispatchEvent(changePriorityEvent);
         popup.remove();
       });
-
-      this.priorityButton.parentElement.appendChild(popup);
     });
+
+    this.commentButton.addEventListener('click', (e) => {
+      const popup = this.#showPopup(this.commentButton.parentElement, `
+        <div class="description-title">Description</div>
+        <p class="description"></p>
+      `);
+      
+      popup.querySelector('.description').innerText = todo.description || 'No description.';
+    });
+  }
+
+  #showPopup(parentElement, innerHTML) {
+    const popup = document.createElement('div');
+    popup.className = 'pop-up';
+    popup.innerHTML = innerHTML;
+    parentElement.appendChild(popup);
+    return popup;
   }
 
   #isPopup(element) {

@@ -512,11 +512,32 @@ main .content-wrap {
   background-color: var(--card-mini-dialog-bg-color);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1;
-}
-
-.todo-item .priority + .pop-up {
   padding: 6px 8px;
   border-radius: 4px;
+}
+
+.todo-item .pop-up::after {
+  /* adds space below to avoid popup
+    touching the edge of screen */
+  height: 20px;
+  width: 100%;
+  top: 100%;
+  left: 0px;
+  position: absolute;
+  content: "";
+}
+
+.todo-item .comment + .pop-up {
+  width: 200px;
+}
+
+.todo-item .description-title {
+  font-size: 0.8rem;
+  color: var(--card-content-text-color);
+}
+
+.todo-item .description {
+  font-size: 0.9rem;
 }
 
 .todo-item button {
