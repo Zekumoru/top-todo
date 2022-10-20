@@ -5,7 +5,7 @@ import './styles/styles.css';
 import primaryNav from './scripts/primaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import todoModal from './scripts/todoModal';
-import TodoRenderer from './scripts/TodoRenderer';
+import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 
 const todos = [];
