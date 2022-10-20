@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keedo</title>
-  <script defer src="build.1fb346b30426db851177.js"></script></head>
+  <script defer src="build.c11739d0822abaf44092.js"></script></head>
   <body>
     <div class="todo-modal">
       <nav class="todo-modal-top-nav flex-horizontal-between">
@@ -16,7 +16,13 @@
         </div>
       </nav>
       <div class="todo-modal-container">
-        <input class="title" type="text" placeholder="Write to do...">
+        <div class="title-container">
+          <input class="title" type="text" placeholder="Write to do...">
+          <div class="checkbox-container">
+            <input class="checkbox" type="checkbox">
+            <div class="mdi mdi-check-bold check-icon"></div>
+          </div>
+        </div>
         <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
         <div class="project flex-horizontal-between">
           <span>Projects</span>
@@ -28,16 +34,13 @@
           <span>Priority</span>
           <ul class="priority-choice-list">
             <li>
-              <input type="radio" name="priority-choice" value="low" class="priority-choice" id="priority-choice-low" checked>
-              <label for="priority-choice-low">Low</label>
+              <label class="priority-choice"><input type="radio" name="priority-choice" value="low" checked>Low</label>
             </li>
             <li>
-              <input type="radio" name="priority-choice" value="medium" class="priority-choice" id="priority-choice-medium">
-              <label for="priority-choice-medium">Med</label>
+              <label class="priority-choice"><input type="radio" name="priority-choice" value="medium">Med</label>
             </li>
             <li>
-              <input type="radio" name="priority-choice" value="high" class="priority-choice" id="priority-choice-high">
-              <label for="priority-choice-high">High</label>
+              <label class="priority-choice"><input type="radio" name="priority-choice" value="high">High</label>
             </li>
           </ul>
         </div>
