@@ -511,7 +511,7 @@ main .content-wrap {
   top: calc(100% + 4px);
   background-color: var(--card-mini-dialog-bg-color);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  z-index: 1;
+  z-index: 200;
   padding: 6px 8px;
   border-radius: 4px;
 }
