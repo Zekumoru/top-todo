@@ -49,10 +49,6 @@ button {
   font-size: 20px;
 }
 
-.display-none {
-  display: none !important;
-}
-
 .flex-horizontal-center {
   display: flex;
   justify-content: center;
@@ -377,13 +373,6 @@ main .content-wrap {
   gap: 4px;
 }
 
-.project-modal-list .drag-icon {
-  font-size: 1.2rem;
-  color: var(--card-content-text-color);
-  padding: 8px 4px 8px 0px;
-  cursor: move;
-}
-
 .project-modal input[type=text] {
   border-bottom: 1px solid transparent;
   padding-bottom: 2px;
@@ -391,6 +380,17 @@ main .content-wrap {
 
 .project-modal input[type=text]:focus {
   border-color: var(--grey-bg-color);
+}
+
+.project-modal-list .drag-icon {
+  font-size: 1.2rem;
+  color: var(--card-content-text-color);
+  padding: 8px 4px 8px 0px;
+  cursor: move;
+}
+
+.project-modal-list .edit-icon {
+  display: none;
 }
 
 /* PROJECTS */
@@ -613,6 +613,10 @@ main .content-wrap {
   .modal-top-nav button:hover,
   .modal-content button:hover {
     background-color: var(--hover-bg-color);
+  }
+
+  .project-modal-list li:hover .edit-icon {
+    display: block;
   }
 
   .todo-item.hoverable:hover {
