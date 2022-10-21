@@ -266,13 +266,13 @@ main .content-wrap {
 
 /* TODO MODAL */
 
-.todo-modal,
-.todo-modal-top-nav,
-.todo-modal-container {
+.modal,
+.modal-top-nav,
+.modal-content {
   width: 100%;
 }
 
-.todo-modal {
+.modal {
   --border-radius: 4px;
   display: none;
   min-height: 100vh;
@@ -286,19 +286,19 @@ main .content-wrap {
   top: 0;
 }
 
-.todo-modal > :first-child {
+.modal > :first-child {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
-.todo-modal > :last-child {
+.modal > :last-child {
   border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
-.todo-modal-top-nav {
+.modal-top-nav {
   padding: 10px;
 }
 
-.todo-modal-top-nav button {
+.modal-top-nav button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -308,7 +308,7 @@ main .content-wrap {
   border-radius: 100%;
 }
 
-.todo-modal-container {
+.modal-content {
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
@@ -565,7 +565,7 @@ main .content-wrap {
     background-color: var(--hover-bg-color);
   }
 
-  .todo-modal-top-nav button:hover {
+  .modal-top-nav button:hover {
     background-color: var(--hover-bg-color);
   }
 
@@ -609,14 +609,14 @@ main .content-wrap {
     display: none;
   }
 
-  .todo-modal {
+  .modal {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.4);
   }
 
-  .todo-modal-top-nav,
-  .todo-modal-container {
+  .modal-top-nav,
+  .modal-content {
     width: 600px;
     background-color: var(--default-bg-color);
   }
