@@ -8,6 +8,11 @@ import todoModal from './scripts/todoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 
+const projectModal = document.querySelector('.project-modal');
+projectModal.querySelector('button.back').addEventListener('click', (e) => {
+  projectModal.style.display = 'none';
+});
+
 const todos = [];
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 

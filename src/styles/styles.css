@@ -32,14 +32,25 @@ ul {
 }
 
 button {
+  padding: 4px;
+  font-size: 1.2rem;
   border: none;
   background-color: transparent;
   color: var(--default-fg-color);
   cursor: pointer;
 }
 
+.buttons {
+  display: flex;
+  gap: 4px;
+}
+
 .icon {
   font-size: 20px;
+}
+
+.display-none {
+  display: none !important;
 }
 
 .flex-horizontal-center {
@@ -187,10 +198,6 @@ button {
   cursor: pointer;
 }
 
-.primary-nav li:not(.section):hover {
-  background-color: var(--hover-bg-color);
-}
-
 .primary-nav .current {
   background-color: var(--card-bg-color);
 }
@@ -260,11 +267,10 @@ main .content-wrap {
 
 .write-todo-bar .buttons {
   display: none;
-  gap: 8px;
   padding-right: 4px;
 }
 
-/* TODO MODAL */
+/* MODAL */
 
 .modal,
 .modal-top-nav,
@@ -298,31 +304,34 @@ main .content-wrap {
   padding: 10px;
 }
 
-.modal-top-nav button {
+.modal-top-nav button,
+.modal-content button {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 32px;
   height: 32px;
-  font-size: 20px;
   border-radius: 100%;
+  flex-shrink: 0;
+}
+
+.modal-top-nav button {
+  font-size: 20px;
 }
 
 .modal-content {
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 10px 16px 24px 16px;
   gap: 16px;
 }
 
-.todo-modal .title-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.modal-content .buttons {
+  gap: 2px;
 }
 
-.todo-modal input[type=text],
-.todo-modal textarea {
+.modal input[type=text],
+.modal textarea {
   width: 100%;
   background-color: transparent;
   color: var(--default-fg-color);
@@ -330,17 +339,58 @@ main .content-wrap {
   font-size: 1rem;
 }
 
-.todo-modal input[type=text]:focus,
-.todo-modal textarea:focus {
+.modal input[type=text]:focus,
+.modal textarea:focus {
   outline: none;
 }
 
-.todo-modal input[type=text] {
+.modal textarea {
+  resize: none;
+}
+
+/* TODO MODAL */
+
+.todo-modal .title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.todo-modal input.title {
   font-size: 1.2rem;
 }
 
-.todo-modal textarea {
-  resize: none;
+/* PROJECT MODAL */
+
+.project-modal input.write-input {
+  font-size: 1.2rem;
+}
+
+.project-modal .write-input-container {
+  display: flex;
+  gap: 8px;
+}
+
+.project-modal-list li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.project-modal-list .drag-icon {
+  font-size: 1.2rem;
+  color: var(--card-content-text-color);
+  padding: 8px 4px 8px 0px;
+  cursor: move;
+}
+
+.project-modal input[type=text] {
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+
+.project-modal input[type=text]:focus {
+  border-color: var(--grey-bg-color);
 }
 
 /* PROJECTS */
@@ -469,11 +519,6 @@ main .content-wrap {
   border-left: 4px solid var(--priority-high-color);
 }
 
-.todo-item .buttons {
-  display: flex;
-  gap: 8px;
-}
-
 .todo-item .title,
 .todo-item .content {
   min-width: 0;
@@ -546,10 +591,6 @@ main .content-wrap {
   font-size: 0.9rem;
 }
 
-.todo-item button {
-  font-size: 1.2rem;
-}
-
 /* MEDIA QUERIES */
 
 @media (hover: hover) {
@@ -565,7 +606,12 @@ main .content-wrap {
     background-color: var(--hover-bg-color);
   }
 
-  .modal-top-nav button:hover {
+  .primary-nav li:not(.section):hover {
+    background-color: var(--hover-bg-color);
+  }
+
+  .modal-top-nav button:hover,
+  .modal-content button:hover {
     background-color: var(--hover-bg-color);
   }
 
@@ -618,6 +664,12 @@ main .content-wrap {
   .modal-top-nav,
   .modal-content {
     width: 600px;
+    background-color: var(--default-bg-color);
+  }
+
+  .project-modal .modal-top-nav,
+  .project-modal .modal-content {
+    width: 360px;
     background-color: var(--default-bg-color);
   }
 }
