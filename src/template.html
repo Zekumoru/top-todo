@@ -8,7 +8,7 @@
     <title><%=htmlWebpackPlugin.options.title%></title>
   </head>
   <body>
-    <div class="modal project-modal" style="display: flex;">
+    <div class="modal project-modal">
       <nav class="modal-top-nav flex-horizontal-between">
         <button class="mdi mdi-arrow-left back"></button>
       </nav>
@@ -18,40 +18,38 @@
           <input class="write-input" type="text" placeholder="Create new project">
           <button class="mdi mdi-check"></button>
         </div>
-        <ul class="project-modal-list">
-          <li>
-            <div class="mdi mdi-drag-vertical drag-icon"></div>
-            <input type="text" placeholder="Enter project name" value="default">
-            <div class="buttons">
-              <button class="mdi mdi-check edit-icon"></button>
-              <button class="mdi mdi-delete"></button>
-            </div>
-          </li>
-          <li>
-            <div class="mdi mdi-drag-vertical drag-icon"></div>
-            <input type="text" placeholder="Enter project name" value="Project 1">
-            <div class="buttons">
-              <button class="mdi mdi-pencil edit-icon"></button>
-              <button class="mdi mdi-delete"></button>
-            </div>
-          </li>
-          <li>
-            <div class="mdi mdi-drag-vertical drag-icon"></div>
-            <input type="text" placeholder="Enter project name" value="Project 2">
-            <div class="buttons">
-              <button class="mdi mdi-pencil edit-icon"></button>
-              <button class="mdi mdi-delete"></button>
-            </div>
-          </li>
-          <li>
-            <div class="mdi mdi-drag-vertical drag-icon"></div>
-            <input type="text" placeholder="Enter project name" value="Project 3">
-            <div class="buttons">
-              <button class="mdi mdi-pencil edit-icon"></button>
-              <button class="mdi mdi-delete"></button>
-            </div>
-          </li>
-        </ul>
+        <div class="project-modal-list-container">
+          <div class="default">
+            <div class="mdi mdi-drag-vertical drag-handle"></div>
+            <input disabled type="text" placeholder="Enter project name" value="default">
+          </div>
+          <ul class="project-modal-list">
+            <li>
+              <div class="mdi mdi-drag-vertical drag-handle"></div>
+              <input type="text" placeholder="Enter project name" value="Project 1">
+              <div class="buttons">
+                <button class="mdi mdi-check edit-icon"></button>
+                <button class="mdi mdi-delete"></button>
+              </div>
+            </li>
+            <li>
+              <div class="mdi mdi-drag-vertical drag-handle"></div>
+              <input type="text" placeholder="Enter project name" value="Project 2">
+              <div class="buttons">
+                <button class="mdi mdi-pencil edit-icon"></button>
+                <button class="mdi mdi-delete"></button>
+              </div>
+            </li>
+            <li>
+              <div class="mdi mdi-drag-vertical drag-handle"></div>
+              <input type="text" placeholder="Enter project name" value="Project 3">
+              <div class="buttons">
+                <button class="mdi mdi-pencil edit-icon"></button>
+                <button class="mdi mdi-delete"></button>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="modal todo-modal">
@@ -108,7 +106,7 @@
           <li class="section">
             <div class="heading content-wrap">
               <h2>Projects</h2>
-              <button class="icon flex-horizontal-center mdi mdi-pencil"></button>
+              <button class="edit-projects icon flex-horizontal-center mdi mdi-pencil"></button>
             </div>
             <ul>
               <li tabindex="0" class="default">default</li>

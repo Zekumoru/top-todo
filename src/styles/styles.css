@@ -367,10 +367,20 @@ main .content-wrap {
   gap: 8px;
 }
 
+.project-modal .default,
 .project-modal-list li {
   display: flex;
   align-items: center;
   gap: 4px;
+  background-color: var(--default-bg-color);
+}
+
+.project-modal .drag-handle {
+  font-size: 1.2rem;
+  color: var(--card-content-text-color);
+  padding: 8px 4px 8px 0px;
+  cursor: move;
+  cursor: -webkit-grabbing;
 }
 
 .project-modal input[type=text] {
@@ -382,11 +392,17 @@ main .content-wrap {
   border-color: var(--grey-bg-color);
 }
 
-.project-modal-list .drag-icon {
-  font-size: 1.2rem;
-  color: var(--card-content-text-color);
-  padding: 8px 4px 8px 0px;
-  cursor: move;
+.project-modal .default .drag-handle,
+.project-modal .default input[type=text] {
+  color: var(--empty-message-text-color);
+}
+
+.project-modal .default .drag-handle {
+  cursor: default;
+}
+
+.project-modal .default input[type=text] {
+  font-style: italic;
 }
 
 .project-modal-list .edit-icon {
