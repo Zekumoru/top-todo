@@ -19,6 +19,7 @@ export default class extends Modal {
     this.#setListSortability();
     this.#setCreateInputEvents();
     this.#setCreateButtonEvents();
+    this.#setEnterButtonEvents();
   }
 
   #populateList(projects) {
@@ -61,7 +62,12 @@ export default class extends Modal {
       this.#createButton.classList.add('mdi-close');
     });
 
-    this.#createInput.addEventListener('keyup', () => {
+    this.#createInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        this.#enterCreate();
+        return;
+      }
+
       if (!this.#createInput.value) {
         this.#enterButton.style.display = 'none';
         return;
@@ -83,14 +89,28 @@ export default class extends Modal {
 
     this.#createButton.addEventListener('click', () => {
       if (this.#createButton.classList.contains('mdi-close')) {
-        this.#createButton.classList.remove('mdi-close');
-        this.#createButton.classList.add('mdi-plus');
-        this.#enterButton.style.display = 'none';
-        this.#createInput.value = '';
+        this.#resetCreateBar();
         return;
       }
       
       this.#createInput.focus();
     });
+  }
+
+  #setEnterButtonEvents() {
+    this.#enterButton.addEventListener('click', () => this.#enterCreate());
+  }
+
+  #enterCreate() {
+    const project = this.#createInput.value;
+    this.#resetCreateBar();
+    this.#addProjectItem(project);
+  }
+
+  #resetCreateBar() {
+    this.#createButton.classList.remove('mdi-close');
+    this.#createButton.classList.add('mdi-plus');
+    this.#enterButton.style.display = 'none';
+    this.#createInput.value = '';
   }
 };
