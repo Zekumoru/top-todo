@@ -2,27 +2,11 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'normalize.css/normalize.css'
 import './styles/reset.css';
 import './styles/styles.css';
-import Sortable from 'sortablejs';
 import primaryNav from './scripts/primaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
-
-const projectModal = document.querySelector('.project-modal');
-projectModal.querySelector('button.back').addEventListener('click', (e) => {
-  projectModal.style.display = 'none';
-});
-
-primaryNav.querySelector('button.edit-projects').addEventListener('click', () => {
-  projectModal.style.display = 'flex';
-});
-
-const projectModalList = document.querySelector('.project-modal-list');
-Sortable.create(projectModalList, {
-  animation: 150,
-  handle: '.drag-handle',
-});
 
 const todos = [];
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);

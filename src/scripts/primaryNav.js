@@ -1,8 +1,13 @@
+import ProjectModal from "./Modal/ProjectModal";
+
 const primaryNav = document.querySelector('.primary-nav');
 export default primaryNav;
 
+const projectModal = new ProjectModal(document.querySelector('.project-modal'));
+
 const openButton = document.querySelector('.open.primary-nav-button');
 const closeButton = document.querySelector('.close.primary-nav-button');
+const editProjectListButton = primaryNav.querySelector('button.edit-projects');
 
 const openEvent = new Event('openPrimaryNav');
 const closeEvent = new Event('closePrimaryNav');
@@ -31,4 +36,8 @@ openButton.addEventListener('click', (e) => {
 closeButton.addEventListener('click', (e) => {
   primaryNav.style.left = '';
   primaryNav.dispatchEvent(closeEvent);
+});
+
+editProjectListButton.addEventListener('click', () => {
+  projectModal.show();
 });
