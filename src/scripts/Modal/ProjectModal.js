@@ -103,6 +103,7 @@ export default class extends Modal {
 
   #enterCreate() {
     const project = this.#createInput.value;
+    if (!project) return;
     this.#resetCreateBar();
     this.#addProjectItem(project);
   }
