@@ -5,10 +5,9 @@ import './styles/styles.css';
 import Sortable from 'sortablejs';
 import primaryNav from './scripts/primaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
-import todoModal from './scripts/todoModal';
+import TodoModal from './scripts/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
-
 
 const projectModal = document.querySelector('.project-modal');
 projectModal.querySelector('button.back').addEventListener('click', (e) => {
@@ -29,6 +28,7 @@ const todos = [];
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 const main = document.querySelector('main');
+const todoModal = new TodoModal(document.querySelector('.todo-modal'));
 
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');
@@ -43,7 +43,7 @@ document.addEventListener('click', (e) => {
   popup.close(e.target);
 }, true);
 
-window.addEventListener('resize', (e) => {
+window.addEventListener('resize', () => {
   if (primaryNav.inert) return;
   if (!primaryNav.style.left) return; // if primary nav is hidden on mobile
   if (window.innerWidth > 768) {
@@ -54,22 +54,22 @@ window.addEventListener('resize', (e) => {
   main.inert = true;
 });
 
-primaryNav.addEventListener('openPrimaryNav', (e) => {
+document.addEventListener('showModal', () => {
   main.inert = true;
+  primaryNav.inert = true;
 });
 
-primaryNav.addEventListener('closePrimaryNav', (e) => {
-  main.inert = false;
-});
-
-todoModal.addEventListener('backTodoModal', (e) => {
+document.addEventListener('hideModal', () => {
   main.inert = false;
   primaryNav.inert = false;
 });
 
-todoModal.addEventListener('showTodoModal', (e) => {
+primaryNav.addEventListener('openPrimaryNav', () => {
   main.inert = true;
-  primaryNav.inert = true;
+});
+
+primaryNav.addEventListener('closePrimaryNav', () => {
+  main.inert = false;
 });
 
 main.addEventListener('checkedTodo', (e) => {
