@@ -5,7 +5,7 @@ import './styles/styles.css';
 import Sortable from 'sortablejs';
 import primaryNav from './scripts/primaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
-import TodoModal from './scripts/TodoModal';
+import TodoModal from './scripts/Modal/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 

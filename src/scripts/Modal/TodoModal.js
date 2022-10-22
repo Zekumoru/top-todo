@@ -1,7 +1,7 @@
-import DatePicker from "./DatePicker";
-import Modal from "./Modal/Modal";
-import RadioList from "./RadioList";
-import Todo from "./Todo";
+import DatePicker from '../DatePicker';
+import Modal from "./Modal";
+import RadioList from "../RadioList";
+import Todo from "../Todo";
 
 export default class extends Modal {
   #checkBox;
