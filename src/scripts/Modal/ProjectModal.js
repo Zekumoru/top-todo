@@ -6,6 +6,7 @@ export default class extends Modal {
   #createInput;
   #createButton;
   #enterButton;
+  #list;
 
   constructor(element, projects) {
     super(element);
@@ -13,14 +14,42 @@ export default class extends Modal {
     this.#createInput = element.querySelector('.create-input');
     this.#createButton = element.querySelector('button.create');
     this.#enterButton = element.querySelector('button.enter');
-    this.#setProjectListSortability();
+    this.#list = this.element.querySelector('.project-modal-list');
+    this.#populateList(projects);
+    this.#setListSortability();
     this.#setCreateInputEvents();
     this.#setCreateButtonEvents();
   }
 
-  #setProjectListSortability() {
-    const projectModalList = this.element.querySelector('.project-modal-list');
-    Sortable.create(projectModalList, {
+  #populateList(projects) {
+    projects.forEach((project) => {
+      if (project === 'default') return;
+      this.#addProjectItem(project);
+    });
+  }
+
+  #addProjectItem(item) {
+    const projectItem = this.#createProjectItem();
+    const input = projectItem.querySelector('input[type=text]');
+    input.value = item;
+    this.#list.appendChild(projectItem);
+  }
+
+  #createProjectItem() {
+    const projectItem = document.createElement('li');
+    projectItem.innerHTML = `
+      <div class="mdi mdi-drag-vertical drag-handle"></div>
+      <input type="text" placeholder="Enter project name">
+      <div class="buttons">
+        <button class="mdi mdi-pencil edit-icon"></button>
+        <button class="mdi mdi-delete"></button>
+      </div>
+    `;
+    return projectItem;
+  }
+
+  #setListSortability() {
+    Sortable.create(this.#list, {
       animation: 150,
       handle: '.drag-handle',
     });
