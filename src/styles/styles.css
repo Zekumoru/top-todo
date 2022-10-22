@@ -358,13 +358,17 @@ main .content-wrap {
 
 /* PROJECT MODAL */
 
-.project-modal input.write-input {
+.project-modal input.create-input {
   font-size: 1.2rem;
 }
 
-.project-modal .write-input-container {
+.project-modal .create-input-container {
   display: flex;
   gap: 8px;
+}
+
+.project-modal button.enter {
+  display: none;
 }
 
 .project-modal .default,
