@@ -2,17 +2,24 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'normalize.css/normalize.css'
 import './styles/reset.css';
 import './styles/styles.css';
-import primaryNav from './scripts/primaryNav';
+import getPrimaryNav from './scripts/getPrimaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 
 const todos = [];
-const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
+const projects = [
+  'default',
+  'project 1',
+  'project 2',
+  'project 3',
+];
 
 const main = document.querySelector('main');
+const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'));
+const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');

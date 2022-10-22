@@ -1,9 +1,11 @@
 import ProjectModal from "./Modal/ProjectModal";
 
+let projectModal = null;
 const primaryNav = document.querySelector('.primary-nav');
-export default primaryNav;
-
-const projectModal = new ProjectModal(document.querySelector('.project-modal'));
+export default function(projects) {
+  projectModal = new ProjectModal(document.querySelector('.project-modal'), projects);
+  return primaryNav;
+};
 
 const openButton = document.querySelector('.open.primary-nav-button');
 const closeButton = document.querySelector('.close.primary-nav-button');

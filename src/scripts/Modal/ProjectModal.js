@@ -2,12 +2,14 @@ import Sortable from 'sortablejs';
 import Modal from './Modal';
 
 export default class extends Modal {
+  #projects;
   #createInput;
   #createButton;
   #enterButton;
 
-  constructor(element) {
+  constructor(element, projects) {
     super(element);
+    this.#projects = projects;
     this.#createInput = element.querySelector('.create-input');
     this.#createButton = element.querySelector('button.create');
     this.#enterButton = element.querySelector('button.enter');
