@@ -243,6 +243,12 @@ main .content-wrap {
   align-items: center;
 }
 
+.write-todo-bar .buttons button:disabled,
+.write-todo-bar-input:disabled {
+  color: #656565;
+  cursor: default;
+}
+
 .write-todo-bar button {
   font-size: 20px;
   opacity: 0.8;
@@ -682,7 +688,7 @@ main .content-wrap {
   }
 
   .primary-header input[type=text] {
-    padding: 8px;
+    padding: 0px 8px;
   }
 
   .open.primary-nav-button,

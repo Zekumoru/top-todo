@@ -18,7 +18,6 @@ const projects = KeedoStorage.loadProjects() ?? [
   new Project('project 2'),
   new Project('project 3'),
 ];
-
 KeedoStorage.todos = todos;
 KeedoStorage.projects = projects;
 
@@ -122,6 +121,7 @@ document.addEventListener('closePrimaryNav', () => {
 
 document.addEventListener('selectPrimaryNavTab', (e) => {
   const { tab, tabName } = e.detail;
+  writeTodoBar.enable();
   todoRenderer.emptyMessage.innerHTML = `
     <p>Uh oh! You do not have any todos yet!</p>
     <p>Try adding some by writing one above!</p>
@@ -133,6 +133,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   if (tab === primaryNav.completedTab) {
+    writeTodoBar.disable();
     todoRenderer.emptyMessage.innerHTML = `
       <p>Uh oh! You have not finished any todos yet!</p>
       <p>Try completing some by checking them!</p>
@@ -148,6 +149,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   if (tab === primaryNav.dueTab) {
+    writeTodoBar.disable();
     todoRenderer.emptyMessage.innerHTML = `
       <p>Congratulations! Keep it up!</p>
       <p>You don't have any unfinished todos!</p>

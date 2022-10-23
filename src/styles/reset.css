@@ -17,3 +17,26 @@ a {
 input[type=text] {
   min-width: 0;
 }
+
+/* placeholder text color */
+input:disabled::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #656565;
+}
+input:disabled:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ color: #656565;
+ opacity:  1;
+}
+input:disabled::-moz-placeholder { /* Mozilla Firefox 19+ */
+ color: #656565;
+ opacity:  1;
+}
+input:disabled:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: #656565;
+}
+input:disabled::-ms-input-placeholder { /* Microsoft Edge */
+ color: #656565;
+}
+
+input:disabled::placeholder { /* Most modern browsers support this now. */
+ color: #656565;
+}
