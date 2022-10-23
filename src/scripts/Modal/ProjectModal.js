@@ -123,6 +123,20 @@ export default class extends Modal {
     Sortable.create(this.#list, {
       animation: 150,
       handle: '.drag-handle',
+      onSort: ({ item, newIndex, oldIndex}) => {
+        newIndex++; // increment these both by 1 since
+        oldIndex++; // the default project isn't in count
+
+        const sortEvent = new CustomEvent('sortProject', {
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            newIndex,
+            oldIndex,
+          },
+        });
+        item.dispatchEvent(sortEvent);
+      },
     });
   }
 

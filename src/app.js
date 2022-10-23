@@ -59,7 +59,13 @@ document.addEventListener('hideModal', () => {
 document.addEventListener('editProject', (e) => {
   const { project, newName } = e.detail;
   project.name = newName;
-  console.log('ok');
+});
+
+document.addEventListener('sortProject', (e) => {
+  const { newIndex, oldIndex } = e.detail;
+  const temp = projects[newIndex];
+  projects[newIndex] = projects[oldIndex];
+  projects[oldIndex] = temp;
 });
 
 primaryNav.addEventListener('openPrimaryNav', () => {
