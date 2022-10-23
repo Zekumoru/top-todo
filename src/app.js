@@ -86,7 +86,9 @@ document.addEventListener('sortProject', (e) => {
 document.addEventListener('deleteProject', (e) => {
   const { project } = e.detail;
   const index = projects.findIndex((p) => p === project);
+  
   projects.splice(index, 1);
+  primaryNav.getProjectListItems()[index].remove();
 });
 
 document.addEventListener('openPrimaryNav', () => {
