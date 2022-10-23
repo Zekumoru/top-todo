@@ -8,6 +8,7 @@ export default class {
   #sections;
   #emptyMessage;
   #renderingProject;
+  #fnFilter;
 
   constructor(element, todos) {
     this.element = element;
@@ -19,22 +20,29 @@ export default class {
     this.render(todos);
   }
 
-  render(todos, fnFilter = null, { showDue = false } = {}) {
+  get defaultFilter() {
+    const today = format(new Date(), 'yyyy-MM-dd');
+    return (todo) => {
+      return todo.dueDate >= today;
+    };
+  }
+
+  render(todos, fnFilter = this.defaultFilter) {
     if (!this.#renderingProject) this.currentProject = null;
+    this.#fnFilter = fnFilter;
     this.#emptyList();
+
     const listEmpty = todos.reduce((empty, todo) => {
-      if (typeof fnFilter === 'function' && !fnFilter(todo)) return empty;
-      this.renderTodo(todo, {showDue});
+      const card = this.renderTodo(todo);
+      if (!card) return empty;
       return false;
     }, true);
     if (listEmpty) this.#showEmptyMessage();
   }
 
-  renderTodo(todo, { showDue } = {}) {
+  renderTodo(todo) {
     if (!(this.currentProject === null || todo.project === this.currentProject.name)) return;
-
-    const today = format(new Date(), 'yyyy-MM-dd');
-    if (!showDue && today > todo.dueDate) return;
+    if (typeof this.#fnFilter === 'function' && !this.#fnFilter(todo)) return; 
     
     const date = format(new Date(todo.dueDate), 'yyyy-MM-dd');
     let section = this.#sections.find(s => s.date === date);
@@ -55,6 +63,7 @@ export default class {
     }, null);
     
     section.list.insertBefore(card.element, insertBefore);
+    return card;
   }
 
   renderProject(project, todos) {
