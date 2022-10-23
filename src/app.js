@@ -59,11 +59,15 @@ document.addEventListener('hideModal', () => {
 document.addEventListener('createProject', (e) => {
   const { project } = e.detail;
   projects.push(project);
+  primaryNav.addProject(project);
 });
 
 document.addEventListener('editProject', (e) => {
   const { project, newName } = e.detail;
   project.name = newName;
+
+  const index = projects.findIndex((p) => p === project);
+  primaryNav.getProjectListItems()[index].innerText = newName;
 });
 
 document.addEventListener('sortProject', (e) => {
@@ -71,6 +75,7 @@ document.addEventListener('sortProject', (e) => {
   const project = projects[oldIndex];
   projects.splice(oldIndex, 1);
   projects.splice(newIndex, 0, project);
+  primaryNav.renderProjects(projects);
 });
 
 document.addEventListener('deleteProject', (e) => {
