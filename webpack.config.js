@@ -5,7 +5,6 @@ module.exports = {
   mode: 'development',
   entry: {
     build: path.resolve(__dirname, 'src/app.js'),
-    tr: path.resolve(__dirname, 'src/scripts/TodoRenderer/TodoRenderer.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

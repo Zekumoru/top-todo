@@ -5,10 +5,12 @@ const input = writeTodoBar.querySelector('.write-todo-bar-input');
 const buttons = writeTodoBar.querySelector('.buttons');
 const enterButton = buttons.querySelector('.enter');
 const editButton = buttons.querySelector('.edit');
+let defaultPlaceholder = input.placeholder;
 let disabled = false;
 
 writeTodoBar.enable = function() {
   input.disabled = false;
+  input.placeholder = defaultPlaceholder;
   enterButton.disabled = false;
   editButton.disabled = false;
   disabled = false;
@@ -16,6 +18,7 @@ writeTodoBar.enable = function() {
 
 writeTodoBar.disable = function() {
   input.disabled = true;
+  input.placeholder = 'Cannot write to do here!';
   enterButton.disabled = true;
   editButton.disabled = true;
   disabled = true;
