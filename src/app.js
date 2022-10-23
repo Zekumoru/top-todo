@@ -131,6 +131,8 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   if (tab === primaryNav.completedTab) {
     todoRenderer.render(todos, (todo) => {
       return todo.checked;
+    }, {
+      showDue: true,
     });
     return;
   }
@@ -138,7 +140,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   if (tab === primaryNav.dueTab) {
     const today = format(new Date(), 'yyyy-MM-dd');
     todoRenderer.render(todos, (todo) => {
-      return today > todo.dueDate;
+      return !todo.checked && today > todo.dueDate;
     }, {
       showDue: true,
     });
