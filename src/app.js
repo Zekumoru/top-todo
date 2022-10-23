@@ -79,15 +79,15 @@ document.addEventListener('deleteProject', (e) => {
   projects.splice(index, 1);
 });
 
-primaryNav.addEventListener('openPrimaryNav', () => {
+document.addEventListener('openPrimaryNav', () => {
   main.inert = true;
 });
 
-primaryNav.addEventListener('closePrimaryNav', () => {
+document.addEventListener('closePrimaryNav', () => {
   main.inert = false;
 });
 
-primaryNav.addEventListener('checkedTodo', (e) => {
+main.addEventListener('checkedTodo', (e) => {
   const { todo, card } = e.detail;
   todo.checked = true;
   todoRenderer.removeCard(card);

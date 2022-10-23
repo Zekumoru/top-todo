@@ -11,8 +11,15 @@ const openButton = document.querySelector('.open.primary-nav-button');
 const closeButton = document.querySelector('.close.primary-nav-button');
 const editProjectListButton = primaryNav.querySelector('button.edit-projects');
 
-const openEvent = new Event('openPrimaryNav');
-const closeEvent = new Event('closePrimaryNav');
+const openEvent = new Event('openPrimaryNav', {
+  bubbles: true,
+  cancelable: true,
+});
+
+const closeEvent = new Event('closePrimaryNav', {
+  bubbles: true,
+  cancelable: true,
+});
 
 primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
   navItem.addEventListener('click', (e) => selectPrimaryNavTab(navItem));
