@@ -7,13 +7,14 @@ import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
+import Project from './scripts/Project';
 
 const todos = [];
 const projects = [
-  'default',
-  'project 1',
-  'project 2',
-  'project 3',
+  new Project('default'),
+  new Project('project 1'),
+  new Project('project 2'),
+  new Project('project 3'),
 ];
 
 const main = document.querySelector('main');
@@ -55,6 +56,12 @@ document.addEventListener('hideModal', () => {
   primaryNav.inert = false;
 });
 
+document.addEventListener('editProject', (e) => {
+  const { project, newName } = e.detail;
+  project.name = newName;
+  console.log('ok');
+});
+
 primaryNav.addEventListener('openPrimaryNav', () => {
   main.inert = true;
 });
@@ -63,7 +70,7 @@ primaryNav.addEventListener('closePrimaryNav', () => {
   main.inert = false;
 });
 
-main.addEventListener('checkedTodo', (e) => {
+primaryNav.addEventListener('checkedTodo', (e) => {
   const { todo, card } = e.detail;
   todo.checked = true;
   todoRenderer.removeCard(card);

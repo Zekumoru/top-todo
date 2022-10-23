@@ -15,36 +15,34 @@ export default class extends Modal {
     this.#createButton = element.querySelector('button.create');
     this.#enterButton = element.querySelector('button.enter');
     this.#list = this.element.querySelector('.project-modal-list');
-    this.#populateList(projects);
     this.#setListSortability();
     this.#setCreateInputEvents();
     this.#setCreateButtonEvents();
     this.#setEnterButtonEvents();
   }
 
-  #populateList(projects) {
+  show() {
+    this.#renderList(this.#projects);
+    super.show();
+  }
+
+  hide() {
+    this.#resetCreateBar();
+    this.#emptyList();
+    super.hide();
+  }
+
+  #renderList(projects) {
     projects.forEach((project) => {
-      if (project === 'default') return;
+      if (project.name === 'default') return;
       this.#addProjectItem(project);
     });
   }
 
-  #addProjectItem(item) {
+  #addProjectItem(project) {
     const projectItem = this.#createProjectItem();
     const input = projectItem.querySelector('input[type=text]');
     const editButton = projectItem.querySelector('button.edit');
-    let previousInputText = ''; //CHANGE THIS TO CHECK THE PROJECT ITSELF
-    // MAKE PROJECT OBJECT RATHER THAN IT BEING A STRING
-
-    const onInputEnter = () => {
-      if (!input.value) {
-        input.value = previousInputText;
-        return;
-      }
-
-      if (input.value === previousInputText) return;
-      console.log('check');
-    };
 
     const onInputBlur = () => {
       editButton.style.display = '';
@@ -52,12 +50,30 @@ export default class extends Modal {
       editButton.classList.add('mdi-pencil');
     };
 
-    input.value = item;
+    const onInputEnter = () => {
+      if (!input.value) {
+        input.value = project.name;
+        return;
+      }
+      if (input.value === project.name) return;
+
+      const editProjectEvent = new CustomEvent('editProject', {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          newName: input.value,
+          project,
+        },
+      });
+      onInputBlur();
+      this.element.dispatchEvent(editProjectEvent);
+    };
+
+    input.value = project.name;
     input.addEventListener('focus', () => {
       editButton.classList.remove('mdi-pencil');
       editButton.classList.add('mdi-check');
       editButton.style.display = 'block';
-      previousInputText = input.value;
     });
 
     input.addEventListener('keyup', (e) => {
@@ -83,7 +99,7 @@ export default class extends Modal {
       if (e.target === input) return;
       if (document.activeElement === input) return;
       if (editButton.classList.contains('mdi-pencil')) return;
-      if (input.value !== previousInputText) return;
+      if (input.value !== project.name) return;
       onInputBlur();
     });
     
@@ -169,5 +185,9 @@ export default class extends Modal {
     this.#createButton.classList.add('mdi-plus');
     this.#enterButton.style.display = 'none';
     this.#createInput.value = '';
+  }
+
+  #emptyList() {
+    this.#list.innerHTML = '';
   }
 };
