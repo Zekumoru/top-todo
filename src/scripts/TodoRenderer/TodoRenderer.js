@@ -19,20 +19,23 @@ export default class {
     this.render(todos);
   }
 
-  render(todos, fnFilter = null) {
+  render(todos, fnFilter = null, { showDue = false } = {}) {
     if (!this.#renderingProject) this.currentProject = null;
     this.#emptyList();
     const listEmpty = todos.reduce((empty, todo) => {
       if (typeof fnFilter === 'function' && !fnFilter(todo)) return empty;
-      this.renderTodo(todo);
+      this.renderTodo(todo, showDue);
       return false;
     }, true);
     if (listEmpty) this.#showEmptyMessage();
   }
 
-  renderTodo(todo) {
+  renderTodo(todo, showDue = false) {
     if (!(this.currentProject === null || todo.project === this.currentProject.name)) return;
 
+    const today = format(new Date(), 'yyyy-MM-dd');
+    if (!showDue && today > todo.dueDate) return;
+    
     const date = format(new Date(todo.dueDate), 'yyyy-MM-dd');
     let section = this.#sections.find(s => s.date === date);
     if (!section) {
@@ -93,11 +96,11 @@ export default class {
 
     let index = this.#sections.findIndex(s => s.date > date);
     if (index === -1) index = this.#sections.length;
-    
+
     const prependTo = this.#sections[index];
     if (prependTo) this.element.insertBefore(section.element, prependTo.element);
     else this.element.appendChild(section.element);
-    
+
     this.#sections.splice(index, 0, section);
     return section;
   }

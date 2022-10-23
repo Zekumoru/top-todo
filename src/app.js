@@ -9,6 +9,7 @@ import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 import Project from './scripts/Project';
 import KeedoStorage from './scripts/KeedoStorage';
+import { format } from 'date-fns';
 
 const todos = KeedoStorage.loadTodos() || [];
 const projects = KeedoStorage.loadProjects() ?? [
@@ -135,7 +136,12 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   if (tab === primaryNav.dueTab) {
-    // stub!
+    const today = format(new Date(), 'yyyy-MM-dd');
+    todoRenderer.render(todos, (todo) => {
+      return today > todo.dueDate;
+    }, {
+      showDue: true,
+    });
     return;
   }
 
