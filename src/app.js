@@ -8,14 +8,18 @@ import TodoModal from './scripts/Modal/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 import Project from './scripts/Project';
+import KeedoStorage from './scripts/KeedoStorage';
 
-const todos = [];
-const projects = [
+const todos = KeedoStorage.loadTodos() || [];
+const projects = KeedoStorage.loadProjects() ?? [
   new Project('default'),
   new Project('project 1'),
   new Project('project 2'),
   new Project('project 3'),
 ];
+
+KeedoStorage.todos = todos;
+KeedoStorage.projects = projects;
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
@@ -60,6 +64,7 @@ document.addEventListener('createProject', (e) => {
   const { project } = e.detail;
   projects.push(project);
   primaryNav.addProject(project);
+  KeedoStorage.saveProjects();
 });
 
 document.addEventListener('editProject', (e) => {
@@ -73,6 +78,8 @@ document.addEventListener('editProject', (e) => {
     if (todo.project === oldName) todo.project = newName;
   });
   todoRenderer.replaceCardsContent(newName, oldName);
+  KeedoStorage.saveTodos();
+  KeedoStorage.saveProjects();
 });
 
 document.addEventListener('sortProject', (e) => {
@@ -81,6 +88,7 @@ document.addEventListener('sortProject', (e) => {
   projects.splice(oldIndex, 1);
   projects.splice(newIndex, 0, project);
   primaryNav.renderProjects(projects, todoRenderer.currentProject?.name);
+  KeedoStorage.saveProjects();
 });
 
 document.addEventListener('deleteProject', (e) => {
@@ -99,6 +107,8 @@ document.addEventListener('deleteProject', (e) => {
     todo.project = 'default';
   });
   todoRenderer.replaceCardsContent('default', project.name);
+  KeedoStorage.saveTodos();
+  KeedoStorage.saveProjects();
 });
 
 document.addEventListener('openPrimaryNav', () => {
@@ -126,6 +136,7 @@ main.addEventListener('checkedTodo', (e) => {
   todo.checked = true;
   todoRenderer.removeCard(card);
   todoRenderer.renderTodo(todo);
+  KeedoStorage.saveTodos();
 });
 
 main.addEventListener('uncheckedTodo', (e) => {
@@ -133,6 +144,7 @@ main.addEventListener('uncheckedTodo', (e) => {
   todo.checked = false;
   todoRenderer.removeCard(card);
   todoRenderer.renderTodo(todo);
+  KeedoStorage.saveTodos();
 });
 
 main.addEventListener('editTodo', (e) => {
@@ -142,6 +154,7 @@ main.addEventListener('editTodo', (e) => {
     todoRenderer.removeCard(card);
     todos.push(editedTodo);
     todoRenderer.renderTodo(editedTodo);
+    KeedoStorage.saveTodos();
   });
 });
 
@@ -150,6 +163,7 @@ main.addEventListener('deleteTodo', (e) => {
   const indexToRemove = todos.findIndex(t => t === todo);
   todos.splice(indexToRemove, 1);
   todoRenderer.removeCard(card);
+  KeedoStorage.saveTodos();
 });
 
 main.addEventListener('changeTodoPriority', (e) => {
@@ -157,6 +171,7 @@ main.addEventListener('changeTodoPriority', (e) => {
   todo.priority = newPriority;
   todoRenderer.removeCard(card);
   todoRenderer.renderTodo(todo);
+  KeedoStorage.saveTodos();
 });
 
 main.addEventListener('enterWriteTodoInput', (e) => {
@@ -166,11 +181,13 @@ main.addEventListener('enterWriteTodoInput', (e) => {
   });
   todos.push(todo);
   todoRenderer.renderTodo(todo);
+  KeedoStorage.saveTodos();
 });
 
 main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
     todos.push(todo); 
     todoRenderer.renderTodo(todo);
+    KeedoStorage.saveTodos();
   });
 });
