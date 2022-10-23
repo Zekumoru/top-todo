@@ -2,6 +2,7 @@ import RadioList from "../RadioList";
 import Popup from "./Popup";
 
 export default class {
+  todo;
   element;
   title;
   content;
@@ -11,13 +12,14 @@ export default class {
   commentButton;
 
   constructor(todo) {
+    this.todo = todo;
     this.#createCard();
-    this.#setValues(todo);
-    this.#setEvents(todo);    
-    this.#setCheckBoxEvents(todo);
-    this.#setDeleteEvent(todo);
-    this.#setChangePriorityEvent(todo);
-    this.#setShowCommentEvent(todo);
+    this.#setValues();
+    this.#setEvents();    
+    this.#setCheckBoxEvents();
+    this.#setDeleteEvent();
+    this.#setChangePriorityEvent();
+    this.#setShowCommentEvent();
   }
 
   #createCard() {
@@ -53,15 +55,15 @@ export default class {
     return this.element;
   }
 
-  #setValues(todo) {
-    this.title.innerText = todo.title;
-    this.content.innerText = todo.project;
-    this.checkbox.checked = todo.checked;
-    this.element.classList.add(`${todo.priority}-priority`);
-    if (todo.checked) this.element.classList.add('checked');
+  #setValues() {
+    this.title.innerText = this.todo.title;
+    this.content.innerText = this.todo.project;
+    this.checkbox.checked = this.todo.checked;
+    this.element.classList.add(`${this.todo.priority}-priority`);
+    if (this.todo.checked) this.element.classList.add('checked');
   }
 
-  #setEvents(todo) {
+  #setEvents() {
     this.element.addEventListener('mouseover', (e) => {
       if (this.#isPopup(e.target)) {
         this.element.classList.remove('hoverable');
@@ -81,7 +83,7 @@ export default class {
         bubbles: true,
         cancelable: true,
         detail: { 
-          todo,
+          todo: this.todo,
           card: this.element
         },
       });
@@ -89,12 +91,12 @@ export default class {
     });
   }
 
-  #setCheckBoxEvents(todo) {
+  #setCheckBoxEvents() {
     const checkedEvent = new CustomEvent('checkedTodo',{ 
       bubbles: true,
       cancelable: true,
       detail: {
-        todo,
+        todo: this.todo,
         card: this.element
       },
     });
@@ -103,7 +105,7 @@ export default class {
       bubbles: true,
       cancelable: true,
       detail: {
-        todo,
+        todo: this.todo,
         card: this.element
       },
     });
@@ -117,19 +119,19 @@ export default class {
     });
   }
 
-  #setDeleteEvent(todo) {
+  #setDeleteEvent() {
     const deleteEvent = new CustomEvent('deleteTodo', {
       bubbles: true,
       cancelable: true,
       detail: {
-        todo,
+        todo: this.todo,
         card: this.element
       },
     });
     this.deleteButton.addEventListener('click', () => this.element.dispatchEvent(deleteEvent));
   }
 
-  #setChangePriorityEvent(todo) {
+  #setChangePriorityEvent() {
     new Popup(this.priorityButton, this.priorityButton.parentElement, `
       <div class="priority-choice-title">Change priority</div>
       <ul class="priority-choice-list">
@@ -145,14 +147,14 @@ export default class {
       </ul>
     `, (popup) => {
       const priorityList = new RadioList(popup.querySelector('.priority-choice-list'));
-      priorityList.element.querySelector(`input[value="${todo.priority}"]`).checked = true;
+      priorityList.element.querySelector(`input[value="${this.todo.priority}"]`).checked = true;
 
       priorityList.element.addEventListener('change', () => {
         const changePriorityEvent = new CustomEvent('changeTodoPriority', {
           bubbles: true,
           cancelable: true,
           detail: {
-            todo,
+            todo: this.todo,
             card: this.element,
             newPriority: priorityList.value,
           },
@@ -163,12 +165,12 @@ export default class {
     });
   }
 
-  #setShowCommentEvent(todo) {
+  #setShowCommentEvent() {
     new Popup(this.commentButton, this.commentButton.parentElement, `
       <div class="description-title">Description</div>
       <p class="description"></p>
     `, (popup) => {
-      popup.querySelector('.description').innerText = todo.description || 'No description.';
+      popup.querySelector('.description').innerText = this.todo.description || 'No description.';
     });
   }
 
