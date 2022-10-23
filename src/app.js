@@ -63,9 +63,9 @@ document.addEventListener('editProject', (e) => {
 
 document.addEventListener('sortProject', (e) => {
   const { newIndex, oldIndex } = e.detail;
-  const temp = projects[newIndex];
-  projects[newIndex] = projects[oldIndex];
-  projects[oldIndex] = temp;
+  const project = projects[oldIndex];
+  projects.splice(oldIndex, 1);
+  projects.splice(newIndex, 0, project);
 });
 
 primaryNav.addEventListener('openPrimaryNav', () => {
