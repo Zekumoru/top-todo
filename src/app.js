@@ -105,6 +105,18 @@ document.addEventListener('closePrimaryNav', () => {
   main.inert = false;
 });
 
+document.addEventListener('selectPrimaryNavTab', (e) => {
+  const { tabName } = e.detail;
+
+  if (tabName === 'All') {
+    todoRenderer.render(todos);
+    return;
+  }
+
+  const project = projects.find((p) => p.name === tabName);
+  todoRenderer.renderProject(project, todos);
+});
+
 main.addEventListener('checkedTodo', (e) => {
   const { todo, card } = e.detail;
   todo.checked = true;

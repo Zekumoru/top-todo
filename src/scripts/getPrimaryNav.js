@@ -73,6 +73,15 @@ function selectTab(tab) {
 
   currentSelected.classList.remove('current');
   tab.classList.add('current');
+
+  const selectTabEvent = new CustomEvent('selectPrimaryNavTab', {
+    bubbles: true,
+    cancelable: true,
+    detail: {
+      tabName: tab.innerText,
+    },
+  });
+  tab.dispatchEvent(selectTabEvent);
 }
 
 openButton.addEventListener('click', (e) => {

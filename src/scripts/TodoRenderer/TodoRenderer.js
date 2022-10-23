@@ -12,8 +12,17 @@ export default class {
     this.#emptyMessage = this.element.querySelector('.empty-message');
 
     this.#sections = [];
+    this.render(todos);
+  }
 
-    todos.forEach((todo) => this.renderTodo(todo));
+  render(todos, fnFilter = null) {
+    this.#emptyList();
+    const listEmpty = todos.reduce((empty, todo) => {
+      if (typeof fnFilter === 'function' && fnFilter(todo)) return empty;
+      this.renderTodo(todo);
+      return false;
+    }, true);
+    if (listEmpty) this.#showEmptyMessage();
   }
 
   renderTodo(todo) {
@@ -35,6 +44,12 @@ export default class {
     }, null);
     
     section.list.insertBefore(card.element, insertBefore);
+  }
+
+  renderProject(project, todos) {
+    this.render(todos, (todo) => {
+      return todo.project !== project.name;
+    });
   }
 
   replaceCardsContent(newContent, oldContent) {
@@ -77,6 +92,11 @@ export default class {
     return section;
   }
 
+  #emptyList() {
+    this.element.innerHTML = '';
+    this.#sections = [];
+  }
+
   #showEmptyMessage() {
     if (this.#sections.length) return;
     this.element.appendChild(this.#emptyMessage);
@@ -84,6 +104,7 @@ export default class {
 
   #hideEmptyMessage() {
     if (this.#sections.length !== 0) return;
+    if (!this.element.contains(this.#emptyMessage)) return;
     this.element.removeChild(this.#emptyMessage);
   }
 }
