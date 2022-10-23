@@ -2,8 +2,10 @@ import DatePicker from '../DatePicker';
 import Modal from "./Modal";
 import RadioList from "../RadioList";
 import Todo from "../Todo";
+import Selector from '../Selector';
 
 export default class extends Modal {
+  #projects;
   #checkBox;
   #titleInput;
   #descriptionInput;
@@ -12,15 +14,20 @@ export default class extends Modal {
   #dueDatePicker;
   #onConfirm;
 
-  constructor(element) {
+  constructor(element, projects) {
     super(element);
+    this.#projects = projects;
+    this.#onConfirm = null;
     this.#checkBox = element.querySelector('.checkbox');
     this.#titleInput = element.querySelector('.title');
     this.#descriptionInput = element.querySelector('.description');
-    this.#projectSelector = element.querySelector('.project-select');
     this.#priorityRadioList = new RadioList(element.querySelector('.priority-choice-list'));
     this.#dueDatePicker = new DatePicker(element.querySelector('.due-date-picker'), new Date(), new Date());
-    this.#onConfirm = null;
+    this.#projectSelector = new Selector(element.querySelector('.project-select'), {
+      options: projects,
+      property: 'name',
+    });
+
     this.#setConfirmButton();
     this.#setTitleInputEvent();
     this.#setDescriptionInputEvent();
@@ -30,10 +37,12 @@ export default class extends Modal {
     this.#checkBox.checked = checked;
     this.#titleInput.value = title ?? '';
     this.#descriptionInput.value = description ?? '';
+    this.#projectSelector.value = project;
     if (priority) this.#priorityRadioList.value = priority;
     if (dueDate) this.#dueDatePicker.value = dueDate;
     this.#onConfirm = fnOnConfirm;
 
+    this.#projectSelector.renderOptions(this.#projects);
     super.show();
     this.#titleInput.focus();
   }
@@ -47,6 +56,7 @@ export default class extends Modal {
     this.#checkBox.checked = false;
     this.#titleInput.value = '';
     this.#descriptionInput.value = '';
+    this.#projectSelector.reset();
     this.#priorityRadioList.reset();
     this.#dueDatePicker.setDate(new Date());
   }
@@ -62,7 +72,7 @@ export default class extends Modal {
       const todo = new Todo({
         title: this.#titleInput.value,
         description: this.#descriptionInput.value.replace(/[\r\n]+/g, ' '),
-        project: this.#projectSelector.options[this.#projectSelector.selectedIndex].value,
+        project: this.#projectSelector.value,
         priority: this.#priorityRadioList.value,
         dueDate: this.#dueDatePicker.value,
         checked: this.#checkBox.checked,

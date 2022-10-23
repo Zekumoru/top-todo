@@ -19,7 +19,7 @@ const projects = [
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
-const todoModal = new TodoModal(document.querySelector('.todo-modal'));
+const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
 document.addEventListener('click', (e) => {
