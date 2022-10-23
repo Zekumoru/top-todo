@@ -54,6 +54,11 @@ export default class extends Modal {
   #setConfirmButton() {
     const confirmButton = this.element.querySelector('button.confirm');
     confirmButton.addEventListener('click', () => {
+      if (!this.#titleInput.value) {
+        this.hide();
+        return;
+      }
+
       const todo = new Todo({
         title: this.#titleInput.value,
         description: this.#descriptionInput.value.replace(/[\r\n]+/g, ' '),
