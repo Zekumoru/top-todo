@@ -4,11 +4,15 @@ import Section from "./Section";
 
 export default class {
   element;
+  currentProject;
   #sections;
   #emptyMessage;
+  #renderingProject;
 
   constructor(element, todos) {
     this.element = element;
+    this.currentProject = null;
+    this.#renderingProject = false;
     this.#emptyMessage = this.element.querySelector('.empty-message');
 
     this.#sections = [];
@@ -16,6 +20,7 @@ export default class {
   }
 
   render(todos, fnFilter = null) {
+    if (!this.#renderingProject) this.currentProject = null;
     this.#emptyList();
     const listEmpty = todos.reduce((empty, todo) => {
       if (typeof fnFilter === 'function' && fnFilter(todo)) return empty;
@@ -26,6 +31,8 @@ export default class {
   }
 
   renderTodo(todo) {
+    if (!(this.currentProject === null || todo.project === this.currentProject.name)) return;
+
     const date = format(new Date(todo.dueDate), 'yyyy-MM-dd');
     let section = this.#sections.find(s => s.date === date);
     if (!section) {
@@ -47,9 +54,12 @@ export default class {
   }
 
   renderProject(project, todos) {
+    this.currentProject = project;
+    this.#renderingProject = true;
     this.render(todos, (todo) => {
       return todo.project !== project.name;
     });
+    this.#renderingProject = false;
   }
 
   replaceCardsContent(newContent, oldContent) {

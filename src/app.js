@@ -158,14 +158,14 @@ main.addEventListener('changeTodoPriority', (e) => {
 main.addEventListener('enterWriteTodoInput', (e) => {
   const todo = new Todo({
     title: e.detail,
-    project: 'default',
+    project: todoRenderer.currentProject?.name ?? 'default',
   });
   todos.push(todo);
   todoRenderer.renderTodo(todo);
 });
 
 main.addEventListener('editWriteTodoInput', (e) => {
-  todoModal.show({ title: e.detail }, (todo) => {
+  todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
     todos.push(todo); 
     todoRenderer.renderTodo(todo);
   });
