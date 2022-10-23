@@ -113,8 +113,8 @@ export default class {
     const section = new Section(date);
     
     let index;
-    if (this.#appendMode) this.#sections.findIndex(s => s.date < date);
-    else this.#sections.findIndex(s => s.date > date);
+    if (this.#appendMode) index = this.#sections.findIndex(s => s.date < date);
+    else index = this.#sections.findIndex(s => s.date > date);
     if (index === -1) index = this.#sections.length;
 
     const insertBefore = this.#sections[index];
