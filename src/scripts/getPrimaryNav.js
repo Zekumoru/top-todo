@@ -24,6 +24,8 @@ const closeEvent = new Event('closePrimaryNav', {
 });
 
 primaryNav.allTab = primaryNav.querySelector('li.all');
+primaryNav.completedTab = primaryNav.querySelector('li.completed');
+primaryNav.dueTab = primaryNav.querySelector('li.due');
 
 primaryNav.getProjectListItems = function() {
   return projectList.children;
@@ -64,6 +66,7 @@ function selectTab(tab) {
     cancelable: true,
     detail: {
       tabName: tab.innerText,
+      tab,
     },
   });
   tab.dispatchEvent(selectTabEvent);

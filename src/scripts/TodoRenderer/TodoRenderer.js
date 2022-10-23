@@ -23,7 +23,7 @@ export default class {
     if (!this.#renderingProject) this.currentProject = null;
     this.#emptyList();
     const listEmpty = todos.reduce((empty, todo) => {
-      if (typeof fnFilter === 'function' && fnFilter(todo)) return empty;
+      if (typeof fnFilter === 'function' && !fnFilter(todo)) return empty;
       this.renderTodo(todo);
       return false;
     }, true);
@@ -57,7 +57,7 @@ export default class {
     this.currentProject = project;
     this.#renderingProject = true;
     this.render(todos, (todo) => {
-      return todo.project !== project.name;
+      return todo.project === project.name;
     });
     this.#renderingProject = false;
   }

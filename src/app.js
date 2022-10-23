@@ -120,10 +120,22 @@ document.addEventListener('closePrimaryNav', () => {
 });
 
 document.addEventListener('selectPrimaryNavTab', (e) => {
-  const { tabName } = e.detail;
+  const { tab, tabName } = e.detail;
 
-  if (tabName === 'All') {
+  if (tab === primaryNav.allTab) {
     todoRenderer.render(todos);
+    return;
+  }
+
+  if (tab === primaryNav.completedTab) {
+    todoRenderer.render(todos, (todo) => {
+      return todo.checked;
+    });
+    return;
+  }
+
+  if (tab === primaryNav.dueTab) {
+    // stub!
     return;
   }
 
