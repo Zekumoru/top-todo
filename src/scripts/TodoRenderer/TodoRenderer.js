@@ -37,6 +37,13 @@ export default class {
     section.list.insertBefore(card.element, insertBefore);
   }
 
+  replaceCardsContent(newContent, oldContent) {
+    this.element.querySelectorAll('.todo-item').forEach((card) => {
+      const content = card.querySelector('.content');
+      if (content.innerText === oldContent) content.innerText = newContent;
+    });
+  }
+
   #getPriority(str, checked) {
     const offset = checked? 0 : 10;
     if (str.includes('high')) return 2 + offset;

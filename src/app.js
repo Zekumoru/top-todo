@@ -63,11 +63,16 @@ document.addEventListener('createProject', (e) => {
 });
 
 document.addEventListener('editProject', (e) => {
-  const { project, newName } = e.detail;
+  const { project, newName, oldName } = e.detail;
   project.name = newName;
 
   const index = projects.findIndex((p) => p === project);
   primaryNav.getProjectListItems()[index].innerText = newName;
+
+  todos.forEach((todo) => {
+    if (todo.project === oldName) todo.project = newName;
+  });
+  todoRenderer.replaceCardsContent(newName, oldName);
 });
 
 document.addEventListener('sortProject', (e) => {
