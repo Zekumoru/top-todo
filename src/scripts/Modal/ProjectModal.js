@@ -53,16 +53,23 @@ export default class extends Modal {
     };
 
     const onInputEnter = () => {
+      input.value = input.value.trim();
+      
       if (!input.value) {
         input.value = project.name;
         return;
       }
       if (input.value === project.name) return;
+      if (this.#projects.some((p) => p.name === input.value)) {
+        input.value = project.name;
+        return;
+      }
 
       const editProjectEvent = new CustomEvent('editProject', {
         bubbles: true,
         cancelable: true,
         detail: {
+          oldName: project.name,
           newName: input.value,
           project,
         },
