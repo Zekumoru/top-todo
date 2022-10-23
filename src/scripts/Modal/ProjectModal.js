@@ -220,8 +220,6 @@ export default class extends Modal {
   }
 
   #resetCreateBar() {
-    this.#createButton.classList.remove('mdi-close');
-    this.#createButton.classList.add('mdi-plus');
     this.#enterButton.style.display = 'none';
     this.#createInput.value = '';
   }
