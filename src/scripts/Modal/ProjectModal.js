@@ -1,4 +1,5 @@
 import Sortable from 'sortablejs';
+import Project from '../Project';
 import Modal from './Modal';
 
 export default class extends Modal {
@@ -40,7 +41,7 @@ export default class extends Modal {
   }
 
   #addProjectItem(project) {
-    const projectItem = this.#createProjectItem();
+    const projectItem = this.#createProjectListItem();
     const input = projectItem.querySelector('input[type=text]');
     const editButton = projectItem.querySelector('button.edit');
 
@@ -106,7 +107,7 @@ export default class extends Modal {
     this.#list.appendChild(projectItem);
   }
 
-  #createProjectItem() {
+  #createProjectListItem() {
     const projectItem = document.createElement('li');
     projectItem.innerHTML = `
       <div class="mdi mdi-drag-vertical drag-handle"></div>
@@ -148,7 +149,7 @@ export default class extends Modal {
 
     this.#createInput.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') {
-        this.#enterCreate();
+        this.#createNewProject();
         return;
       }
 
@@ -184,12 +185,22 @@ export default class extends Modal {
   }
 
   #setEnterButtonEvents() {
-    this.#enterButton.addEventListener('click', () => this.#enterCreate());
+    this.#enterButton.addEventListener('click', () => this.#createNewProject());
   }
 
-  #enterCreate() {
-    const project = this.#createInput.value;
+  #createNewProject() {
+    const project = new Project(this.#createInput.value);
     if (!project) return;
+
+    const createProjectEvent = new CustomEvent('createProject', {
+      bubbles: true,
+      cancelable: true,
+      detail: {
+        project,
+      },
+    });
+    this.element.dispatchEvent(createProjectEvent);
+
     this.#resetCreateBar();
     this.#addProjectItem(project);
   }

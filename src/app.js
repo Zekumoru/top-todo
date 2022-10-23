@@ -56,6 +56,11 @@ document.addEventListener('hideModal', () => {
   primaryNav.inert = false;
 });
 
+document.addEventListener('createProject', (e) => {
+  const { project } = e.detail;
+  projects.push(project);
+});
+
 document.addEventListener('editProject', (e) => {
   const { project, newName } = e.detail;
   project.name = newName;
