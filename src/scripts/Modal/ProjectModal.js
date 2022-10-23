@@ -44,6 +44,7 @@ export default class extends Modal {
     const projectItem = this.#createProjectListItem();
     const input = projectItem.querySelector('input[type=text]');
     const editButton = projectItem.querySelector('button.edit');
+    const deleteButton = projectItem.querySelector('button.delete');
 
     const onInputBlur = () => {
       editButton.style.display = '';
@@ -104,6 +105,18 @@ export default class extends Modal {
       onInputBlur();
     });
     
+    deleteButton.addEventListener('click', () => {
+      const deleteProjectEvent = new CustomEvent('deleteProject', {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          project,
+        },
+      });
+      projectItem.dispatchEvent(deleteProjectEvent);
+      projectItem.remove();
+    });
+
     this.#list.appendChild(projectItem);
   }
 
