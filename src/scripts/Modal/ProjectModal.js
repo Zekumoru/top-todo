@@ -40,7 +40,7 @@ export default class extends Modal {
     const projectItem = document.createElement('li');
     projectItem.innerHTML = `
       <div class="mdi mdi-drag-vertical drag-handle"></div>
-      <input type="text" placeholder="Enter project name">
+      <input type="text" placeholder="Enter project name" enterkeyhint="go">
       <div class="buttons">
         <button class="mdi mdi-pencil edit-icon"></button>
         <button class="mdi mdi-delete"></button>

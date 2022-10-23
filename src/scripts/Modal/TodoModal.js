@@ -22,6 +22,7 @@ export default class extends Modal {
     this.#dueDatePicker = new DatePicker(element.querySelector('.due-date-picker'), new Date(), new Date());
     this.#onConfirm = null;
     this.#setConfirmButton();
+    this.#setTitleInputEvent();
     this.#setDescriptionInputEvent();
   }
 
@@ -70,9 +71,21 @@ export default class extends Modal {
     });
   }
   
+  #setTitleInputEvent() {
+    this.#titleInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        this.#descriptionInput.focus();
+        return;
+      }
+    });
+  }
+
   #setDescriptionInputEvent() {
     this.#descriptionInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') e.preventDefault();
+      if (e.key === 'Enter') { 
+        this.#descriptionInput.blur();
+        return;
+      }
     });
   }
 };
