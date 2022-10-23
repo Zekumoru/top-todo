@@ -89,6 +89,12 @@ document.addEventListener('deleteProject', (e) => {
   
   projects.splice(index, 1);
   primaryNav.getProjectListItems()[index].remove();
+
+  todos.forEach((todo) => {
+    if (todo.project !== project.name) return;
+    todo.project = 'default';
+  });
+  todoRenderer.replaceCardsContent('default', project.name);
 });
 
 document.addEventListener('openPrimaryNav', () => {
