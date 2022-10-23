@@ -24,13 +24,13 @@ export default class {
     this.#emptyList();
     const listEmpty = todos.reduce((empty, todo) => {
       if (typeof fnFilter === 'function' && !fnFilter(todo)) return empty;
-      this.renderTodo(todo, showDue);
+      this.renderTodo(todo, {showDue});
       return false;
     }, true);
     if (listEmpty) this.#showEmptyMessage();
   }
 
-  renderTodo(todo, showDue = false) {
+  renderTodo(todo, { showDue } = {}) {
     if (!(this.currentProject === null || todo.project === this.currentProject.name)) return;
 
     const today = format(new Date(), 'yyyy-MM-dd');
@@ -43,7 +43,8 @@ export default class {
       section = this.#createSection(date);
     }
 
-    const card = new Card(todo);
+    const propertyForContent = (this.currentProject)? 'description' : 'project';
+    const card = new Card(todo, propertyForContent);
 
     const insertBefore = Array.from(section.list.children).reduce((before, current) => {
       const tp = this.#getPriority(todo.priority, todo.checked);

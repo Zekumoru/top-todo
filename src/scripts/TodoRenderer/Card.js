@@ -11,10 +11,10 @@ export default class {
   priorityButton;
   commentButton;
 
-  constructor(todo) {
+  constructor(todo, propertyForContent) {
     this.todo = todo;
     this.#createCard();
-    this.#setValues();
+    this.#setValues(propertyForContent);
     this.#setEvents();    
     this.#setCheckBoxEvents();
     this.#setDeleteEvent();
@@ -55,12 +55,24 @@ export default class {
     return this.element;
   }
 
-  #setValues() {
+  #setValues(propertyForContent) {
     this.title.innerText = this.todo.title;
-    this.content.innerText = this.todo.project;
     this.checkbox.checked = this.todo.checked;
     this.element.classList.add(`${this.todo.priority}-priority`);
     if (this.todo.checked) this.element.classList.add('checked');
+
+    const content = this.todo[propertyForContent];
+    if (content) {
+      this.content.innerText = content;
+      return;
+    }
+
+    if (propertyForContent === 'description') {
+      this.content.innerText = 'No description.'
+      return;
+    }
+
+    this.content.innerText = 'Error!'
   }
 
   #setEvents() {
