@@ -8,13 +8,16 @@ export default class {
   emptyMessage;
   #sections;
   #renderingProject;
+  #appendMode;
   #fnFilter;
 
   constructor(element, todos) {
     this.element = element;
     this.currentProject = null;
-    this.#renderingProject = false;
     this.emptyMessage = this.element.querySelector('.empty-message');
+    this.#renderingProject = false;
+    this.#fnFilter = this.defaultFilter;
+    this.#appendMode = false;
 
     this.#sections = [];
     this.render(todos);
@@ -27,9 +30,10 @@ export default class {
     };
   }
 
-  render(todos, fnFilter = this.defaultFilter) {
+  render(todos, { filter = this.defaultFilter, appendMode = false } = {}) {
     if (!this.#renderingProject) this.currentProject = null;
-    this.#fnFilter = fnFilter;
+    this.#fnFilter = filter;
+    this.#appendMode = appendMode;
     this.#emptyList();
 
     const listEmpty = todos.reduce((empty, todo) => {
@@ -69,8 +73,12 @@ export default class {
   renderProject(project, todos) {
     this.currentProject = project;
     this.#renderingProject = true;
-    this.render(todos, (todo) => {
-      return todo.project === project.name;
+
+    const today = format(new Date(), 'yyyy-MM-dd');
+    this.render(todos, {
+      filter: (todo) => {
+        return todo.project === project.name && todo.dueDate >= today;
+      },
     });
     this.#renderingProject = false;
   }
@@ -103,12 +111,14 @@ export default class {
 
   #createSection(date) {
     const section = new Section(date);
-
-    let index = this.#sections.findIndex(s => s.date > date);
+    
+    let index;
+    if (this.#appendMode) this.#sections.findIndex(s => s.date < date);
+    else this.#sections.findIndex(s => s.date > date);
     if (index === -1) index = this.#sections.length;
 
-    const prependTo = this.#sections[index];
-    if (prependTo) this.element.insertBefore(section.element, prependTo.element);
+    const insertBefore = this.#sections[index];
+    if (insertBefore) this.element.insertBefore(section.element, insertBefore.element);
     else this.element.appendChild(section.element);
 
     this.#sections.splice(index, 0, section);

@@ -138,8 +138,11 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
       <p>Try completing some by checking them!</p>
     `;
 
-    todoRenderer.render(todos, (todo) => {
-      return todo.checked;
+    todoRenderer.render(todos, {
+      filter: (todo) => {
+        return todo.checked;
+      },
+      appendMode: true,
     });
     return;
   }
@@ -151,8 +154,11 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     `;
 
     const today = format(new Date(), 'yyyy-MM-dd');
-    todoRenderer.render(todos, (todo) => {
-      return !todo.checked && today > todo.dueDate;
+    todoRenderer.render(todos, {
+      filter: (todo) => {
+        return !todo.checked && today > todo.dueDate;
+      },
+      appendMode: true,
     });
     return;
   }
