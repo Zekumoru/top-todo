@@ -23,6 +23,8 @@ const closeEvent = new Event('closePrimaryNav', {
   cancelable: true,
 });
 
+primaryNav.allTab = primaryNav.querySelector('li.all');
+
 primaryNav.getProjectListItems = function() {
   return projectList.children;
 };
@@ -32,7 +34,7 @@ primaryNav.addProject = function(project) {
   projectList.appendChild(projectListItem);
 };
 
-primaryNav.renderProjects = function(projects) {
+primaryNav.renderProjects = function(projects, selectProject) {
   projectList.innerHTML = '';
 
   projects.forEach((project) => {
@@ -40,10 +42,32 @@ primaryNav.renderProjects = function(projects) {
     if (project.name === 'default') {
       projectListItem.classList.add('default');
     }
+    if (project.name === selectProject) {
+      projectListItem.classList.add('current');
+    }
 
     projectList.appendChild(projectListItem);
   });
 };
+
+primaryNav.selectTab = selectTab;
+
+function selectTab(tab) {
+  const currentSelected = primaryNav.querySelector('li.current');
+  if (tab === currentSelected) return;
+
+  if (currentSelected) currentSelected.classList.remove('current');
+  tab.classList.add('current');
+
+  const selectTabEvent = new CustomEvent('selectPrimaryNavTab', {
+    bubbles: true,
+    cancelable: true,
+    detail: {
+      tabName: tab.innerText,
+    },
+  });
+  tab.dispatchEvent(selectTabEvent);
+}
 
 function createProjectListItem(project) {
   const projectListItem = document.createElement('li');
@@ -66,23 +90,6 @@ primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
     selectTab(navItem);
   });
 });
-
-function selectTab(tab) {
-  const currentSelected = primaryNav.querySelector('li.current');
-  if (tab === currentSelected) return;
-
-  currentSelected.classList.remove('current');
-  tab.classList.add('current');
-
-  const selectTabEvent = new CustomEvent('selectPrimaryNavTab', {
-    bubbles: true,
-    cancelable: true,
-    detail: {
-      tabName: tab.innerText,
-    },
-  });
-  tab.dispatchEvent(selectTabEvent);
-}
 
 openButton.addEventListener('click', (e) => {
   primaryNav.style.left = '0px';

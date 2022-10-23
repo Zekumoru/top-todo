@@ -80,7 +80,7 @@ document.addEventListener('sortProject', (e) => {
   const project = projects[oldIndex];
   projects.splice(oldIndex, 1);
   projects.splice(newIndex, 0, project);
-  primaryNav.renderProjects(projects);
+  primaryNav.renderProjects(projects, todoRenderer.currentProject?.name);
 });
 
 document.addEventListener('deleteProject', (e) => {
@@ -88,7 +88,11 @@ document.addEventListener('deleteProject', (e) => {
   const index = projects.findIndex((p) => p === project);
   
   projects.splice(index, 1);
-  primaryNav.getProjectListItems()[index].remove();
+  const selectedTab = primaryNav.getProjectListItems()[index];
+  if (selectedTab.classList.contains('current')) {
+    primaryNav.selectTab(primaryNav.allTab);
+  }
+  selectedTab.remove();
 
   todos.forEach((todo) => {
     if (todo.project !== project.name) return;
