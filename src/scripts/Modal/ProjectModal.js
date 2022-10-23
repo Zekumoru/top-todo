@@ -202,8 +202,8 @@ export default class extends Modal {
   }
 
   #createNewProject() {
+    if (!this.#createInput.value) return;
     const project = new Project(this.#createInput.value);
-    if (!project) return;
 
     const createProjectEvent = new CustomEvent('createProject', {
       bubbles: true,
