@@ -5,8 +5,8 @@ import Section from "./Section";
 export default class {
   element;
   currentProject;
+  emptyMessage;
   #sections;
-  #emptyMessage;
   #renderingProject;
   #fnFilter;
 
@@ -14,7 +14,7 @@ export default class {
     this.element = element;
     this.currentProject = null;
     this.#renderingProject = false;
-    this.#emptyMessage = this.element.querySelector('.empty-message');
+    this.emptyMessage = this.element.querySelector('.empty-message');
 
     this.#sections = [];
     this.render(todos);
@@ -122,12 +122,12 @@ export default class {
 
   #showEmptyMessage() {
     if (this.#sections.length) return;
-    this.element.appendChild(this.#emptyMessage);
+    this.element.appendChild(this.emptyMessage);
   }
 
   #hideEmptyMessage() {
     if (this.#sections.length !== 0) return;
-    if (!this.element.contains(this.#emptyMessage)) return;
-    this.element.removeChild(this.#emptyMessage);
+    if (!this.element.contains(this.emptyMessage)) return;
+    this.element.removeChild(this.emptyMessage);
   }
 }

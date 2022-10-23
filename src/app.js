@@ -122,6 +122,10 @@ document.addEventListener('closePrimaryNav', () => {
 
 document.addEventListener('selectPrimaryNavTab', (e) => {
   const { tab, tabName } = e.detail;
+  todoRenderer.emptyMessage.innerHTML = `
+    <p>Uh oh! You do not have any todos yet!</p>
+    <p>Try adding some by writing one above!</p>
+  `;
 
   if (tab === primaryNav.allTab) {
     todoRenderer.render(todos);
@@ -129,6 +133,11 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   if (tab === primaryNav.completedTab) {
+    todoRenderer.emptyMessage.innerHTML = `
+      <p>Uh oh! You have not finished any todos yet!</p>
+      <p>Try completing some by checking them!</p>
+    `;
+
     todoRenderer.render(todos, (todo) => {
       return todo.checked;
     });
@@ -136,6 +145,11 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   if (tab === primaryNav.dueTab) {
+    todoRenderer.emptyMessage.innerHTML = `
+      <p>Congratulations! Keep it up!</p>
+      <p>You don't have any unfinished todos!</p>
+    `;
+
     const today = format(new Date(), 'yyyy-MM-dd');
     todoRenderer.render(todos, (todo) => {
       return !todo.checked && today > todo.dueDate;
