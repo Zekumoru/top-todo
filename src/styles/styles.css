@@ -378,6 +378,10 @@ main .content-wrap {
   overflow: auto;
 }
 
+.project-modal-list {
+  padding-bottom: 20px;
+}
+
 .project-modal .default,
 .project-modal-list li {
   display: flex;
