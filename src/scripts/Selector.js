@@ -26,12 +26,13 @@ export default class {
     this.#selectElement.selectedIndex = 0;
   }
 
-  renderOptions(options = []) {
+  renderOptions(options = [], value = '') {
     this.#selectElement.innerHTML = '';
-    options.forEach((option) => {
+    options.forEach((option, index) => {
       if (typeof option === 'object') option = option[this.#property];
       const optionElement = this.#createOptionElement(option);
       this.#selectElement.appendChild(optionElement);
+      if (option === value) this.#selectElement.selectedIndex = index;
     });
   }
 

@@ -37,12 +37,11 @@ export default class extends Modal {
     this.#checkBox.checked = checked;
     this.#titleInput.value = title ?? '';
     this.#descriptionInput.value = description ?? '';
-    this.#projectSelector.value = project;
     if (priority) this.#priorityRadioList.value = priority;
     if (dueDate) this.#dueDatePicker.value = dueDate;
+    this.#projectSelector.renderOptions(this.#projects, project);
     this.#onConfirm = fnOnConfirm;
 
-    this.#projectSelector.renderOptions(this.#projects);
     super.show();
     this.#titleInput.focus();
   }
