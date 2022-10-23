@@ -32,7 +32,61 @@ export default class extends Modal {
   #addProjectItem(item) {
     const projectItem = this.#createProjectItem();
     const input = projectItem.querySelector('input[type=text]');
+    const editButton = projectItem.querySelector('button.edit');
+    let previousInputText = ''; //CHANGE THIS TO CHECK THE PROJECT ITSELF
+    // MAKE PROJECT OBJECT RATHER THAN IT BEING A STRING
+
+    const onInputEnter = () => {
+      if (!input.value) {
+        input.value = previousInputText;
+        return;
+      }
+
+      if (input.value === previousInputText) return;
+      console.log('check');
+    };
+
+    const onInputBlur = () => {
+      editButton.style.display = '';
+      editButton.classList.remove('mdi-check');
+      editButton.classList.add('mdi-pencil');
+    };
+
     input.value = item;
+    input.addEventListener('focus', () => {
+      editButton.classList.remove('mdi-pencil');
+      editButton.classList.add('mdi-check');
+      editButton.style.display = 'block';
+      previousInputText = input.value;
+    });
+
+    input.addEventListener('keyup', (e) => {
+      if (e.key !== 'Enter') return;
+      onInputEnter();
+      input.blur();
+      onInputBlur();
+    });
+
+    editButton.addEventListener('click', () => {
+      if (editButton.classList.contains('mdi-pencil')) {
+        input.focus();
+        return;
+      }
+
+      onInputEnter();
+    });
+
+    this.element.addEventListener('click', (e) => {
+      // all of the conditions below check if the user
+      // has clicked outside the input so that we can
+      // change the edit icon accordingly
+      if (e.target === input) return;
+      if (document.activeElement === input) return;
+      if (editButton.classList.contains('mdi-pencil')) return;
+      if (input.value !== previousInputText) return;
+      onInputBlur();
+    });
+    
     this.#list.appendChild(projectItem);
   }
 
@@ -42,8 +96,8 @@ export default class extends Modal {
       <div class="mdi mdi-drag-vertical drag-handle"></div>
       <input type="text" placeholder="Enter project name" enterkeyhint="go">
       <div class="buttons">
-        <button class="mdi mdi-pencil edit-icon"></button>
-        <button class="mdi mdi-delete"></button>
+        <button class="mdi mdi-pencil edit"></button>
+        <button class="mdi mdi-delete delete"></button>
       </div>
     `;
     return projectItem;
@@ -79,6 +133,8 @@ export default class extends Modal {
 
   #setCreateButtonEvents() {
     this.element.addEventListener('click', (e) => {
+      // same as above, all of these check if the user
+      // has clicked outside the input
       if (e.target === this.#createInput) return;
       if (document.activeElement === this.#createInput) return;
       if (this.#createInput.value) return;

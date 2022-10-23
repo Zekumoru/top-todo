@@ -420,7 +420,7 @@ main .content-wrap {
   font-style: italic;
 }
 
-.project-modal-list .edit-icon {
+.project-modal-list button.edit {
   display: none;
 }
 
@@ -646,7 +646,7 @@ main .content-wrap {
     background-color: var(--hover-bg-color);
   }
 
-  .project-modal-list li:hover .edit-icon {
+  .project-modal-list li:hover button.edit {
     display: block;
   }
 
