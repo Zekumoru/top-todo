@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keedo</title>
-  <script defer src="build.2eb10ab471ab3b735c4b.js"></script></head>
+  <script defer src="build.c21f742efc34de4c755d.js"></script></head>
   <body>
     <div class="modal project-modal">
       <nav class="modal-top-nav flex-horizontal-between">
@@ -15,13 +15,13 @@
       <div class="modal-content">
         <div class="create-input-container">
           <button class="mdi mdi-plus create"></button>
-          <input class="create-input" type="text" placeholder="Create new project">
+          <input class="create-input" type="text" placeholder="Create new project" enterkeyhint="go">
           <button class="mdi mdi-check enter"></button>
         </div>
         <div class="project-modal-list-container">
           <div class="default">
             <div class="mdi mdi-drag-vertical drag-handle"></div>
-            <input disabled type="text" placeholder="Enter project name" value="default">
+            <input type="text" placeholder="Enter project name" value="default" disabled>
           </div>
           <ul class="project-modal-list"></ul>
         </div>
@@ -36,15 +36,15 @@
       </nav>
       <div class="modal-content">
         <div class="title-container">
-          <input class="title" type="text" placeholder="Write to do...">
+          <input class="title" type="text" placeholder="Write to do..." enterkeyhint="next">
           <div class="checkbox-container">
             <input class="checkbox" type="checkbox">
             <div class="mdi mdi-check-bold check-icon"></div>
           </div>
         </div>
-        <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..."></textarea>
+        <textarea class="description" rows="3" maxlength="120" placeholder="Write a meaningful description..." enterkeyhint="done"></textarea>
         <div class="project flex-horizontal-between">
-          <span>Projects</span>
+          <span>Project</span>
           <select class="project-select">
             <option value="default">default</option>
           </select>
@@ -77,18 +77,13 @@
           <h1>Keedo</h1>
         </header>
         <ul class="main disable-scrollbar">
-          <li tabindex="0" class="current">All</li>
+          <li tabindex="0" class="current all">All</li>
           <li class="section">
             <div class="heading content-wrap">
               <h2>Projects</h2>
               <button class="edit-projects icon flex-horizontal-center mdi mdi-pencil"></button>
             </div>
-            <ul>
-              <li tabindex="0" class="default">default</li>
-              <li tabindex="0">Project 1</li>
-              <li tabindex="0">Project 2</li>
-              <li tabindex="0">Project 3</li>
-            </ul>
+            <ul class="project-list"></ul>
           </li>
         </ul>
       </div>
