@@ -1,0 +1,79 @@
+.tutorial-panel {
+  --text-color: #e6e6e6;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  color: var(--text-color);
+  z-index: 1000;
+}
+
+.tutorial-next-button {
+  position: absolute;
+  font-size: 1.2rem;
+  bottom: 100px;
+  border: 2px solid var(--text-color);
+  padding: 12px 36px;
+  border-radius: 4px;
+}
+
+.tutorial-next-button:hover {
+  border-color: #cccccc;
+  color: #cccccc;
+}
+
+.tutorial-content {
+  position: absolute;
+  font-size: 1.2rem;
+  width: 80%;
+  text-align: center;
+  bottom: 50%;
+}
+
+.tutorial-content .title {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.tutorial-content .paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tutorial-circle::after {
+  --length: 200px;
+  --border-size: max(150vw, 150vh);
+  position: absolute;
+  width: var(--length);
+  height: var(--length);
+  top: calc(0px - calc(var(--length) / 2) - var(--border-size) + 50%);
+  left: calc(0px - calc(var(--length) / 2) - var(--border-size) + 50%);
+  border-radius: 100%;
+  border: var(--border-size) solid rgba(0, 0, 0, 0.8);
+  content: "";
+  cursor: default;
+}
+
+.tutorial-highlight {
+  position: fixed;
+  top: 20px;
+  left: 0px;
+  isolation: isolate;
+  z-index: 1000;
+}
+
+.tutorial-highlight::after {
+  --border-size: max(150vw, 150vh);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: calc(0px - var(--border-size));
+  left: calc(0px - var(--border-size));
+  border-radius: 10000px;
+  border: var(--border-size) solid rgba(0, 0, 0, 0.8);
+  content: "";
+}

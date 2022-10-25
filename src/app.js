@@ -2,6 +2,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'normalize.css/normalize.css'
 import './styles/reset.css';
 import './styles/styles.css';
+import './styles/tutorial.css';
 import getPrimaryNav from './scripts/getPrimaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
@@ -9,14 +10,53 @@ import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 import Project from './scripts/Project';
 import KeedoStorage from './scripts/KeedoStorage';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 
-const todos = KeedoStorage.loadTodos() || [];
+const todos = KeedoStorage.loadTodos() || [
+  new Todo({
+    title: 'Learn trigonometric functions',
+    project: 'Math',
+    priority: 'medium',
+  }),
+  new Todo({
+    title: 'Milk',
+    project: 'Groceries',
+    priority: 'high',
+  }),
+  new Todo({
+    title: 'Cereal',
+    project: 'Groceries',
+    priority: 'low',
+  }),
+  new Todo({
+    title: 'Implement binary sort',
+    project: 'Programming',
+    priority: 'low',
+  }),
+  new Todo({
+    title: 'Burger',
+    project: 'Groceries',
+    priority: 'medium',
+    dueDate: format(add(new Date(), {days: 1}), 'yyyy-MM-dd'),
+  }),
+  new Todo({
+    title: 'Learn Big-O notation',
+    project: 'Programming',
+    priority: 'low',
+    dueDate: format(add(new Date(), {days: 1}), 'yyyy-MM-dd'),
+  }),
+  new Todo({
+    title: 'Do some differential equations',
+    project: 'Math',
+    priority: 'low',
+    dueDate: format(add(new Date(), {days: 3}), 'yyyy-MM-dd'),
+  }),
+];
 const projects = KeedoStorage.loadProjects() ?? [
   new Project('default'),
-  new Project('project 1'),
-  new Project('project 2'),
-  new Project('project 3'),
+  new Project('Groceries'),
+  new Project('Programming'),
+  new Project('Math'),
 ];
 KeedoStorage.todos = todos;
 KeedoStorage.projects = projects;
@@ -25,6 +65,64 @@ const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
+
+
+(() => {
+  document.body.style.overflow = 'hidden';
+  
+  const tutorialPanel = Object.assign(document.createElement('div'), {
+    className: 'tutorial-panel flex-vertical-center',
+  });
+  const content = Object.assign(document.createElement('div'), {
+    className: 'tutorial-content',
+    innerHTML: `
+      <div class="title">Welcome to Keedo!</div>
+      <div class="paragraphs">
+        <p>Want to accomplish something big but you always procrastinate? Well, you're in the right place!</p>
+        <p>Keedo will help you divide your dreams into tasks so that you may achieve them.</p>
+        <p>Let us start by clicking the 'Next' button below!</p>
+      </div>
+    `,
+  });
+  const nextButton = Object.assign(document.createElement('button'), {
+    className: 'tutorial-next-button',
+    innerText: 'Next',
+  });
+
+  const panelFns = [
+    function() {
+      tutorialPanel.style.backgroundColor = 'transparent';
+      nextButton.style.right = '100px';
+    },
+  ];
+  
+  highlightCreateTodoBar();
+
+
+  let currentPanel = 0;
+  nextButton.addEventListener('click', () => {
+    panelFns[0]();
+  });
+  
+  //document.body.appendChild(tutorialPanel);
+
+  tutorialPanel.appendChild(content);
+  tutorialPanel.appendChild(nextButton);
+
+  function isUsingMobile() {
+    return window.innerWidth < 768;
+  }
+
+  function highlightMenuIcon() {
+    const burgerIcon = writeTodoBar.querySelector('.open.primary-nav-button');
+    burgerIcon.style.position = 'relative';
+    burgerIcon.classList.add('tutorial-circle');
+  }
+  
+  function highlightCreateTodoBar() {
+    writeTodoBar.classList.add('tutorial-highlight');
+  }
+})();
 
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');

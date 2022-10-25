@@ -61,6 +61,13 @@ button {
   align-items: center;
 }
 
+.flex-vertical-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .disable-scrollbar::-webkit-scrollbar {
   background: transparent; /* Chrome/Safari/Webkit */
   width: 0px;
