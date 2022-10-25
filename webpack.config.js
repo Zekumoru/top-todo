@@ -53,6 +53,6 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/template.html'),
     }),
-    new FaviconsWebpackPlugin(path.resolve(__dirname, 'src/logo.png')),
+    new FaviconsWebpackPlugin(path.resolve(__dirname, 'src/logo-fav.png')),
   ],
 };
