@@ -1,79 +1,101 @@
 .tutorial-panel {
-  --text-color: #e6e6e6;
   position: fixed;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
   top: 0;
   left: 0;
-  color: var(--text-color);
   z-index: 1000;
-}
-
-.tutorial-next-button {
-  position: absolute;
-  font-size: 1.2rem;
-  bottom: 100px;
-  border: 2px solid var(--text-color);
-  padding: 12px 36px;
-  border-radius: 4px;
-}
-
-.tutorial-next-button:hover {
-  border-color: #cccccc;
-  color: #cccccc;
+  overflow-y: auto;
 }
 
 .tutorial-content {
-  position: absolute;
+  min-height: 100vh;
   font-size: 1.2rem;
-  width: 80%;
-  text-align: center;
-  bottom: 50%;
+  padding: 120px 40px 80px;
+  margin: 0 auto;
 }
 
-.tutorial-content .title {
+.tutorial-content .grey-circle {
+  --size: 1rem;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 100%;
+  background-color: #505050;
+  display: inline-block;
+}
+
+.tutorial-content .header {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.tutorial-content .logo-icon {
+  --icon-size: 40px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background-size: var(--icon-size) var(--icon-size);
+}
+
+.tutorial-content .heading {
   font-weight: 700;
   font-size: 2rem;
+}
+
+.tutorial-content .sub-heading {
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+
+.tutorial-content .sub-sub-heading {
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+
+.tutorial-content p {
+  margin-bottom: 4px;
+}
+
+.tutorial-content section > :last-child,
+.tutorial-content p:last-of-type {
   margin-bottom: 20px;
 }
 
-.tutorial-content .paragraphs {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.tutorial-content img {
+  margin: 12px 0;
 }
 
-.tutorial-circle::after {
-  --length: 200px;
-  --border-size: max(150vw, 150vh);
-  position: absolute;
-  width: var(--length);
-  height: var(--length);
-  top: calc(0px - calc(var(--length) / 2) - var(--border-size) + 50%);
-  left: calc(0px - calc(var(--length) / 2) - var(--border-size) + 50%);
-  border-radius: 100%;
-  border: var(--border-size) solid rgba(0, 0, 0, 0.8);
-  content: "";
-  cursor: default;
+.tutorial-content .mono {
+  display: inline-block;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: rgba(60, 60, 60, 0.8);
+  padding: 2px  8px;
+  border-radius: 4px;
+  margin: 0px 2px;
 }
 
-.tutorial-highlight {
-  position: fixed;
-  top: 20px;
-  left: 0px;
-  isolation: isolate;
-  z-index: 1000;
+.tutorial-content .begin-button {
+  display: block;
+  font-weight: 600;
+  border: 2px solid;
+  padding: 12px 24px;
+  border-radius: 4px;
+  margin-left: auto;
+  margin-top: 40px;
 }
 
-.tutorial-highlight::after {
-  --border-size: max(150vw, 150vh);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: calc(0px - var(--border-size));
-  left: calc(0px - var(--border-size));
-  border-radius: 10000px;
-  border: var(--border-size) solid rgba(0, 0, 0, 0.8);
-  content: "";
+@media (hover: hover) {
+  .tutorial-content .begin-button:hover {
+    opacity: 0.9;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .tutorial-content {
+    max-width: 768px;
+  }
 }

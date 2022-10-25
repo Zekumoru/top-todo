@@ -49,6 +49,15 @@ button {
   font-size: 20px;
 }
 
+.logo-icon {
+  --icon-size: 32px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background-size: var(--icon-size) var(--icon-size);
+  background-image: url(../logo.png);
+  background-repeat: no-repeat;
+}
+
 .flex-horizontal-center {
   display: flex;
   justify-content: center;
@@ -176,15 +185,6 @@ button {
 
 .primary-nav h1 {
   font-size: 1.6rem;
-}
-
-.primary-nav .logo-icon {
-  --icon-size: 32px;
-  width: var(--icon-size);
-  height: var(--icon-size);
-  background-image: url(../logo.png);
-  background-size: var(--icon-size) var(--icon-size);
-  background-repeat: no-repeat;
 }
 
 .primary-nav h2 {
