@@ -66,64 +66,6 @@ const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
-
-(() => {
-  document.body.style.overflow = 'hidden';
-  
-  const tutorialPanel = Object.assign(document.createElement('div'), {
-    className: 'tutorial-panel flex-vertical-center',
-  });
-  const content = Object.assign(document.createElement('div'), {
-    className: 'tutorial-content',
-    innerHTML: `
-      <div class="title">Welcome to Keedo!</div>
-      <div class="paragraphs">
-        <p>Want to accomplish something big but you always procrastinate? Well, you're in the right place!</p>
-        <p>Keedo will help you divide your dreams into tasks so that you may achieve them.</p>
-        <p>Let us start by clicking the 'Next' button below!</p>
-      </div>
-    `,
-  });
-  const nextButton = Object.assign(document.createElement('button'), {
-    className: 'tutorial-next-button',
-    innerText: 'Next',
-  });
-
-  const panelFns = [
-    function() {
-      tutorialPanel.style.backgroundColor = 'transparent';
-      nextButton.style.right = '100px';
-    },
-  ];
-  
-  highlightCreateTodoBar();
-
-
-  let currentPanel = 0;
-  nextButton.addEventListener('click', () => {
-    panelFns[0]();
-  });
-  
-  //document.body.appendChild(tutorialPanel);
-
-  tutorialPanel.appendChild(content);
-  tutorialPanel.appendChild(nextButton);
-
-  function isUsingMobile() {
-    return window.innerWidth < 768;
-  }
-
-  function highlightMenuIcon() {
-    const burgerIcon = writeTodoBar.querySelector('.open.primary-nav-button');
-    burgerIcon.style.position = 'relative';
-    burgerIcon.classList.add('tutorial-circle');
-  }
-  
-  function highlightCreateTodoBar() {
-    writeTodoBar.classList.add('tutorial-highlight');
-  }
-})();
-
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');
   if (!popup) return;
