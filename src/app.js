@@ -11,53 +11,11 @@ import Todo from './scripts/Todo';
 import Project from './scripts/Project';
 import KeedoStorage from './scripts/KeedoStorage';
 import { add, format } from 'date-fns';
+import loadTutorial from './scripts/loadTutorial';
 
-const todos = KeedoStorage.loadTodos() || [
-  new Todo({
-    title: 'Learn trigonometric functions',
-    project: 'Math',
-    priority: 'medium',
-  }),
-  new Todo({
-    title: 'Milk',
-    project: 'Groceries',
-    priority: 'high',
-  }),
-  new Todo({
-    title: 'Cereal',
-    project: 'Groceries',
-    priority: 'low',
-  }),
-  new Todo({
-    title: 'Implement binary sort',
-    project: 'Programming',
-    priority: 'low',
-  }),
-  new Todo({
-    title: 'Burger',
-    project: 'Groceries',
-    priority: 'medium',
-    dueDate: format(add(new Date(), {days: 1}), 'yyyy-MM-dd'),
-  }),
-  new Todo({
-    title: 'Learn Big-O notation',
-    project: 'Programming',
-    priority: 'low',
-    dueDate: format(add(new Date(), {days: 1}), 'yyyy-MM-dd'),
-  }),
-  new Todo({
-    title: 'Do some differential equations',
-    project: 'Math',
-    priority: 'low',
-    dueDate: format(add(new Date(), {days: 3}), 'yyyy-MM-dd'),
-  }),
-];
-const projects = KeedoStorage.loadProjects() ?? [
-  new Project('default'),
-  new Project('Groceries'),
-  new Project('Programming'),
-  new Project('Math'),
-];
+const todos = KeedoStorage.loadTodos() || [];
+const projects = KeedoStorage.loadProjects() ?? [];
+
 KeedoStorage.todos = todos;
 KeedoStorage.projects = projects;
 
@@ -65,6 +23,8 @@ const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
+
+loadTutorial();
 
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');
