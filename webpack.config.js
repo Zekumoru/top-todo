@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -9,6 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
+    assetModuleFilename: '[name][ext]',
     clean: true,
   },
   optimization: {
@@ -39,6 +41,10 @@ module.exports = {
           'css-loader',
         ],
       },
+      {
+        test: /\.(png|jpg|jpeg|svg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
@@ -47,5 +53,6 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/template.html'),
     }),
+    new FaviconsWebpackPlugin(path.resolve(__dirname, 'src/logo.png')),
   ],
 };

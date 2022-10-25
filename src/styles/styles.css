@@ -172,7 +172,12 @@ button {
 }
 
 .primary-nav .logo-icon {
-  font-size: 28px;
+  --icon-size: 32px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background-image: url(../logo.png);
+  background-size: var(--icon-size) var(--icon-size);
+  background-repeat: no-repeat;
 }
 
 .primary-nav h2 {
