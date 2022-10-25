@@ -127,6 +127,10 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     <p>Try adding some by writing one above!</p>
   `;
 
+  if (primaryNav.isOpen()) {
+    primaryNav.close();
+  }
+
   if (tab === primaryNav.allTab) {
     todoRenderer.render(todos);
     return;

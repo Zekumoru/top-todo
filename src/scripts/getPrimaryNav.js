@@ -23,9 +23,17 @@ const closeEvent = new Event('closePrimaryNav', {
   cancelable: true,
 });
 
+primaryNav.selectTab = selectTab;
+primaryNav.open = open;
+primaryNav.close = close;
+
 primaryNav.allTab = primaryNav.querySelector('li.all');
 primaryNav.completedTab = primaryNav.querySelector('li.completed');
 primaryNav.dueTab = primaryNav.querySelector('li.due');
+
+primaryNav.isOpen = function() {
+  return (primaryNav.style.left === '0px');
+};
 
 primaryNav.getProjectListItems = function() {
   return projectList.children;
@@ -52,7 +60,36 @@ primaryNav.renderProjects = function(projects, selectProject) {
   });
 };
 
-primaryNav.selectTab = selectTab;
+primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
+  navItem.addEventListener('click', (e) => selectTab(navItem));
+  navItem.addEventListener('keyup', (e) => {
+    if (!(e.key === 'Enter' || e.key === ' ')) return;
+    selectTab(navItem);
+  });
+});
+
+openButton.addEventListener('click', (e) => {
+  open();
+});
+
+closeButton.addEventListener('click', (e) => {
+  close();
+});
+
+editProjectListButton.addEventListener('click', () => {
+  projectModal.show();
+});
+
+function open() {
+  primaryNav.style.left = '0px';
+  primaryNav.dispatchEvent(openEvent);
+}
+
+function close() {
+  primaryNav.style.left = '';
+  primaryNav.dispatchEvent(closeEvent);
+}
+
 
 function selectTab(tab) {
   const currentSelected = primaryNav.querySelector('li.current');
@@ -85,25 +122,3 @@ function createProjectListItem(project) {
 
   return projectListItem;
 }
-
-primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
-  navItem.addEventListener('click', (e) => selectTab(navItem));
-  navItem.addEventListener('keyup', (e) => {
-    if (!(e.key === 'Enter' || e.key === ' ')) return;
-    selectTab(navItem);
-  });
-});
-
-openButton.addEventListener('click', (e) => {
-  primaryNav.style.left = '0px';
-  primaryNav.dispatchEvent(openEvent);
-});
-
-closeButton.addEventListener('click', (e) => {
-  primaryNav.style.left = '';
-  primaryNav.dispatchEvent(closeEvent);
-});
-
-editProjectListButton.addEventListener('click', () => {
-  projectModal.show();
-});
