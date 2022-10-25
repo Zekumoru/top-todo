@@ -64,9 +64,21 @@ export default function () {
         <div class="caption">The projects editor</div>
       </section>
       <section>
+        <div class="sub-heading">Editing a project</div>
+        <p>Simply press on a project then go ahead and change its name.</p>
+        <p>Don't forget to press the confirm <span class="mdi mdi-check"></span> button or hit the <span class="mono">Enter</span> key to save your change!</p>
+        <img src="" alt="Editing a project">
+      </section>
+      <section>
         <div class="sub-heading">Sorting projects</div>
         <p>To change the hierarchy of your projects, simply drag the vertical handles <span class="mdi mdi-drag-vertical"></span> on the left and drop it to your desired new place.</p>
         <img src="${sortingProjectImg}" alt="Sorting a project">
+      </section>
+      <section>
+        <div class="sub-heading">Creating todos based on project</div>
+        <p>Need to add multiple todos on the same project?</p>
+        <p>Simply go to one of your project's tab and start writing todos from there!</p>
+        <img src="" alt="Multiple todos on same project">
       </section>
       <section>
         <div class="sub-heading">And that's all!</div>
