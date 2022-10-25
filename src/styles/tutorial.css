@@ -70,6 +70,10 @@
   margin: 12px 0;
 }
 
+.tutorial-content .caption {
+  font-size: 1rem;
+}
+
 .tutorial-content .mono {
   display: inline-block;
   font-family: 'Courier New', Courier, monospace;

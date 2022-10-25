@@ -29,6 +29,7 @@ export default function () {
         <p>The right arrow <span class="mdi mdi-arrow-right"></span> button will act the same as pressing the <span class="mono">Enter</span> key.</p>
         <p>The pencil <span class="mdi mdi-pencil"></span> button will open up the todo editor <span class="mono">Todo Modal</span> which will let you edit more details such as the description, priority, due date, etc.</p>
         <img src="${todoModalImg}" alt="The todo editor modal">
+        <div class="caption">The todo editor</div>
       </section>
       <section>
         <div class="sub-heading">Completing a todo</div>
@@ -60,6 +61,7 @@ export default function () {
         <img src="${projectListImg}" alt="List of projects">
         <p>To add, edit, or <strong>even sort(!)</strong> projects, press on the pencil <span class="mdi mdi-pencil"></span> button to open up the projects editor <span class="mono">Project Modal</span>.</p>
         <img src="${projectModalImg}" style="width: 40%;" alt="The projects editor">
+        <div class="caption">The projects editor</div>
       </section>
       <section>
         <div class="sub-heading">Sorting projects</div>
