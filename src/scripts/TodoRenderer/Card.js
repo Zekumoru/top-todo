@@ -68,7 +68,9 @@ export default class {
     }
 
     if (propertyForContent === 'description') {
-      this.content.innerText = 'No description.'
+      this.element.style = 'grid-template-areas: "checkbox title buttons" "checkbox title buttons";';
+      this.title.style.fontSize = '1.6rem';
+      this.content.style.display = 'none';
       return;
     }
 
