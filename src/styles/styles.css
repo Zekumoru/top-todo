@@ -471,14 +471,18 @@ main {
   padding-bottom: 60px;
 }
 
+.about-modal .paragraphs {
+  overflow-y: auto;
+}
+
 .about-modal a {
   color: var(--default-fg-color);
   text-decoration: underline;
   cursor: pointer;
 }
 
-.about-modal .paragraphs {
-  overflow-y: auto;
+.about-modal p {
+  margin-bottom: 12px;
 }
 
 /* PROJECTS */
