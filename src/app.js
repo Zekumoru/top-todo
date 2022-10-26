@@ -38,7 +38,7 @@ const { todos, projects } = (() => {
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
-const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
+const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));
 
@@ -219,6 +219,7 @@ main.addEventListener('uncheckedTodo', (e) => {
 
 main.addEventListener('editTodo', (e) => {
   const { todo, card } = e.detail;
+  todoModal.title = 'Editing todo';
   todoModal.show(todo, (editedTodo) => {
     todos.splice(todos.findIndex(t => t === todo), 1);
     todoRenderer.removeCard(card);
@@ -255,6 +256,7 @@ main.addEventListener('enterWriteTodoInput', (e) => {
 });
 
 main.addEventListener('editWriteTodoInput', (e) => {
+  todoModal.title = 'Creating todo';
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
     todos.push(todo); 
     todoRenderer.renderTodo(todo);

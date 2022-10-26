@@ -282,6 +282,7 @@ main {
 
 .write-todo-bar-input {
   flex: 1;
+  height: 100%;
   background-color: transparent;
   border: none;
   color: var(--default-fg-color);
@@ -327,7 +328,15 @@ main {
 .modal-top-nav {
   height: 60px;
   padding: 0 10px;
+  display: flex;
   flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  margin-right: auto;
 }
 
 .modal-top-nav button,
@@ -482,6 +491,7 @@ main {
 }
 
 .about-modal p {
+  font-size: 1.1rem;
   margin-bottom: 12px;
 }
 

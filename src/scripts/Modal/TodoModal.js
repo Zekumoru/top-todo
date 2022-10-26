@@ -14,8 +14,8 @@ export default class extends Modal {
   #dueDatePicker;
   #onConfirm;
 
-  constructor(element, projects) {
-    super(element);
+  constructor(element, title, projects) {
+    super(element, title);
     this.#projects = projects;
     this.#onConfirm = null;
     this.#checkBox = element.querySelector('.checkbox');

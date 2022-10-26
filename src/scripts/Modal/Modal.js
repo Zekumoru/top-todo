@@ -1,9 +1,20 @@
 export default class {
   element;
+  #titleElement;
 
-  constructor(element) {
+  constructor(element, title = '') {
     this.element = element;
+    this.#titleElement = element.querySelector('.modal-title');
+    if (title) this.#titleElement.innerText = title;
     this.#setBackButton();
+  }
+
+  get title() {
+    return this.#titleElement.innerText;
+  }
+
+  set title(value) {
+    this.#titleElement.innerText = value;
   }
 
   show() {
