@@ -54,15 +54,15 @@ export default function () {
       <section>
         <div class="sub-heading">Sidebar Menu</div>
         <p>If you're on mobile, click on the burger icon <span class="mdi mdi-menu"></span> to open up the sidebar menu.</p>
-        <img src="${sidebarMenuImg}" style="width: 40%;" alt="Sidebar menu">
+        <img src="${sidebarMenuImg}" class="tall" alt="Sidebar menu">
       </section>
       <section>
         <div class="sub-heading">Projects</div>
         <p>Projects are a way to organize your todos. They're akin to folders but just named <span class="mono">Project</span> instead.</p>
         <p>On the left (if you're using a computer) or when you open up the sidebar menu, you'll find the list of projects you have.</p>
-        <img src="${projectListImg}" alt="List of projects">
+        <img src="${projectListImg}" class="tall" alt="List of projects">
         <p>To add, edit, or <strong>even sort(!)</strong> projects, press on the pencil <span class="mdi mdi-pencil"></span> button to open up the projects editor <span class="mono">Project Modal</span>.</p>
-        <img src="${projectModalImg}" style="width: 40%;" alt="The projects editor">
+        <img src="${projectModalImg}" class="tall" alt="The projects editor">
         <div class="caption">The projects editor</div>
       </section>
       <section>
@@ -80,7 +80,7 @@ export default function () {
         <div class="sub-heading">Creating todos based on project</div>
         <p>Need to add multiple todos on the same project?</p>
         <p>Simply go to one of your project's tab and start writing todos from there!</p>
-        <img src="${multipleTodosSameProjectImg}" style="width: 90%;" alt="Multiple todos on same project">
+        <img src="${multipleTodosSameProjectImg}" alt="Multiple todos on same project">
       </section>
       <section>
         <div class="sub-heading">And that's all!</div>

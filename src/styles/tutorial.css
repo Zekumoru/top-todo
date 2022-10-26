@@ -66,8 +66,12 @@
 }
 
 .tutorial-content img {
-  width: 60%;
+  width: min(600px, 100%);
   margin: 12px 0;
+}
+
+.tutorial-content img.tall {
+  width: min(360px, 100%);
 }
 
 .tutorial-content .caption {
@@ -98,6 +102,7 @@
     opacity: 0.9;
   }
 }
+
 
 @media screen and (min-width: 768px) {
   .tutorial-content {
