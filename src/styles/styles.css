@@ -362,6 +362,7 @@ main .content-wrap {
 }
 
 .modal textarea {
+  height: 60px;
   resize: none;
 }
 
