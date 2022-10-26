@@ -35,7 +35,7 @@ export default {
       new Todo({
         title: 'Learn about Single Responsibility',
         description: 'What does it mean and what are the benefits of adhering to that principle?',
-        project: 'programming',
+        project: 'Programming',
         priority: 'medium',
         dueDate: format(add(new Date(), { days: 2 }), 'yyyy-MM-dd'),
       }),
