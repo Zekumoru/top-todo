@@ -14,7 +14,9 @@ import { add, format } from 'date-fns';
 import loadTutorial from './scripts/loadTutorial';
 
 const todos = KeedoStorage.loadTodos() || [];
-const projects = KeedoStorage.loadProjects() ?? [];
+const projects = KeedoStorage.loadProjects() ?? [
+  new Project('default'),
+];
 
 KeedoStorage.todos = todos;
 KeedoStorage.projects = projects;
