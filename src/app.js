@@ -13,13 +13,27 @@ import KeedoStorage from './scripts/KeedoStorage';
 import { add, format } from 'date-fns';
 import loadTutorial from './scripts/loadTutorial';
 
-const todos = KeedoStorage.loadTodos() || [];
-const projects = KeedoStorage.loadProjects() ?? [
-  new Project('default'),
-];
+const { todos, projects } = (() => {
+  let todos = KeedoStorage.loadTodos();
+  let projects = KeedoStorage.loadProjects();
+  
+  if (todos === undefined || projects === undefined) {
+    ({ todos, projects } = KeedoStorage.populate());
+    KeedoStorage.todos = todos;
+    KeedoStorage.projects = projects;
+    KeedoStorage.saveTodos();
+    KeedoStorage.saveProjects();
+  }
 
-KeedoStorage.todos = todos;
-KeedoStorage.projects = projects;
+  KeedoStorage.todos = todos;
+  KeedoStorage.projects = projects;
+
+  return {
+    todos,
+    projects,
+  };
+})();
+
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);

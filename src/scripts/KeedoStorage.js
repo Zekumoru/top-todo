@@ -1,3 +1,7 @@
+import { add, format } from "date-fns";
+import Project from "./Project";
+import Todo from "./Todo";
+
 const TODOS_KEY = 'todos';
 const PROJECTS_KEY = 'projects';
 const TUTORIAL_KEY = 'tutorial-shown';
@@ -25,5 +29,52 @@ export default {
   },
   set tutorialShown(value) {
     return localStorage.setItem(TUTORIAL_KEY, !!value);
+  },
+  populate: function() {
+    const todos = [
+      new Todo({
+        title: 'Learn about Single Responsibility',
+        description: 'What does it mean and what are the benefits of adhering to that principle?',
+        project: 'programming',
+        priority: 'medium',
+        dueDate: format(add(new Date(), { days: 2 }), 'yyyy-MM-dd'),
+      }),
+      new Todo({
+        title: 'Apple',
+        project: 'Groceries',
+      }),
+      new Todo({
+        title: 'Banana',
+        project: 'Groceries',
+      }),
+      new Todo({
+        title: 'Carrot',
+        project: 'Groceries',
+        priority: 'low',
+      }),
+      new Todo({
+        title: 'Dragon fruit',
+        project: 'Groceries',
+        priority: 'medium',
+      }),
+      new Todo({
+        title: 'Tap on me to edit my details',
+        description: 'You can set any of my options to whatever you like!',
+        project: 'default',
+        priority: 'high',
+      }),
+    ];
+
+    const projects = [
+      new Project('default'),
+      new Project('Programming'),
+      new Project('Groceries'),
+      new Project('Keedo'),
+    ];
+
+    return {
+      todos,
+      projects,
+    };
   },
 };
