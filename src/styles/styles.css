@@ -44,6 +44,10 @@ button {
   cursor: pointer;
 }
 
+.text-input {
+  min-width: 0;
+}
+
 .buttons {
   display: flex;
   align-items: center;
