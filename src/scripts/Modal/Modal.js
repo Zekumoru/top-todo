@@ -8,6 +8,7 @@ export default class {
 
   show() {
     this.element.style.display = 'flex';
+    document.body.style.overflowY = 'hidden';
     
     const showModalEvent = new Event('showModal', {
       bubbles: true,
@@ -18,6 +19,7 @@ export default class {
 
   hide() {
     this.element.style.display = 'none';
+    document.body.style.overflowY = '';
     
     const hideModalEvent = new Event('hideModal', {
       bubbles: true,
