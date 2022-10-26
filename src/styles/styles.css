@@ -368,7 +368,10 @@ main {
   gap: 2px;
 }
 
-.modal input[type=text],
+/* .text-input rather than input[type=text] since 
+    after webpack production build, browsers cannot 
+    seem to use this selector */
+.modal .text-input,
 .modal textarea {
   width: 100%;
   background-color: transparent;
@@ -377,7 +380,7 @@ main {
   font-size: 1.2rem;
 }
 
-.modal input[type=text]:focus,
+.modal .text-input:focus,
 .modal textarea:focus {
   outline: none;
 }
