@@ -451,6 +451,18 @@ main .content-wrap {
   display: none;
 }
 
+/* ABOUT MODAL */
+
+.about-modal .modal-content {
+  padding-bottom: 60px;
+}
+
+.about-modal a {
+  color: var(--default-fg-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* PROJECTS */
 
 .project-select {
@@ -677,6 +689,10 @@ main .content-wrap {
     display: block;
   }
 
+  .about-modal a:hover {
+    color: var(--hover-fg-color);
+  }
+
   .todo-item.hoverable:hover {
     background-color: var(--card-bg-hover-color);
   }
@@ -741,5 +757,11 @@ main .content-wrap {
 
   .project-modal-list-container {
     max-height: 400px;
+  }
+
+  .about-modal .modal-content {
+    max-height: 400px;
+    padding-bottom: 20px;
+    overflow-y: auto;
   }
 }

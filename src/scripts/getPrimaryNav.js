@@ -30,6 +30,7 @@ primaryNav.close = close;
 primaryNav.allTab = primaryNav.querySelector('li.all');
 primaryNav.completedTab = primaryNav.querySelector('li.completed');
 primaryNav.dueTab = primaryNav.querySelector('li.due');
+primaryNav.aboutTab = primaryNav.querySelector('li.about');
 
 primaryNav.isOpen = function() {
   return (primaryNav.style.left === '0px');
@@ -93,11 +94,6 @@ function close() {
 
 function selectTab(tab) {
   const currentSelected = primaryNav.querySelector('li.current');
-  if (tab === currentSelected) return;
-
-  if (currentSelected) currentSelected.classList.remove('current');
-  tab.classList.add('current');
-
   const selectTabEvent = new CustomEvent('selectPrimaryNavTab', {
     bubbles: true,
     cancelable: true,
@@ -106,6 +102,17 @@ function selectTab(tab) {
       tab,
     },
   });
+
+  if (tab.dataset.mode === 'click') {
+    tab.dispatchEvent(selectTabEvent);
+    return;
+  }
+
+  if (tab === currentSelected) return;
+
+  if (currentSelected) currentSelected.classList.remove('current');
+  tab.classList.add('current');
+
   tab.dispatchEvent(selectTabEvent);
 }
 

@@ -12,6 +12,7 @@ import Project from './scripts/Project';
 import KeedoStorage from './scripts/KeedoStorage';
 import { add, format } from 'date-fns';
 import loadTutorial from './scripts/loadTutorial';
+import AboutModal from './scripts/Modal/AboutModal';
 
 const { todos, projects } = (() => {
   let todos = KeedoStorage.loadTodos();
@@ -39,6 +40,7 @@ const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
+const aboutModal = new AboutModal(document.querySelector('.about-modal'));
 
 if (!KeedoStorage.tutorialShown) {
   loadTutorial(() => {
@@ -141,6 +143,12 @@ document.addEventListener('closePrimaryNav', () => {
 
 document.addEventListener('selectPrimaryNavTab', (e) => {
   const { tab, tabName } = e.detail;
+
+  if (tab === primaryNav.aboutTab) {
+    aboutModal.show();
+    return;
+  }
+
   writeTodoBar.enable();
   todoRenderer.emptyMessage.innerHTML = `
     <p>Uh oh! You do not have any todos yet!</p>
