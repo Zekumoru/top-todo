@@ -561,6 +561,11 @@ main {
 .todos .empty-message {
   text-align: center;
   color: var(--empty-message-text-color);
+  padding: 0 16px;
+}
+
+.todos .empty-message p:not(:last-of-type) {
+  margin-bottom: 8px;
 }
 
 .todos:has(.empty-message) {
