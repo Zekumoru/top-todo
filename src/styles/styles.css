@@ -379,6 +379,14 @@ main .content-wrap {
 
 /* PROJECT MODAL */
 
+.project-modal {
+  overflow: hidden;
+}
+
+.project-modal .modal-content {
+  height: calc(100% - 50px);
+}
+
 .project-modal input.create-input {
   font-size: 1.2rem;
 }
@@ -393,6 +401,7 @@ main .content-wrap {
 }
 
 .project-modal-list-container {
+  flex: 1;
   overflow: auto;
 }
 
