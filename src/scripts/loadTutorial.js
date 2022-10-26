@@ -6,7 +6,9 @@ import editingTodoImg from '../images/editing-todo.png';
 import sidebarMenuImg from '../images/sidebar-menu.png';
 import projectListImg from '../images/project-list.png';
 import projectModalImg from '../images/project-modal.png';
+import editingProjectImg from '../images/editing-project.png';
 import sortingProjectImg from '../images/sorting-project.png';
+import multipleTodosSameProjectImg from '../images/multiple-todos-same-project.png';
 
 export default function () {
   const tutorial = Object.assign(document.createElement('div'), {
@@ -67,7 +69,7 @@ export default function () {
         <div class="sub-heading">Editing a project</div>
         <p>Simply press on a project then go ahead and change its name.</p>
         <p>Don't forget to press the confirm <span class="mdi mdi-check"></span> button or hit the <span class="mono">Enter</span> key to save your change!</p>
-        <img src="" alt="Editing a project">
+        <img src="${editingProjectImg}" alt="Editing a project">
       </section>
       <section>
         <div class="sub-heading">Sorting projects</div>
@@ -78,7 +80,7 @@ export default function () {
         <div class="sub-heading">Creating todos based on project</div>
         <p>Need to add multiple todos on the same project?</p>
         <p>Simply go to one of your project's tab and start writing todos from there!</p>
-        <img src="" alt="Multiple todos on same project">
+        <img src="${multipleTodosSameProjectImg}" style="width: 90%;" alt="Multiple todos on same project">
       </section>
       <section>
         <div class="sub-heading">And that's all!</div>
