@@ -432,7 +432,7 @@ main {
 }
 
 .project-modal-list {
-  padding-bottom: 20px;
+  padding-bottom: 60px;
 }
 
 .project-modal .default,
@@ -802,6 +802,10 @@ main {
 
   .project-modal-list-container {
     max-height: 400px;
+  }
+
+  .project-modal-list {
+    padding-bottom: 0px;
   }
 
   .about-modal .modal-content {
