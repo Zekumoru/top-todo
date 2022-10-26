@@ -90,5 +90,13 @@ export default function () {
       <button class="begin-button">Let's begin!</button>
     </div>
   `;
+
+  const beginButton = tutorial.querySelector('.begin-button');
+  beginButton.addEventListener('click', () => {
+    tutorial.remove();
+    document.body.style.overflow = '';
+  });
+
+  document.body.style.overflow = 'hidden';
   document.body.appendChild(tutorial);
 }
