@@ -7,6 +7,11 @@ const PROJECTS_KEY = 'projects';
 const TUTORIAL_KEY = 'tutorial-shown';
 
 export default {
+  clear() {
+    localStorage.removeItem(TODOS_KEY);
+    localStorage.removeItem(PROJECTS_KEY);
+    localStorage.removeItem(TUTORIAL_KEY);
+  },
   loadTodos: function() {
     return this.loadJSON(TODOS_KEY);
   },
