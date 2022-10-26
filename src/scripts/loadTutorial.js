@@ -10,7 +10,7 @@ import editingProjectImg from '../images/editing-project.png';
 import sortingProjectImg from '../images/sorting-project.png';
 import multipleTodosSameProjectImg from '../images/multiple-todos-same-project.png';
 
-export default function () {
+export default function (fnBeginClick) {
   const tutorial = Object.assign(document.createElement('div'), {
     className: 'tutorial-panel',
   });
@@ -95,6 +95,7 @@ export default function () {
   beginButton.addEventListener('click', () => {
     tutorial.remove();
     document.body.style.overflow = '';
+    if (typeof fnBeginClick === 'function') fnBeginClick();
   });
 
   document.body.style.overflow = 'hidden';

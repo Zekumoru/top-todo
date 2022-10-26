@@ -26,7 +26,11 @@ const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), projects);
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
 
-loadTutorial();
+if (!KeedoStorage.tutorialShown) {
+  loadTutorial(() => {
+    KeedoStorage.tutorialShown = true;
+  });
+}
 
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');
