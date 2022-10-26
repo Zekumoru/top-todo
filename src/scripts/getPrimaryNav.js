@@ -29,7 +29,7 @@ primaryNav.close = close;
 
 primaryNav.allTab = primaryNav.querySelector('li.all');
 primaryNav.completedTab = primaryNav.querySelector('li.completed');
-primaryNav.dueTab = primaryNav.querySelector('li.due');
+primaryNav.overdueTab = primaryNav.querySelector('li.overdue');
 primaryNav.aboutTab = primaryNav.querySelector('li.about');
 
 primaryNav.isOpen = function() {

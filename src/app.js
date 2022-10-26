@@ -180,7 +180,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     return;
   }
 
-  if (tab === primaryNav.dueTab) {
+  if (tab === primaryNav.overdueTab) {
     writeTodoBar.disable();
     todoRenderer.emptyMessage.innerHTML = `
       <p>Congratulations! Keep it up!</p>
