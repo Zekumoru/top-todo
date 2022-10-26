@@ -477,6 +477,10 @@ main {
   cursor: pointer;
 }
 
+.about-modal .paragraphs {
+  overflow-y: auto;
+}
+
 /* PROJECTS */
 
 .project-select {
@@ -782,6 +786,5 @@ main {
     flex-basis: auto;
     height: 400px;
     padding-bottom: 20px;
-    overflow-y: auto;
   }
 }
