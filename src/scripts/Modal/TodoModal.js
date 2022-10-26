@@ -5,6 +5,7 @@ import Todo from "../Todo";
 import Selector from '../Selector';
 
 export default class extends Modal {
+  confirmButton;
   #projects;
   #checkBox;
   #titleInput;
@@ -27,6 +28,7 @@ export default class extends Modal {
       options: projects,
       property: 'name',
     });
+    this.confirmButton = this.element.querySelector('button.confirm');
 
     this.#setConfirmButton();
     this.#setTitleInputEvent();
@@ -61,8 +63,7 @@ export default class extends Modal {
   }
 
   #setConfirmButton() {
-    const confirmButton = this.element.querySelector('button.confirm');
-    confirmButton.addEventListener('click', () => {
+    this.confirmButton.addEventListener('click', () => {
       if (!this.#titleInput.value) {
         this.hide();
         return;

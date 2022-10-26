@@ -390,6 +390,20 @@ main {
   resize: none;
 }
 
+.modal-content .text-button {
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 8px 32px;
+  background-color: #4234A6;
+  border-radius: 4px;
+  font-size: 1.2rem;
+}
+
+.modal-content .text-button.cancel {
+  background-color: transparent;
+}
+
 /* TODO MODAL */
 
 .todo-modal .title-container {
@@ -400,6 +414,11 @@ main {
 
 .todo-modal input.title {
   font-size: 1.4rem;
+}
+
+.todo-modal .buttons {
+  margin-top: 24px;  
+  align-self: flex-end;
 }
 
 /* PROJECT MODAL */
@@ -727,6 +746,16 @@ main {
   .modal-top-nav button:hover,
   .modal-content button:hover {
     background-color: var(--hover-bg-color);
+  }
+
+  .modal-content .text-button:hover {
+    background-color: transparent;
+    color: var(--hover-fg-color);
+  }
+
+  .modal-content .text-button.confirm:hover {
+    background-color: #392d94;
+    color: inherit;
   }
 
   .project-modal-list li:hover button.edit {

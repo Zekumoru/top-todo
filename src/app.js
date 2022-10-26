@@ -220,6 +220,7 @@ main.addEventListener('uncheckedTodo', (e) => {
 main.addEventListener('editTodo', (e) => {
   const { todo, card } = e.detail;
   todoModal.title = 'Editing todo';
+  todoModal.confirmButton.innerText = 'Save';
   todoModal.show(todo, (editedTodo) => {
     todos.splice(todos.findIndex(t => t === todo), 1);
     todoRenderer.removeCard(card);
@@ -257,6 +258,7 @@ main.addEventListener('enterWriteTodoInput', (e) => {
 
 main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.title = 'Creating todo';
+  todoModal.confirmButton.innerText = 'Create';
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
     todos.push(todo); 
     todoRenderer.renderTodo(todo);
