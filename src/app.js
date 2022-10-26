@@ -82,6 +82,12 @@ document.addEventListener('hideModal', () => {
   primaryNav.inert = false;
 });
 
+document.addEventListener('eraseAllData', () => {
+  KeedoStorage.clear();
+  todoRenderer.render(todos);
+  primaryNav.renderProjects(projects);
+});
+
 document.addEventListener('createProject', (e) => {
   const { project } = e.detail;
   projects.push(project);

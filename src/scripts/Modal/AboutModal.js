@@ -4,6 +4,8 @@ import Modal from "./Modal";
 export default class extends Modal {
   #content;
   #showTutorialButton;
+  #eraseAllDataButton;
+  #eraseStatusText;
 
   constructor(element) {
     super(element);
@@ -27,22 +29,43 @@ export default class extends Modal {
         <p>Thank you and I hope you like my own version of the todo-list project! :D</p>
         <p><span style="font-weight: 600;">Fun fact:</span> I often use Google Keep for making my notes hence the look of this website is heavily influenced by it. In fact, Keedo derives from 'Kee' from 'Keep' and 'do' from 'to do'.</p>
         <p><span style="font-weight: 600;">Credits:</span> Keedo's logo is photoshopped by me using Google Keep's icon and images from Freepik. The hand icons used in the tutorial came from Freepik also.</p>
+        <p><a class="erase-all-data" style="color: red;">Erase all data</a><span class="erase-status" style="display: none;"> Erased successfully</span></p>
       </div>
     `;
-    this.#showTutorialButton = this.#content.querySelector('.show-tutorial');
-    this.#showTutorialButton.addEventListener('click', this.#onShowTutorialButtonClick);
+    this.#setButtonsEvent();
     this.element.appendChild(this.#content);
     super.show();
   }
 
   hide() {
     this.#content.innerHTML = '';
-    this.#showTutorialButton.removeEventListener('click', this.#onShowTutorialButtonClick);
-    this.#showTutorialButton = null;
+    this.#removeButtonsEvent();
     super.hide();
   }
 
-  #onShowTutorialButtonClick() {
-    loadTutorial();
+  #setButtonsEvent() {
+    this.#showTutorialButton = this.#content.querySelector('.show-tutorial');
+    this.#showTutorialButton.addEventListener('click', () => {
+      loadTutorial();
+    });
+    
+    this.#eraseStatusText = this.#content.querySelector('.erase-status');
+    this.#eraseAllDataButton = this.#content.querySelector('.erase-all-data');
+    this.#eraseAllDataButton.addEventListener('click', () => {
+      if (!this.#eraseStatusText.style.display) return;
+
+      const eraseAllDataEvent = new Event('eraseAllData', {
+        bubbles: true,
+        cancelable: true,
+      });
+      this.#eraseAllDataButton.dispatchEvent(eraseAllDataEvent);
+      this.#eraseStatusText.style.display = '';
+    });
+  }
+
+  #removeButtonsEvent() {
+    this.#showTutorialButton = null;
+    this.#eraseAllDataButton = null;
+    this.#eraseStatusText = null;
   }
 };

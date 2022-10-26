@@ -10,7 +10,12 @@ export default {
   clear() {
     localStorage.removeItem(TODOS_KEY);
     localStorage.removeItem(PROJECTS_KEY);
-    localStorage.removeItem(TUTORIAL_KEY);
+
+    this.todos.length = 0
+    this.projects.length = 0;
+    this.projects.push(new Project('default'));
+    this.saveTodos();
+    this.saveProjects();
   },
   loadTodos: function() {
     return this.loadJSON(TODOS_KEY);
