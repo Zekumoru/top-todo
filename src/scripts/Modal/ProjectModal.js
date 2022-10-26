@@ -210,6 +210,7 @@ export default class extends Modal {
 
   #createNewProject() {
     if (!this.#createInput.value) return;
+    this.#createInput.value = this.#createInput.value.trim();
     if (this.#projects.some((p) => p.name === this.#createInput.value)) return;
     const project = new Project(this.#createInput.value);
 
