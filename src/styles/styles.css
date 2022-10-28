@@ -19,7 +19,7 @@
 }
 
 * {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html {
@@ -86,10 +86,10 @@ button {
   background: transparent; /* Chrome/Safari/Webkit */
   width: 0px;
 }
-    
+
 .disable-scrollbar {
   scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
 }
 
 /* CHECKBOX */
@@ -349,8 +349,8 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--size)  ;
-  height: var(--size) ;
+  width: var(--size);
+  height: var(--size);
   font-size: 1.5rem;
   border-radius: 100%;
   flex-shrink: 0;
@@ -399,7 +399,7 @@ main {
   width: auto;
   height: auto;
   padding: 8px 32px;
-  background-color: #4234A6;
+  background-color: #4234a6;
   border-radius: 4px;
   font-size: 1.2rem;
 }
@@ -421,7 +421,7 @@ main {
 }
 
 .todo-modal .buttons {
-  margin-top: 24px;  
+  margin-top: 24px;
   align-self: flex-end;
 }
 
@@ -629,7 +629,7 @@ main {
 .todo-item {
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-areas: 
+  grid-template-areas:
     "checkbox title buttons"
     "checkbox content buttons";
   background-color: var(--card-bg-color);
@@ -795,7 +795,7 @@ main {
   .primary-nav-container {
     background-color: inherit;
   }
-  
+
   .primary-header .write-todo-bar {
     max-width: 600px;
     margin: 0 auto;

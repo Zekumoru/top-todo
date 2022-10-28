@@ -1,6 +1,9 @@
 # Ignore JS files for Eslint to format
 *.js
 
+# Ignore HTML files
+*.html
+
 # Ignore artifacts
 build
 

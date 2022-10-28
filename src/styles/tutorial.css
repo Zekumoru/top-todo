@@ -80,9 +80,9 @@
 
 .tutorial-content .mono {
   display: inline-block;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   background-color: rgba(60, 60, 60, 0.8);
-  padding: 2px  8px;
+  padding: 2px 8px;
   border-radius: 4px;
   margin: 0px 2px;
 }
@@ -102,7 +102,6 @@
     opacity: 0.9;
   }
 }
-
 
 @media screen and (min-width: 768px) {
   .tutorial-content {
