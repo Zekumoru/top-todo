@@ -1,23 +1,22 @@
-import '@mdi/font/css/materialdesignicons.css'
-import 'normalize.css/normalize.css'
+import '@mdi/font/css/materialdesignicons.css';
+import 'normalize.css/normalize.css';
 import './styles/reset.css';
 import './styles/styles.css';
 import './styles/tutorial.css';
+import { format } from 'date-fns';
 import getPrimaryNav from './scripts/getPrimaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
 import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
-import Project from './scripts/Project';
 import KeedoStorage from './scripts/KeedoStorage';
-import { add, format } from 'date-fns';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 
 const { todos, projects } = (() => {
   let todos = KeedoStorage.loadTodos();
   let projects = KeedoStorage.loadProjects();
-  
+
   if (todos === undefined || projects === undefined) {
     ({ todos, projects } = KeedoStorage.populate());
     KeedoStorage.todos = todos;
@@ -34,7 +33,6 @@ const { todos, projects } = (() => {
     projects,
   };
 })();
-
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
@@ -57,7 +55,7 @@ document.addEventListener('click', (e) => {
     if (parent === popup) return;
     parent = parent.parentElement;
   }
-  
+
   popup.close(e.target);
 }, true);
 
@@ -122,7 +120,7 @@ document.addEventListener('sortProject', (e) => {
 document.addEventListener('deleteProject', (e) => {
   const { project } = e.detail;
   const index = projects.findIndex((p) => p === project);
-  
+
   projects.splice(index, 1);
   const selectedTab = primaryNav.getProjectListItems()[index];
   if (selectedTab.classList.contains('current')) {
@@ -178,9 +176,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     `;
 
     todoRenderer.render(todos, {
-      filter: (todo) => {
-        return todo.checked;
-      },
+      filter: (todo) => todo.checked,
       appendMode: true,
     });
     return;
@@ -195,9 +191,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
 
     const today = format(new Date(), 'yyyy-MM-dd');
     todoRenderer.render(todos, {
-      filter: (todo) => {
-        return !todo.checked && today > todo.dueDate;
-      },
+      filter: (todo) => !todo.checked && today > todo.dueDate,
       appendMode: true,
     });
     return;
@@ -228,7 +222,7 @@ main.addEventListener('editTodo', (e) => {
   todoModal.title = 'Editing todo';
   todoModal.confirmButton.innerText = 'Save';
   todoModal.show(todo, (editedTodo) => {
-    todos.splice(todos.findIndex(t => t === todo), 1);
+    todos.splice(todos.findIndex((t) => t === todo), 1);
     todoRenderer.removeCard(card);
     todos.push(editedTodo);
     todoRenderer.renderTodo(editedTodo);
@@ -238,7 +232,7 @@ main.addEventListener('editTodo', (e) => {
 
 main.addEventListener('deleteTodo', (e) => {
   const { todo, card } = e.detail;
-  const indexToRemove = todos.findIndex(t => t === todo);
+  const indexToRemove = todos.findIndex((t) => t === todo);
   todos.splice(indexToRemove, 1);
   todoRenderer.removeCard(card);
   KeedoStorage.saveTodos();
@@ -266,7 +260,7 @@ main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.title = 'Creating todo';
   todoModal.confirmButton.innerText = 'Create';
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
-    todos.push(todo); 
+    todos.push(todo);
     todoRenderer.renderTodo(todo);
     KeedoStorage.saveTodos();
   });
