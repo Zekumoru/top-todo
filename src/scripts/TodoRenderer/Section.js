@@ -1,4 +1,4 @@
-import { format, isToday, isTomorrow } from "date-fns";
+import { format, isToday, isTomorrow } from 'date-fns';
 
 export default class {
   #title;
@@ -36,4 +36,4 @@ export default class {
 
     this.#title.innerText = title;
   }
-};
+}

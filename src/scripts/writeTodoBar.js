@@ -5,10 +5,10 @@ const input = writeTodoBar.querySelector('.write-todo-bar-input');
 const buttons = writeTodoBar.querySelector('.buttons');
 const enterButton = buttons.querySelector('.enter');
 const editButton = buttons.querySelector('.edit');
-let defaultPlaceholder = input.placeholder;
+const defaultPlaceholder = input.placeholder;
 let disabled = false;
 
-writeTodoBar.enable = function() {
+writeTodoBar.enable = function () {
   input.disabled = false;
   input.placeholder = defaultPlaceholder;
   enterButton.disabled = false;
@@ -16,7 +16,7 @@ writeTodoBar.enable = function() {
   disabled = false;
 };
 
-writeTodoBar.disable = function() {
+writeTodoBar.disable = function () {
   input.disabled = true;
   input.placeholder = 'Cannot write to do here!';
   enterButton.disabled = true;
@@ -50,12 +50,12 @@ input.addEventListener('keyup', (e) => {
   buttons.style.display = 'flex';
 });
 
-enterButton.addEventListener('click', (e) => {
+enterButton.addEventListener('click', () => {
   if (disabled) return;
   enterInput(input.value);
 });
 
-editButton.addEventListener('click', (e) => {
+editButton.addEventListener('click', () => {
   if (disabled) return;
 
   const editEvent = new CustomEvent('editWriteTodoInput', { bubbles: true, cancelable: true, detail: input.value });

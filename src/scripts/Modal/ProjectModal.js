@@ -54,7 +54,7 @@ export default class extends Modal {
 
     const onInputEnter = () => {
       input.value = input.value.trim();
-      
+
       if (!input.value) {
         input.value = project.name;
         return;
@@ -111,7 +111,7 @@ export default class extends Modal {
       if (input.value !== project.name) return;
       onInputBlur();
     });
-    
+
     deleteButton.addEventListener('click', () => {
       const deleteProjectEvent = new CustomEvent('deleteProject', {
         bubbles: true,
@@ -144,7 +144,7 @@ export default class extends Modal {
     Sortable.create(this.#list, {
       animation: 150,
       handle: '.drag-handle',
-      onSort: ({ item, newIndex, oldIndex}) => {
+      onSort: ({ item, newIndex, oldIndex }) => {
         newIndex++; // increment these both by 1 since
         oldIndex++; // the default project isn't in count
 
@@ -199,7 +199,7 @@ export default class extends Modal {
         this.#resetCreateBar();
         return;
       }
-      
+
       this.#createInput.focus();
     });
   }
@@ -235,4 +235,4 @@ export default class extends Modal {
   #emptyList() {
     this.#list.innerHTML = '';
   }
-};
+}

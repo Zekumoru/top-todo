@@ -2,7 +2,7 @@ export default class {
   #selectElement;
   #property;
 
-  constructor(selectElement, { options = [], property = '', value = '' }) {
+  constructor(selectElement, { options = [], property = '' }) {
     this.#selectElement = selectElement;
     this.#property = property;
     this.renderOptions(options);
@@ -42,4 +42,4 @@ export default class {
     optionElement.innerText = option;
     return optionElement;
   }
-};
+}

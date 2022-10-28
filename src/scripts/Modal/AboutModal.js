@@ -1,5 +1,5 @@
-import loadTutorial from "../loadTutorial";
-import Modal from "./Modal";
+import loadTutorial from '../loadTutorial';
+import Modal from './Modal';
 
 export default class extends Modal {
   #content;
@@ -48,7 +48,7 @@ export default class extends Modal {
     this.#showTutorialButton.addEventListener('click', () => {
       loadTutorial();
     });
-    
+
     this.#eraseStatusText = this.#content.querySelector('.erase-status');
     this.#eraseAllDataButton = this.#content.querySelector('.erase-all-data');
     this.#eraseAllDataButton.addEventListener('click', () => {
@@ -68,4 +68,4 @@ export default class extends Modal {
     this.#eraseAllDataButton = null;
     this.#eraseStatusText = null;
   }
-};
+}

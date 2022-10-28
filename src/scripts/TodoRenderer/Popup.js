@@ -21,7 +21,7 @@ export default class {
     const popup = document.createElement('div');
     popup.className = 'pop-up';
     popup.innerHTML = innerHTML;
-    popup.close = function(clickedOn) {
+    popup.close = function (clickedOn) {
       popup.remove();
       if (typeof fnOnClosed === 'function') fnOnClosed(clickedOn);
     };
@@ -29,4 +29,4 @@ export default class {
     parentElement.appendChild(popup);
     return popup;
   }
-};
+}

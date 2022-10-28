@@ -1,7 +1,7 @@
 import DatePicker from '../DatePicker';
-import Modal from "./Modal";
-import RadioList from "../RadioList";
-import Todo from "../Todo";
+import Modal from './Modal';
+import RadioList from '../RadioList';
+import Todo from '../Todo';
 import Selector from '../Selector';
 
 export default class extends Modal {
@@ -35,7 +35,9 @@ export default class extends Modal {
     this.#setDescriptionInputEvent();
   }
 
-  show({ title, description, project, priority, dueDate, checked }, fnOnConfirm) {
+  show({
+    title, description, project, priority, dueDate, checked,
+  }, fnOnConfirm) {
     this.#checkBox.checked = checked;
     this.#titleInput.value = title ?? '';
     this.#descriptionInput.value = description ?? '';
@@ -77,7 +79,7 @@ export default class extends Modal {
         dueDate: this.#dueDatePicker.value,
         checked: this.#checkBox.checked,
       });
-    
+
       this.hide();
       if (typeof this.#onConfirm === 'function') {
         this.#onConfirm(todo);
@@ -85,22 +87,20 @@ export default class extends Modal {
       }
     });
   }
-  
+
   #setTitleInputEvent() {
     this.#titleInput.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') {
         this.#descriptionInput.focus();
-        return;
       }
     });
   }
 
   #setDescriptionInputEvent() {
     this.#descriptionInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { 
+      if (e.key === 'Enter') {
         this.#descriptionInput.blur();
-        return;
       }
     });
   }
-};
+}

@@ -1,4 +1,4 @@
-import { compareAsc, format } from "date-fns";
+import { compareAsc, format } from 'date-fns';
 
 export default class {
   static DATE_FORMAT = 'yyyy-MM-dd';

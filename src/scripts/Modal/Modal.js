@@ -20,7 +20,7 @@ export default class {
   show() {
     this.element.style.display = 'flex';
     document.body.style.overflowY = 'hidden';
-    
+
     const showModalEvent = new Event('showModal', {
       bubbles: true,
       cancelable: true,
@@ -31,7 +31,7 @@ export default class {
   hide() {
     this.element.style.display = 'none';
     document.body.style.overflowY = '';
-    
+
     const hideModalEvent = new Event('hideModal', {
       bubbles: true,
       cancelable: true,
@@ -43,4 +43,4 @@ export default class {
     const backButton = this.element.querySelector('button.back');
     backButton.addEventListener('click', () => this.hide());
   }
-};
+}

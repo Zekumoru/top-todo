@@ -1,6 +1,6 @@
-import { add, format } from "date-fns";
-import Project from "./Project";
-import Todo from "./Todo";
+import { add, format } from 'date-fns';
+import Project from './Project';
+import Todo from './Todo';
 
 const TODOS_KEY = 'todos';
 const PROJECTS_KEY = 'projects';
@@ -11,16 +11,16 @@ export default {
     localStorage.removeItem(TODOS_KEY);
     localStorage.removeItem(PROJECTS_KEY);
 
-    this.todos.length = 0
+    this.todos.length = 0;
     this.projects.length = 0;
     this.projects.push(new Project('default'));
     this.saveTodos();
     this.saveProjects();
   },
-  loadTodos: function() {
+  loadTodos() {
     return this.loadJSON(TODOS_KEY);
   },
-  loadProjects: function() {
+  loadProjects() {
     return this.loadJSON(PROJECTS_KEY);
   },
   loadJSON(key) {
@@ -28,19 +28,19 @@ export default {
     if (!json) return;
     return JSON.parse(json);
   },
-  saveTodos: function() {
+  saveTodos() {
     localStorage.setItem(TODOS_KEY, JSON.stringify(this.todos));
   },
-  saveProjects: function() {
+  saveProjects() {
     localStorage.setItem(PROJECTS_KEY, JSON.stringify(this.projects));
   },
   get tutorialShown() {
     return localStorage.getItem(TUTORIAL_KEY);
   },
   set tutorialShown(value) {
-    return localStorage.setItem(TUTORIAL_KEY, !!value);
+    localStorage.setItem(TUTORIAL_KEY, !!value);
   },
-  populate: function() {
+  populate() {
     const todos = [
       new Todo({
         title: 'Learn about Single Responsibility',

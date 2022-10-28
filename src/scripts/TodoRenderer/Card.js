@@ -1,5 +1,5 @@
-import RadioList from "../RadioList";
-import Popup from "./Popup";
+import RadioList from '../RadioList';
+import Popup from './Popup';
 
 export default class {
   todo;
@@ -15,7 +15,7 @@ export default class {
     this.todo = todo;
     this.#createCard();
     this.#setValues(propertyForContent);
-    this.#setEvents();    
+    this.#setEvents();
     this.#setCheckBoxEvents();
     this.#setDeleteEvent();
     this.#setChangePriorityEvent();
@@ -74,7 +74,7 @@ export default class {
       return;
     }
 
-    this.content.innerText = 'Error!'
+    this.content.innerText = 'Error!';
   }
 
   #setEvents() {
@@ -85,7 +85,7 @@ export default class {
       }
       this.element.classList.add('hoverable');
     });
-    
+
     this.element.addEventListener('click', (e) => {
       if (e.target === this.checkbox) return;
       if (e.target === this.deleteButton) return;
@@ -96,9 +96,9 @@ export default class {
       const editEvent = new CustomEvent('editTodo', {
         bubbles: true,
         cancelable: true,
-        detail: { 
+        detail: {
           todo: this.todo,
-          card: this.element
+          card: this.element,
         },
       });
       this.element.dispatchEvent(editEvent);
@@ -106,12 +106,12 @@ export default class {
   }
 
   #setCheckBoxEvents() {
-    const checkedEvent = new CustomEvent('checkedTodo',{ 
+    const checkedEvent = new CustomEvent('checkedTodo', {
       bubbles: true,
       cancelable: true,
       detail: {
         todo: this.todo,
-        card: this.element
+        card: this.element,
       },
     });
 
@@ -120,11 +120,11 @@ export default class {
       cancelable: true,
       detail: {
         todo: this.todo,
-        card: this.element
+        card: this.element,
       },
     });
-    
-    this.checkbox.addEventListener('change', (e) => {
+
+    this.checkbox.addEventListener('change', () => {
       if (this.checkbox.checked) {
         this.element.dispatchEvent(checkedEvent);
         return;
@@ -139,7 +139,7 @@ export default class {
       cancelable: true,
       detail: {
         todo: this.todo,
-        card: this.element
+        card: this.element,
       },
     });
     this.deleteButton.addEventListener('click', () => this.element.dispatchEvent(deleteEvent));
@@ -196,4 +196,4 @@ export default class {
     }
     return false;
   }
-};
+}

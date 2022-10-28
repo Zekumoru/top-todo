@@ -11,5 +11,14 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'lines-between-class-members': 'off',
+    'no-param-reassign': 'off',
+    'no-shadow': 'off',
+    'no-use-before-define': 'off',
+    'func-names': 'off',
+    'no-plusplus': 'off',
+    'class-methods-use-this': 'off',
+    'no-new': 'off',
+    'consistent-return': 'off',
   },
 };

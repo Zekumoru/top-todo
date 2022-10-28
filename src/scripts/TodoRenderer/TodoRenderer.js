@@ -1,6 +1,6 @@
-import { format } from "date-fns";
-import Card from "./Card";
-import Section from "./Section";
+import { format } from 'date-fns';
+import Card from './Card';
+import Section from './Section';
 
 export default class {
   element;
@@ -25,9 +25,7 @@ export default class {
 
   get defaultFilter() {
     const today = format(new Date(), 'yyyy-MM-dd');
-    return (todo) => {
-      return todo.dueDate >= today;
-    };
+    return (todo) => todo.dueDate >= today;
   }
 
   render(todos, { filter = this.defaultFilter, appendMode = false } = {}) {
@@ -46,26 +44,26 @@ export default class {
 
   renderTodo(todo) {
     if (!(this.currentProject === null || todo.project === this.currentProject.name)) return;
-    if (typeof this.#fnFilter === 'function' && !this.#fnFilter(todo)) return; 
-    
+    if (typeof this.#fnFilter === 'function' && !this.#fnFilter(todo)) return;
+
     const date = format(new Date(todo.dueDate), 'yyyy-MM-dd');
-    let section = this.#sections.find(s => s.date === date);
+    let section = this.#sections.find((s) => s.date === date);
     if (!section) {
       this.#hideEmptyMessage();
       section = this.#createSection(date);
     }
 
-    const propertyForContent = (this.currentProject)? 'description' : 'project';
+    const propertyForContent = (this.currentProject) ? 'description' : 'project';
     const card = new Card(todo, propertyForContent);
 
     const insertBefore = Array.from(section.list.children).reduce((before, current) => {
       const tp = this.#getPriority(todo.priority, todo.checked);
       const cp = this.#getPriority(current.className, current.querySelector('.checkbox').checked);
-      const bp = (!before)? -1 : this.#getPriority(before.className, before.querySelector('.checkbox').checked);
+      const bp = (!before) ? -1 : this.#getPriority(before.className, before.querySelector('.checkbox').checked);
       if (tp >= cp && cp > bp) return current;
       return before;
     }, null);
-    
+
     section.list.insertBefore(card.element, insertBefore);
     return card;
   }
@@ -76,9 +74,7 @@ export default class {
 
     const today = format(new Date(), 'yyyy-MM-dd');
     this.render(todos, {
-      filter: (todo) => {
-        return todo.project === project.name && todo.dueDate >= today;
-      },
+      filter: (todo) => todo.project === project.name && todo.dueDate >= today,
     });
     this.#renderingProject = false;
   }
@@ -91,30 +87,30 @@ export default class {
   }
 
   #getPriority(str, checked) {
-    const offset = checked? 0 : 10;
+    const offset = checked ? 0 : 10;
     if (str.includes('high')) return 2 + offset;
     if (str.includes('medium')) return 1 + offset;
     return 0 + offset;
   }
 
   removeCard(card) {
-    const section = this.#sections.find(s => s.element.contains(card));
+    const section = this.#sections.find((s) => s.element.contains(card));
     if (!section) return;
-    
+
     section.list.removeChild(card);
     if (!section.list.hasChildNodes()) {
       this.element.removeChild(section.element);
-      this.#sections.splice(this.#sections.findIndex(s => s === section), 1);
+      this.#sections.splice(this.#sections.findIndex((s) => s === section), 1);
       this.#showEmptyMessage();
     }
   }
 
   #createSection(date) {
     const section = new Section(date);
-    
+
     let index;
-    if (this.#appendMode) index = this.#sections.findIndex(s => s.date < date);
-    else index = this.#sections.findIndex(s => s.date > date);
+    if (this.#appendMode) index = this.#sections.findIndex((s) => s.date < date);
+    else index = this.#sections.findIndex((s) => s.date > date);
     if (index === -1) index = this.#sections.length;
 
     const insertBefore = this.#sections[index];

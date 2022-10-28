@@ -1,12 +1,12 @@
-import ProjectModal from "./Modal/ProjectModal";
+import ProjectModal from './Modal/ProjectModal';
 
 let projectModal = null;
 const primaryNav = document.querySelector('.primary-nav');
-export default function(projects) {
+export default function (projects) {
   projectModal = new ProjectModal(document.querySelector('.project-modal'), projects);
   primaryNav.renderProjects(projects);
   return primaryNav;
-};
+}
 
 const openButton = document.querySelector('.open.primary-nav-button');
 const closeButton = document.querySelector('.close.primary-nav-button');
@@ -32,20 +32,20 @@ primaryNav.completedTab = primaryNav.querySelector('li.completed');
 primaryNav.overdueTab = primaryNav.querySelector('li.overdue');
 primaryNav.aboutTab = primaryNav.querySelector('li.about');
 
-primaryNav.isOpen = function() {
+primaryNav.isOpen = function () {
   return (primaryNav.style.left === '0px');
 };
 
-primaryNav.getProjectListItems = function() {
+primaryNav.getProjectListItems = function () {
   return projectList.children;
 };
 
-primaryNav.addProject = function(project) {
+primaryNav.addProject = function (project) {
   const projectListItem = createProjectListItem(project);
   projectList.appendChild(projectListItem);
 };
 
-primaryNav.renderProjects = function(projects, selectProject) {
+primaryNav.renderProjects = function (projects, selectProject) {
   projectList.innerHTML = '';
 
   projects.forEach((project) => {
@@ -62,18 +62,18 @@ primaryNav.renderProjects = function(projects, selectProject) {
 };
 
 primaryNav.querySelectorAll('li:not(.section)').forEach((navItem) => {
-  navItem.addEventListener('click', (e) => selectTab(navItem));
+  navItem.addEventListener('click', () => selectTab(navItem));
   navItem.addEventListener('keyup', (e) => {
     if (!(e.key === 'Enter' || e.key === ' ')) return;
     selectTab(navItem);
   });
 });
 
-openButton.addEventListener('click', (e) => {
+openButton.addEventListener('click', () => {
   open();
 });
 
-closeButton.addEventListener('click', (e) => {
+closeButton.addEventListener('click', () => {
   close();
 });
 
@@ -90,7 +90,6 @@ function close() {
   primaryNav.style.left = '';
   primaryNav.dispatchEvent(closeEvent);
 }
-
 
 function selectTab(tab) {
   const currentSelected = primaryNav.querySelector('li.current');
@@ -121,7 +120,7 @@ function createProjectListItem(project) {
   projectListItem.tabIndex = '0';
   projectListItem.innerText = project.name;
 
-  projectListItem.addEventListener('click', (e) => selectTab(projectListItem));
+  projectListItem.addEventListener('click', () => selectTab(projectListItem));
   projectListItem.addEventListener('keyup', (e) => {
     if (!(e.key === 'Enter' || e.key === ' ')) return;
     selectTab(projectListItem);
