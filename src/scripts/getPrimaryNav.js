@@ -31,6 +31,7 @@ primaryNav.allTab = primaryNav.querySelector('li.all');
 primaryNav.completedTab = primaryNav.querySelector('li.completed');
 primaryNav.overdueTab = primaryNav.querySelector('li.overdue');
 primaryNav.aboutTab = primaryNav.querySelector('li.about');
+primaryNav.signInOutTab = primaryNav.querySelector('li.sign-in-out');
 
 primaryNav.isOpen = function () {
   return (primaryNav.style.left === '0px');
