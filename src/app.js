@@ -4,6 +4,28 @@ import './styles/reset.css';
 import './styles/styles.css';
 import './styles/tutorial.css';
 import { format } from 'date-fns';
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  doc,
+  serverTimestamp,
+} from 'firebase/firestore';
+import firebaseConfig from './firebase-config';
 import getPrimaryNav from './scripts/getPrimaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
@@ -153,6 +175,16 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     return;
   }
 
+  if (tab === primaryNav.signInTab) {
+    signInUser();
+    return;
+  }
+
+  if (tab === primaryNav.signOutTab) {
+    signOutUser();
+    return;
+  }
+
   writeTodoBar.enable();
   todoRenderer.emptyMessage.innerHTML = `
     <p>Uh oh! You do not have any todos yet!</p>
@@ -265,3 +297,27 @@ main.addEventListener('editWriteTodoInput', (e) => {
     KeedoStorage.saveTodos();
   });
 });
+
+/** Firebase */
+const signInUser = async () => {
+  const provider = new GoogleAuthProvider();
+  await signInWithPopup(getAuth(), provider);
+}
+
+const signOutUser = () => {
+  signOut(getAuth());
+}
+
+const authStateObserver = (user) => {
+  if (user) {
+    primaryNav.signOutTab.removeAttribute('hidden');
+    primaryNav.signInTab.setAttribute('hidden', 'true');
+    return;
+  }
+
+  primaryNav.signInTab.removeAttribute('hidden');
+  primaryNav.signOutTab.setAttribute('hidden', 'true');
+}
+
+initializeApp(firebaseConfig);
+onAuthStateChanged(getAuth(), authStateObserver);

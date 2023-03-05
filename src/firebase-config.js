@@ -1,4 +1,4 @@
-const config = {
+const firebaseConfig = {
   apiKey: "AIzaSyCpz8idx6poCMJxER93ds87vXXgBfNZ_vk",
   authDomain: "keedo-todos.firebaseapp.com",
   projectId: "keedo-todos",
@@ -7,4 +7,4 @@ const config = {
   appId: "1:883342083756:web:b435bf467854943029c109"
 }
 
-export default config;
+export default firebaseConfig;
