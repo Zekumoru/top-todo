@@ -308,15 +308,35 @@ const signOutUser = () => {
   signOut(getAuth());
 }
 
+const setUserProfileTab = () => {
+  const { name, pic } = primaryNav.userProfileTab;
+  const profilePicUrl = getAuth().currentUser.photoURL;
+  const userName = getAuth().currentUser.displayName;
+
+  pic.style.backgroundImage = `url(${profilePicUrl})`;
+  name.textContent = userName;
+  primaryNav.userProfileTab.style.display = '';
+};
+
+const unsetUserProfileTab = () => {
+  const { name, pic } = primaryNav.userProfileTab;
+
+  name.textContent = '';
+  pic.style.backgroundImage = '';
+  primaryNav.userProfileTab.style.display = 'none';
+};
+
 const authStateObserver = (user) => {
   if (user) {
     primaryNav.signOutTab.removeAttribute('hidden');
     primaryNav.signInTab.setAttribute('hidden', 'true');
+    setUserProfileTab();
     return;
   }
 
   primaryNav.signInTab.removeAttribute('hidden');
   primaryNav.signOutTab.setAttribute('hidden', 'true');
+  unsetUserProfileTab();
 }
 
 initializeApp(firebaseConfig);

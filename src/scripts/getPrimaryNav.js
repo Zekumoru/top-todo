@@ -34,6 +34,11 @@ primaryNav.aboutTab = primaryNav.querySelector('li.about');
 primaryNav.signInTab = primaryNav.querySelector('li.sign-in');
 primaryNav.signOutTab = primaryNav.querySelector('li.sign-out');
 
+const userProfileTab = primaryNav.querySelector('li.user-profile');
+primaryNav.userProfileTab = userProfileTab
+primaryNav.userProfileTab.pic = userProfileTab.querySelector('.user-pic');
+primaryNav.userProfileTab.name = userProfileTab.querySelector('.user-name');
+
 primaryNav.isOpen = function () {
   return (primaryNav.style.left === '0px');
 };

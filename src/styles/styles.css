@@ -224,6 +224,34 @@ button {
   font-style: italic;
 }
 
+.primary-nav li.user-profile {
+  display: flex;
+  align-items: center;
+  padding-block: 10px;
+  gap: 8px;
+}
+
+.primary-nav li.user-profile:hover {
+  background-color: initial !important;
+  cursor: default !important;
+}
+
+.primary-nav li.user-profile .user-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: #505050;
+  flex-shrink: 0;
+  background-position: center;
+  background-size: cover;
+}
+
+.primary-nav li.user-profile .user-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* MAIN */
 
 main {
