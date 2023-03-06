@@ -32,19 +32,34 @@ import KeedoStorage from './scripts/KeedoStorage';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 
-const { getTodos, loadTodos, projects } = (() => {
+const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() => {
   let todos = [];
   let projects = KeedoStorage.loadProjects();
   
-  if (projects === undefined) {
+  if (todos === undefined || projects === undefined) {
     ({ todos, projects } = KeedoStorage.populate());
+    KeedoStorage.todos = todos;
     KeedoStorage.projects = projects;
+    KeedoStorage.saveTodos();
     KeedoStorage.saveProjects();
   }
   KeedoStorage.projects = projects;
 
   const loadTodosFromLocalStorage = () => {
     todos = KeedoStorage.loadTodos();
+  };
+
+  const addTodo = (todo) => {
+    if (!isUserSignedIn()) {
+      console.error('Error! Local storage temporarily disabled.');
+      return;
+    }
+    
+    setDoc(getTodoDocPath(todo.id), {
+      ...todo,
+      timestamp: serverTimestamp(),
+      createdByUserId: getUserId(),
+    });
   };
 
   const loadTodos = () => {
@@ -81,10 +96,31 @@ const { getTodos, loadTodos, projects } = (() => {
     });
   };
 
+  const updateTodo = (todo, fields) => {
+    if (!isUserSignedIn()) {
+      console.error('Error! Local storage temporarily disabled.');
+      return;
+    }
+    
+    updateDoc(getTodoDocPath(todo.id), fields);
+  }
+  
+  const deleteTodo = (todo) => {
+    if (!isUserSignedIn()) {
+      console.error('Error! Local storage temporarily disabled.');
+      return;
+    }
+
+    deleteDoc(getTodoDocPath(todo.id));
+  };
+
   const getTodos = () => todos;
 
   return {
     loadTodos,
+    addTodo,
+    updateTodo,
+    deleteTodo,
     getTodos,
     projects,
   }
@@ -275,14 +311,14 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
 
 main.addEventListener('checkedTodo', (e) => {
   const { todo } = e.detail;
-  updateDoc(getTodoDocPath(todo.id), {
+  updateTodo(todo, {
     checked: true,
   });
 });
 
 main.addEventListener('uncheckedTodo', (e) => {
   const { todo } = e.detail;
-  updateDoc(getTodoDocPath(todo.id), {
+  updateTodo(todo, {
     checked: false,
   });
 });
@@ -292,7 +328,7 @@ main.addEventListener('editTodo', (e) => {
   todoModal.title = 'Editing todo';
   todoModal.confirmButton.innerText = 'Save';
   todoModal.show(todo, (editedTodo) => {
-    updateDoc(getTodoDocPath(todo.id), {
+    updateTodo(todo, {
       ...editedTodo,
       id: todo.id, // stay consistent with id since editedTodo is a modified COPY of the original todo AND it makes sure to remove the old unedited one
     });
@@ -301,32 +337,15 @@ main.addEventListener('editTodo', (e) => {
 
 main.addEventListener('deleteTodo', (e) => {
   const { todo } = e.detail;
-  deleteDoc(getTodoDocPath(todo.id));
+  deleteTodo(todo);
 });
 
 main.addEventListener('changeTodoPriority', (e) => {
   const { todo, newPriority } = e.detail;
-  updateDoc(getTodoDocPath(todo.id), {
+  updateTodo(todo, {
     priority: newPriority,
   });
 });
-
-const saveTodoDB = async (todo) => {
-  if (!isUserSignedIn()) {
-    return;
-  }
-
-  try {
-    await setDoc(getTodoDocPath(todo.id), {
-      ...todo,
-      timestamp: serverTimestamp(),
-      createdByUserId: getUserId(),
-    });
-  }
-  catch(error) {
-    throw new Error('Error: Cannot write a new todo to Firebase.', error.message);
-  }
-};
 
 main.addEventListener('enterWriteTodoInput', (e) => {
   const todo = new Todo({
@@ -334,14 +353,14 @@ main.addEventListener('enterWriteTodoInput', (e) => {
     project: todoRenderer.currentProject?.name ?? 'default',
   });
 
-  saveTodoDB(todo);
+  addTodo(todo);
 });
 
 main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.title = 'Creating todo';
   todoModal.confirmButton.innerText = 'Create';
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
-    saveTodoDB(todo);
+    addTodo(todo);
   });
 });
 
