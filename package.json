@@ -37,6 +37,7 @@
     "@mdi/font": "^7.0.96",
     "date-fns": "^2.29.3",
     "firebase": "^9.17.2",
+    "nanoid": "^4.0.1",
     "normalize.css": "^8.0.1",
     "sortablejs": "^1.15.0"
   }

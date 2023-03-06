@@ -1,6 +1,8 @@
 import { format } from 'date-fns';
+import { nanoid } from 'nanoid';
 
 export default class Todo {
+  id;
   title;
   description;
   project;
@@ -9,6 +11,7 @@ export default class Todo {
   checked;
 
   constructor(properties) {
+    this.id = nanoid();
     this.title = '';
     this.description = '';
     this.project = '';
