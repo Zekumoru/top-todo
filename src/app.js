@@ -24,6 +24,7 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
+  where,
 } from 'firebase/firestore';
 import firebaseConfig from './firebase-config';
 import getPrimaryNav from './scripts/getPrimaryNav';
@@ -61,7 +62,7 @@ const { getTodos, loadTodos, projects } = (() => {
     }
   
     todos = [];
-    unsubscribeSnapshot = onSnapshot(collection(getFirestore(), `users/${getUserId()}/todos`), (snapshot) => {
+    unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserTodosPath()), (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === 'added') {
           const todo = change.doc.data();
@@ -83,6 +84,7 @@ const { getTodos, loadTodos, projects } = (() => {
 
 const isUserSignedIn = () => !!getAuth().currentUser;
 const getUserId = () => getAuth().currentUser.uid;
+const getUserTodosPath = () => `users/${getUserId()}/todos`;
 let unsubscribeSnapshot = null;
 
 const main = document.querySelector('main');
@@ -313,7 +315,7 @@ const saveTodoDB = async (todo) => {
   }
 
   try {
-    await addDoc(collection(getFirestore(), `users/${getUserId()}/todos`), {
+    await setDoc(doc(getFirestore(), getUserTodosPath(), todo.id), {
       ...todo,
       timestamp: serverTimestamp(),
       createdByUserId: getUserId(),
