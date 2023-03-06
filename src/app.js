@@ -35,34 +35,60 @@ import KeedoStorage from './scripts/KeedoStorage';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 
-const { todos, projects } = (() => {
-  let todos = KeedoStorage.loadTodos();
+const { getTodos, loadTodos, projects } = (() => {
+  let todos = [];
   let projects = KeedoStorage.loadProjects();
-
-  if (todos === undefined || projects === undefined) {
+  
+  if (projects === undefined) {
     ({ todos, projects } = KeedoStorage.populate());
-    KeedoStorage.todos = todos;
     KeedoStorage.projects = projects;
-    KeedoStorage.saveTodos();
     KeedoStorage.saveProjects();
   }
-
-  KeedoStorage.todos = todos;
   KeedoStorage.projects = projects;
 
-  return {
-    todos,
-    projects,
+  const loadTodosFromLocalStorage = () => {
+    todos = KeedoStorage.loadTodos();
   };
+
+  const loadTodos = () => {
+    if (!isUserSignedIn()) {
+      loadTodosFromLocalStorage();
+      return;
+    }
+  
+    if (typeof unsubscribeSnapshot === 'function') {
+      unsubscribeSnapshot();
+    }
+  
+    todos = [];
+    unsubscribeSnapshot = onSnapshot(collection(getFirestore(), `users/${getUserId()}/todos`), (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'added') {
+          const todo = change.doc.data();
+          todos.push(todo);
+          todoRenderer.renderTodo(todo);
+        }
+      })
+    });
+  };
+
+  const getTodos = () => todos;
+
+  return {
+    loadTodos,
+    getTodos,
+    projects,
+  }
 })();
 
 const isUserSignedIn = () => !!getAuth().currentUser;
 const getUserId = () => getAuth().currentUser.uid;
+let unsubscribeSnapshot = null;
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', projects);
-const todoRenderer = new TodoRenderer(document.querySelector('.todos'), todos);
+const todoRenderer = new TodoRenderer(document.querySelector('.todos'), getTodos());
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));
 
 if (!KeedoStorage.tutorialShown) {
@@ -107,7 +133,7 @@ document.addEventListener('hideModal', () => {
 
 document.addEventListener('eraseAllData', () => {
   KeedoStorage.clear();
-  todoRenderer.render(todos);
+  todoRenderer.render(getTodos());
   primaryNav.renderProjects(projects);
 });
 
@@ -125,7 +151,7 @@ document.addEventListener('editProject', (e) => {
   const index = projects.findIndex((p) => p === project);
   primaryNav.getProjectListItems()[index].innerText = newName;
 
-  todos.forEach((todo) => {
+  getTodos().forEach((todo) => {
     if (todo.project === oldName) todo.project = newName;
   });
   todoRenderer.replaceCardsContent(newName, oldName);
@@ -153,7 +179,7 @@ document.addEventListener('deleteProject', (e) => {
   }
   selectedTab.remove();
 
-  todos.forEach((todo) => {
+  getTodos().forEach((todo) => {
     if (todo.project !== project.name) return;
     todo.project = 'default';
   });
@@ -199,7 +225,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   if (tab === primaryNav.allTab) {
-    todoRenderer.render(todos);
+    todoRenderer.render(getTodos());
     return;
   }
 
@@ -210,7 +236,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
       <p>Try completing some by checking them!</p>
     `;
 
-    todoRenderer.render(todos, {
+    todoRenderer.render(getTodos(), {
       filter: (todo) => todo.checked,
       appendMode: true,
     });
@@ -225,7 +251,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     `;
 
     const today = format(new Date(), 'yyyy-MM-dd');
-    todoRenderer.render(todos, {
+    todoRenderer.render(getTodos(), {
       filter: (todo) => !todo.checked && today > todo.dueDate,
       appendMode: true,
     });
@@ -233,7 +259,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
   }
 
   const project = projects.find((p) => p.name === tabName);
-  todoRenderer.renderProject(project, todos);
+  todoRenderer.renderProject(project, getTodos());
 });
 
 main.addEventListener('checkedTodo', (e) => {
@@ -257,9 +283,9 @@ main.addEventListener('editTodo', (e) => {
   todoModal.title = 'Editing todo';
   todoModal.confirmButton.innerText = 'Save';
   todoModal.show(todo, (editedTodo) => {
-    todos.splice(todos.findIndex((t) => t === todo), 1);
+    getTodos().splice(getTodos().findIndex((t) => t === todo), 1);
     todoRenderer.removeCard(card);
-    todos.push(editedTodo);
+    getTodos().push(editedTodo);
     todoRenderer.renderTodo(editedTodo);
     KeedoStorage.saveTodos();
   });
@@ -267,8 +293,8 @@ main.addEventListener('editTodo', (e) => {
 
 main.addEventListener('deleteTodo', (e) => {
   const { todo, card } = e.detail;
-  const indexToRemove = todos.findIndex((t) => t === todo);
-  todos.splice(indexToRemove, 1);
+  const indexToRemove = getTodos().findIndex((t) => t === todo);
+  getTodos().splice(indexToRemove, 1);
   todoRenderer.removeCard(card);
   KeedoStorage.saveTodos();
 });
@@ -305,17 +331,13 @@ main.addEventListener('enterWriteTodoInput', (e) => {
   });
 
   saveTodoDB(todo);
-
-  todos.push(todo);
-  todoRenderer.renderTodo(todo);
-  KeedoStorage.saveTodos();
 });
 
 main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.title = 'Creating todo';
   todoModal.confirmButton.innerText = 'Create';
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
-    todos.push(todo);
+    getTodos().push(todo);
     todoRenderer.renderTodo(todo);
     KeedoStorage.saveTodos();
   });
@@ -354,13 +376,18 @@ const authStateObserver = (user) => {
     primaryNav.signOutTab.removeAttribute('hidden');
     primaryNav.signInTab.setAttribute('hidden', 'true');
     setUserProfileTab();
+    loadTodos();
+    todoRenderer.render(getTodos());
     return;
   }
-
+  
   primaryNav.signInTab.removeAttribute('hidden');
   primaryNav.signOutTab.setAttribute('hidden', 'true');
   unsetUserProfileTab();
+  loadTodos();
+  todoRenderer.render(getTodos());
 }
 
 initializeApp(firebaseConfig);
 onAuthStateChanged(getAuth(), authStateObserver);
+loadTodos();
