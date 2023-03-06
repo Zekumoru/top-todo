@@ -1,8 +1,9 @@
-import { collection, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { getUserId, isUserSignedIn } from "./firebase-utils";
 import getPrimaryNav from "./getPrimaryNav";
 import KeedoStorage from "./KeedoStorage";
 import Project from "./Project";
+import { getTodos, updateTodo } from './todos-operations';
 
 let projects = KeedoStorage.loadProjects();
 let unsubscribeSnapshot = null;
@@ -23,6 +24,29 @@ const onProjectsChange = (type, project) => {
   if (type === 'added') {
     projects.push(project);
     primaryNav.addProject(project);
+    return;
+  }
+
+  if (type === 'removed') {
+    let index = -1;
+    projects = projects.filter((p, i) => {
+      if (p.name !== project.name) return true;
+      index = i;
+      return false;
+    });
+    
+    const selectedTab = primaryNav.getProjectListItems()[index];
+    if (selectedTab.classList.contains('current')) {
+      primaryNav.selectTab(primaryNav.allTab);
+    }
+    selectedTab.remove();
+
+    getTodos().forEach((todo) => {
+      if (todo.project !== project.name) return;
+      updateTodo(todo, {
+        project: 'default',
+      });
+    });
   }
 };
 
@@ -65,7 +89,7 @@ const loadProjects = () => {
 
   projects = [];
   initializeProjects();
-  unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserProjectsPath()), (snapshot) => {
+  unsubscribeSnapshot = onSnapshot(query(collection(getFirestore(), getUserProjectsPath()), orderBy('position')), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       const project = change.doc.data();
       onProjectsChange(change.type, project);
@@ -73,4 +97,22 @@ const loadProjects = () => {
   });
 };
 
-export { getProjects, loadProjects, addProject };
+const updateProject = (project, fields) => {
+  if (!isUserSignedIn()) {
+    console.error('Updating project using local storage is currently disabled.');
+    return;
+  }
+
+  console.error('Updating project is currently disabled.');
+};
+
+const deleteProject = (project) => {
+  if (!isUserSignedIn()) {
+    console.error('Deleting project using local storage is currently disabled.');
+    return;
+  }
+
+  deleteDoc(getProjectDocPath(project.name));
+}
+
+export { getProjects, loadProjects, addProject, updateProject, deleteProject };

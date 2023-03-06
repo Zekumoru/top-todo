@@ -19,12 +19,12 @@ import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 import { addTodo, deleteTodo, getTodos, loadTodos, todoRenderer, updateTodo } from './scripts/todos-operations';
 import { signInUser, signOutUser } from './scripts/firebase-utils';
-import { addProject, getProjects, loadProjects } from './scripts/projects-operations';
+import { addProject, deleteProject, getProjects, loadProjects } from './scripts/projects-operations';
 import authStateObserver from './scripts/authStateObserver';
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(getProjects);
-const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', getProjects());
+const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', getProjects);
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));
 
 if (!KeedoStorage.tutorialShown) {
@@ -104,22 +104,7 @@ document.addEventListener('sortProject', (e) => {
 
 document.addEventListener('deleteProject', (e) => {
   const { project } = e.detail;
-  const index = getProjects().findIndex((p) => p === project);
-
-  getProjects().splice(index, 1);
-  const selectedTab = primaryNav.getProjectListItems()[index];
-  if (selectedTab.classList.contains('current')) {
-    primaryNav.selectTab(primaryNav.allTab);
-  }
-  selectedTab.remove();
-
-  getTodos().forEach((todo) => {
-    if (todo.project !== project.name) return;
-    todo.project = 'default';
-  });
-  todoRenderer.replaceCardsContent('default', project.name);
-  KeedoStorage.saveTodos();
-  KeedoStorage.saveProjects();
+  deleteProject(project);
 });
 
 document.addEventListener('openPrimaryNav', () => {
