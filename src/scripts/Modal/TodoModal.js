@@ -6,7 +6,7 @@ import Selector from '../Selector';
 
 export default class extends Modal {
   confirmButton;
-  #projects;
+  #getProjects;
   #checkBox;
   #titleInput;
   #descriptionInput;
@@ -15,9 +15,9 @@ export default class extends Modal {
   #dueDatePicker;
   #onConfirm;
 
-  constructor(element, title, projects) {
+  constructor(element, title, getProjectsCallback) {
     super(element, title);
-    this.#projects = projects;
+    this.#getProjects = getProjectsCallback;
     this.#onConfirm = null;
     this.#checkBox = element.querySelector('.checkbox');
     this.#titleInput = element.querySelector('.title');
@@ -25,7 +25,7 @@ export default class extends Modal {
     this.#priorityRadioList = new RadioList(element.querySelector('.priority-choice-list'));
     this.#dueDatePicker = new DatePicker(element.querySelector('.due-date-picker'), new Date(), new Date());
     this.#projectSelector = new Selector(element.querySelector('.project-select'), {
-      options: projects,
+      options: this.#getProjects(),
       property: 'name',
     });
     this.confirmButton = this.element.querySelector('button.confirm');
@@ -43,7 +43,7 @@ export default class extends Modal {
     this.#descriptionInput.value = description ?? '';
     if (priority) this.#priorityRadioList.value = priority;
     if (dueDate) this.#dueDatePicker.value = dueDate;
-    this.#projectSelector.renderOptions(this.#projects, project);
+    this.#projectSelector.renderOptions(this.#getProjects(), project);
     this.#onConfirm = fnOnConfirm;
 
     super.show();
