@@ -55,6 +55,7 @@ export default class {
 
     const propertyForContent = (this.currentProject) ? 'description' : 'project';
     const card = new Card(todo, propertyForContent);
+    card.element.id = todo.id;
 
     const insertBefore = Array.from(section.list.children).reduce((before, current) => {
       const tp = this.#getPriority(todo.priority, todo.checked);
@@ -91,6 +92,21 @@ export default class {
     if (str.includes('high')) return 2 + offset;
     if (str.includes('medium')) return 1 + offset;
     return 0 + offset;
+  }
+
+  removeCardById(id) {
+    let card = null;
+    for (let i = 0; i < this.#sections.length; i++) {
+      const sectionList = this.#sections[i].list;
+      for (let j = 0; j < sectionList.children.length; j++) {
+        const node = sectionList.children[j];
+        if (node.id === id) {
+          card = node;
+          break;
+        }
+      }
+    }
+    this.removeCard(card);
   }
 
   removeCard(card) {
