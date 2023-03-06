@@ -8,214 +8,23 @@ import { initializeApp } from 'firebase/app';
 import {
   getAuth,
   onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
 } from 'firebase/auth';
-import {
-  getFirestore,
-  collection,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  getDoc,
-} from 'firebase/firestore';
 import firebaseConfig from './firebase-config';
 import getPrimaryNav from './scripts/getPrimaryNav';
 import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
-import TodoRenderer from './scripts/TodoRenderer/TodoRenderer';
 import Todo from './scripts/Todo';
 import KeedoStorage from './scripts/KeedoStorage';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
-import Project from './scripts/Project';
-
-const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo } = (() => {
-  let todos = KeedoStorage.loadTodos();
-  let unsubscribeSnapshot = null;
-  
-  if (todos === undefined) {
-    ({ todos } = KeedoStorage.populate());
-    KeedoStorage.todos = todos;
-    KeedoStorage.saveTodos();
-  }
-
-  const onTodosChange = (type, todo) => {
-    if (type === 'added') {
-      todos.push(todo);
-    }
-    
-    todoRenderer.removeCardById(todo.id);
-    
-    if (type === 'removed') {
-      todos = todos.filter((t) => t.id !== todo.id);
-      return;
-    }
-
-    // type === 'modified'
-    const modifiedTodoIndex = todos.findIndex((t) => t.id === todo.id);
-    todos[modifiedTodoIndex] = todo;
-    todoRenderer.renderTodo(todo);
-  };
-
-  const addTodo = (todo) => {
-    if (!isUserSignedIn()) {
-      onTodosChange('added', todo);
-      KeedoStorage.saveTodos();
-      return;
-    }
-    
-    setDoc(getTodoDocPath(todo.id), {
-      ...todo,
-      timestamp: serverTimestamp(),
-      createdByUserId: getUserId(),
-    });
-  };
-
-  const loadTodos = () => {
-    if (!isUserSignedIn()) {
-      todos = KeedoStorage.loadTodos();
-      KeedoStorage.todos = todos;
-      return;
-    }
-  
-    if (typeof unsubscribeSnapshot === 'function') {
-      unsubscribeSnapshot();
-    }
-  
-    todos = [];
-    unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserTodosPath()), (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        const todo = change.doc.data();
-        onTodosChange(change.type, todo);
-      })
-    });
-  };
-
-  const updateTodo = (todo, fields) => {
-    if (!isUserSignedIn()) {
-      const updatedTodo = {
-        ...todo,
-        ...fields,
-      };
-      onTodosChange('modified', updatedTodo);
-      KeedoStorage.saveTodos();
-      return;
-    }
-    
-    updateDoc(getTodoDocPath(todo.id), fields);
-  }
-  
-  const deleteTodo = (todo) => {
-    if (!isUserSignedIn()) {
-      onTodosChange('removed', todo);
-      KeedoStorage.todos = todos; // needed otherwise saveTodos below will save the old array
-      KeedoStorage.saveTodos();
-      return;
-    }
-
-    deleteDoc(getTodoDocPath(todo.id));
-  };
-
-  const getTodos = () => todos;
-
-  return {
-    loadTodos,
-    addTodo,
-    updateTodo,
-    deleteTodo,
-    getTodos,
-  };
-})();
-
-const { getProjects, loadProjects, addProject } = (() => {
-  let projects = KeedoStorage.loadProjects();
-  let unsubscribeSnapshot = null;
-
-  if (projects === undefined) {
-    ({ projects } = KeedoStorage.populate());
-    KeedoStorage.projects = projects;
-    KeedoStorage.saveProjects();
-  }
-
-  const onProjectsChange = (type, project) => {
-    if (type === 'added') {
-      projects.push(project);
-      primaryNav.addProject(project);
-    }
-  };
-
-  const initializeProjects = async () => {
-    const doc = await getDoc(getProjectDocPath('default'));
-    if (doc.data() !== undefined) return;
-
-    setDoc(getProjectDocPath('default'), {
-      ...(new Project('default', 0)),
-      timestamp: serverTimestamp(),
-      createdByUserId: getUserId(),
-    });
-  };
-
-  const addProject = (project) => {
-    if (!isUserSignedIn()) {
-      projects.push(project);
-      primaryNav.addProject(project);
-      KeedoStorage.saveProjects();
-      return;
-    }
-
-    setDoc(getProjectDocPath(project.name), {
-      ...project,
-      timestamp: serverTimestamp(),
-      createdByUserId: getUserId(),
-    });
-  };
-
-  const loadProjects = () => {
-    if (!isUserSignedIn()) {
-      projects = KeedoStorage.loadProjects();
-      KeedoStorage.projects = projects;
-      return;
-    }
-
-    if (typeof unsubscribeSnapshot === 'function') {
-      unsubscribeSnapshot();
-    }
-
-    projects = [];
-    initializeProjects();
-    unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserProjectsPath()), (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        const project = change.doc.data();
-        onProjectsChange(change.type, project);
-      });
-    });
-  };
-
-  const getProjects = () => projects;
-  
-  return {
-    addProject,
-    loadProjects,
-    getProjects,
-  }
-})();
-
-const isUserSignedIn = () => !!getAuth().currentUser;
-const getUserId = () => getAuth().currentUser.uid;
-const getUserTodosPath = () => `users/${getUserId()}/todos`;
-const getUserProjectsPath = () => `users/${getUserId()}/projects`;
-const getTodoDocPath = (id) => doc(getFirestore(), getUserTodosPath(), id);
-const getProjectDocPath = (name) => doc(getFirestore(), getUserProjectsPath(), name);
+import { addTodo, deleteTodo, getTodos, loadTodos, todoRenderer, updateTodo } from './scripts/todos-operations';
+import { signInUser, signOutUser } from './scripts/firebase-utils';
+import { addProject, getProjects, loadProjects } from './scripts/projects-operations';
+import authStateObserver from './scripts/authStateObserver';
 
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(getProjects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', getProjects());
-const todoRenderer = new TodoRenderer(document.querySelector('.todos'), getTodos());
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));
 
 if (!KeedoStorage.tutorialShown) {
@@ -441,55 +250,6 @@ main.addEventListener('editWriteTodoInput', (e) => {
     addTodo(todo);
   });
 });
-
-/** Firebase */
-const signInUser = async () => {
-  const provider = new GoogleAuthProvider();
-  await signInWithPopup(getAuth(), provider);
-}
-
-const signOutUser = () => {
-  signOut(getAuth());
-}
-
-const setUserProfileTab = () => {
-  const { name, pic } = primaryNav.userProfileTab;
-  const profilePicUrl = getAuth().currentUser.photoURL;
-  const userName = getAuth().currentUser.displayName;
-
-  pic.style.backgroundImage = `url(${profilePicUrl})`;
-  name.textContent = userName;
-  primaryNav.userProfileTab.style.display = '';
-};
-
-const unsetUserProfileTab = () => {
-  const { name, pic } = primaryNav.userProfileTab;
-
-  name.textContent = '';
-  pic.style.backgroundImage = '';
-  primaryNav.userProfileTab.style.display = 'none';
-};
-
-const authStateObserver = (user) => {
-  if (user) {
-    primaryNav.signOutTab.removeAttribute('hidden');
-    primaryNav.signInTab.setAttribute('hidden', 'true');
-    setUserProfileTab();
-    loadTodos();
-    loadProjects();
-    todoRenderer.render(getTodos());
-    primaryNav.renderProjects(getProjects(), 'default');
-    return;
-  }
-  
-  primaryNav.signInTab.removeAttribute('hidden');
-  primaryNav.signOutTab.setAttribute('hidden', 'true');
-  unsetUserProfileTab();
-  loadTodos();
-  loadProjects();
-  todoRenderer.render(getTodos());
-  primaryNav.renderProjects(getProjects(), 'default');
-}
 
 initializeApp(firebaseConfig);
 onAuthStateChanged(getAuth(), authStateObserver);
