@@ -33,7 +33,7 @@ import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 
 const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() => {
-  let todos = [];
+  let todos = KeedoStorage.loadTodos();
   let projects = KeedoStorage.loadProjects();
   
   if (todos === undefined || projects === undefined) {
@@ -47,11 +47,30 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() =
 
   const loadTodosFromLocalStorage = () => {
     todos = KeedoStorage.loadTodos();
+    KeedoStorage.todos = todos;
+  };
+
+  const onTodosChange = (type, todo) => {
+    if (type === 'added') {
+      todos.push(todo);
+    }
+    
+    todoRenderer.removeCardById(todo.id);
+    
+    if (type === 'removed') {
+      todos = todos.filter((t) => t.id !== todo.id);
+      return;
+    }
+
+    const modifiedTodoIndex = todos.findIndex((t) => t.id === todo.id);
+    todos[modifiedTodoIndex] = todo;
+    todoRenderer.renderTodo(todo);
   };
 
   const addTodo = (todo) => {
     if (!isUserSignedIn()) {
-      console.error('Error! Local storage temporarily disabled.');
+      onTodosChange('added', todo);
+      KeedoStorage.saveTodos();
       return;
     }
     
@@ -76,29 +95,19 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() =
     unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserTodosPath()), (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         const todo = change.doc.data();
-        
-        if (change.type === 'added') {
-          todos.push(todo);
-        }
-        
-        todoRenderer.removeCardById(todo.id);
-        
-        if (change.type === 'removed') {
-          todos = todos.filter((t) => t.id !== todo.id);
-        } else {
-          const modifiedTodoIndex = todos.findIndex((t) => t.id === todo.id);
-          todos[modifiedTodoIndex] = todo;
-          todoRenderer.renderTodo(todo);
-        }
-        
-        console.log('DB updated. Local state:', todos)
+        onTodosChange(change.type, todo);
       })
     });
   };
 
   const updateTodo = (todo, fields) => {
     if (!isUserSignedIn()) {
-      console.error('Error! Local storage temporarily disabled.');
+      const updatedTodo = {
+        ...todo,
+        ...fields,
+      };
+      onTodosChange('modified', updatedTodo);
+      KeedoStorage.saveTodos();
       return;
     }
     
@@ -107,7 +116,9 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() =
   
   const deleteTodo = (todo) => {
     if (!isUserSignedIn()) {
-      console.error('Error! Local storage temporarily disabled.');
+      onTodosChange('removed', todo);
+      KeedoStorage.todos = todos; // needed otherwise saveTodos below will save the old array
+      KeedoStorage.saveTodos();
       return;
     }
 
