@@ -56,6 +56,9 @@ const { todos, projects } = (() => {
   };
 })();
 
+const isUserSignedIn = () => !!getAuth().currentUser;
+const getUserId = () => getAuth().currentUser.uid;
+
 const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(projects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', projects);
@@ -278,11 +281,31 @@ main.addEventListener('changeTodoPriority', (e) => {
   KeedoStorage.saveTodos();
 });
 
+const saveTodoDB = async (todo) => {
+  if (!isUserSignedIn()) {
+    return;
+  }
+
+  try {
+    await addDoc(collection(getFirestore(), `users/${getUserId()}/todos`), {
+      ...todo,
+      timestamp: serverTimestamp(),
+      createdByUserId: getUserId(),
+    });
+  }
+  catch(error) {
+    throw new Error('Error: Cannot write a new todo to Firebase.', error.message);
+  }
+};
+
 main.addEventListener('enterWriteTodoInput', (e) => {
   const todo = new Todo({
     title: e.detail,
     project: todoRenderer.currentProject?.name ?? 'default',
   });
+
+  saveTodoDB(todo);
+
   todos.push(todo);
   todoRenderer.renderTodo(todo);
   KeedoStorage.saveTodos();
