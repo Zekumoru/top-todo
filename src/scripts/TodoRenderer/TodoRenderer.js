@@ -55,7 +55,7 @@ export default class {
 
     const propertyForContent = (this.currentProject) ? 'description' : 'project';
     const card = new Card(todo, propertyForContent);
-    card.element.id = todo.id;
+    card.element.getId = () => todo.id;
 
     const insertBefore = Array.from(section.list.children).reduce((before, current) => {
       const tp = this.#getPriority(todo.priority, todo.checked);
@@ -100,7 +100,7 @@ export default class {
       const sectionList = this.#sections[i].list;
       for (let j = 0; j < sectionList.children.length; j++) {
         const node = sectionList.children[j];
-        if (node.id === id) {
+        if (node.getId() === id) {
           card = node;
           break;
         }
