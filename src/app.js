@@ -21,6 +21,7 @@ import {
   doc,
   serverTimestamp,
   deleteDoc,
+  getDoc,
 } from 'firebase/firestore';
 import firebaseConfig from './firebase-config';
 import getPrimaryNav from './scripts/getPrimaryNav';
@@ -31,24 +32,17 @@ import Todo from './scripts/Todo';
 import KeedoStorage from './scripts/KeedoStorage';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
+import Project from './scripts/Project';
 
-const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() => {
+const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo } = (() => {
   let todos = KeedoStorage.loadTodos();
-  let projects = KeedoStorage.loadProjects();
+  let unsubscribeSnapshot = null;
   
-  if (todos === undefined || projects === undefined) {
-    ({ todos, projects } = KeedoStorage.populate());
+  if (todos === undefined) {
+    ({ todos } = KeedoStorage.populate());
     KeedoStorage.todos = todos;
-    KeedoStorage.projects = projects;
     KeedoStorage.saveTodos();
-    KeedoStorage.saveProjects();
   }
-  KeedoStorage.projects = projects;
-
-  const loadTodosFromLocalStorage = () => {
-    todos = KeedoStorage.loadTodos();
-    KeedoStorage.todos = todos;
-  };
 
   const onTodosChange = (type, todo) => {
     if (type === 'added') {
@@ -83,7 +77,8 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() =
 
   const loadTodos = () => {
     if (!isUserSignedIn()) {
-      loadTodosFromLocalStorage();
+      todos = KeedoStorage.loadTodos();
+      KeedoStorage.todos = todos;
       return;
     }
   
@@ -133,19 +128,75 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo, projects } = (() =
     updateTodo,
     deleteTodo,
     getTodos,
-    projects,
+  };
+})();
+
+const { getProjects, loadProjects } = (() => {
+  let projects = KeedoStorage.loadProjects();
+  let unsubscribeSnapshot = null;
+
+  if (projects === undefined) {
+    ({ projects } = KeedoStorage.populate());
+    KeedoStorage.projects = projects;
+    KeedoStorage.saveProjects();
+  }
+
+  const onProjectsChange = (type, project) => {
+    if (type === 'added') {
+      projects.push(project);
+    }
+  };
+
+  const initializeProjects = async () => {
+    const doc = await getDoc(getProjectDocPath('default'));
+    if (doc.data() !== 'undefined') return;
+
+    setDoc(getProjectDocPath('default'), {
+      ...(new Project('default')),
+      timestamp: serverTimestamp(),
+      createdByUserId: getUserId(),
+    });
+  };
+
+  const loadProjects = () => {
+    if (!isUserSignedIn()) {
+      projects = KeedoStorage.loadProjects();
+      KeedoStorage.projects = projects;
+      return;
+    }
+
+    if (typeof unsubscribeSnapshot === 'function') {
+      unsubscribeSnapshot();
+    }
+
+    projects = [];
+    initializeProjects();
+    unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserProjectsPath()), (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        const project = change.doc.data();
+        onProjectsChange(change.type, project);
+      });
+    });
+  };
+
+  const getProjects = () => projects;
+  
+  return {
+    loadProjects,
+    getProjects,
   }
 })();
 
 const isUserSignedIn = () => !!getAuth().currentUser;
 const getUserId = () => getAuth().currentUser.uid;
 const getUserTodosPath = () => `users/${getUserId()}/todos`;
-const getTodoDocPath = (id) => doc(getFirestore(), getUserTodosPath(), id)
-let unsubscribeSnapshot = null;
+const getUserProjectsPath = () => `users/${getUserId()}/projects`;
+const getTodoDocPath = (id) => doc(getFirestore(), getUserTodosPath(), id);
+const getProjectDocPath = (name) => doc(getFirestore(), getUserProjectsPath(), name);
 
 const main = document.querySelector('main');
-const primaryNav = getPrimaryNav(projects);
-const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', projects);
+const primaryNav = getPrimaryNav(getProjects());
+const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', getProjects());
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), getTodos());
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));
 
@@ -192,12 +243,12 @@ document.addEventListener('hideModal', () => {
 document.addEventListener('eraseAllData', () => {
   KeedoStorage.clear();
   todoRenderer.render(getTodos());
-  primaryNav.renderProjects(projects);
+  primaryNav.renderProjects(getProjects());
 });
 
 document.addEventListener('createProject', (e) => {
   const { project } = e.detail;
-  projects.push(project);
+  getProjects().push(project);
   primaryNav.addProject(project);
   KeedoStorage.saveProjects();
 });
@@ -206,7 +257,7 @@ document.addEventListener('editProject', (e) => {
   const { project, newName, oldName } = e.detail;
   project.name = newName;
 
-  const index = projects.findIndex((p) => p === project);
+  const index = getProjects().findIndex((p) => p === project);
   primaryNav.getProjectListItems()[index].innerText = newName;
 
   getTodos().forEach((todo) => {
@@ -219,18 +270,18 @@ document.addEventListener('editProject', (e) => {
 
 document.addEventListener('sortProject', (e) => {
   const { newIndex, oldIndex } = e.detail;
-  const project = projects[oldIndex];
-  projects.splice(oldIndex, 1);
-  projects.splice(newIndex, 0, project);
-  primaryNav.renderProjects(projects, todoRenderer.currentProject?.name);
+  const project = getProjects()[oldIndex];
+  getProjects().splice(oldIndex, 1);
+  getProjects().splice(newIndex, 0, project);
+  primaryNav.renderProjects(getProjects(), todoRenderer.currentProject?.name);
   KeedoStorage.saveProjects();
 });
 
 document.addEventListener('deleteProject', (e) => {
   const { project } = e.detail;
-  const index = projects.findIndex((p) => p === project);
+  const index = getProjects().findIndex((p) => p === project);
 
-  projects.splice(index, 1);
+  getProjects().splice(index, 1);
   const selectedTab = primaryNav.getProjectListItems()[index];
   if (selectedTab.classList.contains('current')) {
     primaryNav.selectTab(primaryNav.allTab);
@@ -316,7 +367,7 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
     return;
   }
 
-  const project = projects.find((p) => p.name === tabName);
+  const project = getProjects().find((p) => p.name === tabName);
   todoRenderer.renderProject(project, getTodos());
 });
 
@@ -409,6 +460,7 @@ const authStateObserver = (user) => {
     primaryNav.signInTab.setAttribute('hidden', 'true');
     setUserProfileTab();
     loadTodos();
+    loadProjects();
     todoRenderer.render(getTodos());
     return;
   }
@@ -417,9 +469,11 @@ const authStateObserver = (user) => {
   primaryNav.signOutTab.setAttribute('hidden', 'true');
   unsetUserProfileTab();
   loadTodos();
+  loadProjects();
   todoRenderer.render(getTodos());
 }
 
 initializeApp(firebaseConfig);
 onAuthStateChanged(getAuth(), authStateObserver);
 loadTodos();
+loadProjects();
