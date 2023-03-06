@@ -3,7 +3,7 @@ import { getUserId, isUserSignedIn } from "./firebase-utils";
 import getPrimaryNav from "./getPrimaryNav";
 import KeedoStorage from "./KeedoStorage";
 import Project from "./Project";
-import { getTodos, updateTodo } from './todos-operations';
+import { getTodos, todoRenderer, updateTodo } from './todos-operations';
 
 let projects = KeedoStorage.loadProjects();
 let unsubscribeSnapshot = null;
@@ -20,13 +20,15 @@ if (projects === undefined) {
   KeedoStorage.saveProjects();
 }
 
-const onProjectsChange = (type, project) => {
-  if (type === 'added') {
-    projects.push(project);
-    primaryNav.addProject(project);
-    return;
-  }
+const createProjectDoc = (project) => {
+  setDoc(getProjectDocPath(project.name), {
+    ...project,
+    timestamp: serverTimestamp(),
+    createdByUserId: getUserId(),
+  });
+};
 
+const onProjectsChange = (type, project) => {
   if (type === 'removed') {
     let index = -1;
     projects = projects.filter((p, i) => {
@@ -34,6 +36,10 @@ const onProjectsChange = (type, project) => {
       index = i;
       return false;
     });
+
+    // it will be -1 when a rename operation is done
+    // and obviously not a delete
+    if (index === -1) return;
     
     const selectedTab = primaryNav.getProjectListItems()[index];
     if (selectedTab.classList.contains('current')) {
@@ -48,17 +54,34 @@ const onProjectsChange = (type, project) => {
       });
     });
   }
+
+  if (type !== 'added') return;
+  
+  const index = projects.findIndex((p) => p.position === project.position && p.name !== project.name);
+  if (index === -1) { // this means that it's a new project and not a rename
+    projects.push(project);
+    primaryNav.addProject(project);
+    return;
+  }
+  
+  // when a project has been renamed
+  const oldProject = projects[index];
+  projects[index] = project;
+  primaryNav.getProjectListItems()[index].textContent = project.name;
+  getTodos().forEach((todo) => {
+    if (todo.project !== oldProject.name) return;
+    updateTodo(todo, {
+      project: project.name,
+    });
+  });
+  todoRenderer.renderProject(project, getTodos());
 };
 
 const initializeProjects = async () => {
   const doc = await getDoc(getProjectDocPath('default'));
   if (doc.data() !== undefined) return;
 
-  setDoc(getProjectDocPath('default'), {
-    ...(new Project('default', 0)),
-    timestamp: serverTimestamp(),
-    createdByUserId: getUserId(),
-  });
+  createProjectDoc(new Project('default', 0))
 };
 
 const addProject = (project) => {
@@ -69,11 +92,7 @@ const addProject = (project) => {
     return;
   }
 
-  setDoc(getProjectDocPath(project.name), {
-    ...project,
-    timestamp: serverTimestamp(),
-    createdByUserId: getUserId(),
-  });
+  createProjectDoc(project);
 };
 
 const loadProjects = () => {
@@ -103,7 +122,11 @@ const updateProject = (project, fields) => {
     return;
   }
 
-  console.error('Updating project is currently disabled.');
+  createProjectDoc({
+    ...project,
+    ...fields,
+  });
+  deleteDoc(getProjectDocPath(project.name));
 };
 
 const deleteProject = (project) => {

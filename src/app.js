@@ -19,7 +19,7 @@ import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 import { addTodo, deleteTodo, getTodos, loadTodos, todoRenderer, updateTodo } from './scripts/todos-operations';
 import { signInUser, signOutUser } from './scripts/firebase-utils';
-import { addProject, deleteProject, getProjects, loadProjects } from './scripts/projects-operations';
+import { addProject, deleteProject, getProjects, loadProjects, updateProject } from './scripts/projects-operations';
 import authStateObserver from './scripts/authStateObserver';
 
 const main = document.querySelector('main');
@@ -79,18 +79,10 @@ document.addEventListener('createProject', (e) => {
 });
 
 document.addEventListener('editProject', (e) => {
-  const { project, newName, oldName } = e.detail;
-  project.name = newName;
-
-  const index = getProjects().findIndex((p) => p === project);
-  primaryNav.getProjectListItems()[index].innerText = newName;
-
-  getTodos().forEach((todo) => {
-    if (todo.project === oldName) todo.project = newName;
+  const { project, newName } = e.detail;
+  updateProject(project, {
+    name: newName,
   });
-  todoRenderer.replaceCardsContent(newName, oldName);
-  KeedoStorage.saveTodos();
-  KeedoStorage.saveProjects();
 });
 
 document.addEventListener('sortProject', (e) => {
