@@ -15,16 +15,12 @@ import {
 import {
   getFirestore,
   collection,
-  addDoc,
-  query,
-  orderBy,
-  limit,
   onSnapshot,
   setDoc,
   updateDoc,
   doc,
   serverTimestamp,
-  where,
+  deleteDoc,
 } from 'firebase/firestore';
 import firebaseConfig from './firebase-config';
 import getPrimaryNav from './scripts/getPrimaryNav';
@@ -64,11 +60,23 @@ const { getTodos, loadTodos, projects } = (() => {
     todos = [];
     unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserTodosPath()), (snapshot) => {
       snapshot.docChanges().forEach((change) => {
+        const todo = change.doc.data();
+        
         if (change.type === 'added') {
-          const todo = change.doc.data();
           todos.push(todo);
+        }
+        
+        todoRenderer.removeCardById(todo.id);
+        
+        if (change.type === 'removed') {
+          todos = todos.filter((t) => t.id !== todo.id);
+        } else {
+          const modifiedTodoIndex = todos.findIndex((t) => t.id === todo.id);
+          todos[modifiedTodoIndex] = todo;
           todoRenderer.renderTodo(todo);
         }
+        
+        console.log('DB updated. Local state:', todos)
       })
     });
   };
@@ -85,6 +93,7 @@ const { getTodos, loadTodos, projects } = (() => {
 const isUserSignedIn = () => !!getAuth().currentUser;
 const getUserId = () => getAuth().currentUser.uid;
 const getUserTodosPath = () => `users/${getUserId()}/todos`;
+const getTodoDocPath = (id) => doc(getFirestore(), getUserTodosPath(), id)
 let unsubscribeSnapshot = null;
 
 const main = document.querySelector('main');
@@ -265,48 +274,41 @@ document.addEventListener('selectPrimaryNavTab', (e) => {
 });
 
 main.addEventListener('checkedTodo', (e) => {
-  const { todo, card } = e.detail;
-  todo.checked = true;
-  todoRenderer.removeCard(card);
-  todoRenderer.renderTodo(todo);
-  KeedoStorage.saveTodos();
+  const { todo } = e.detail;
+  updateDoc(getTodoDocPath(todo.id), {
+    checked: true,
+  });
 });
 
 main.addEventListener('uncheckedTodo', (e) => {
-  const { todo, card } = e.detail;
-  todo.checked = false;
-  todoRenderer.removeCard(card);
-  todoRenderer.renderTodo(todo);
-  KeedoStorage.saveTodos();
+  const { todo } = e.detail;
+  updateDoc(getTodoDocPath(todo.id), {
+    checked: false,
+  });
 });
 
 main.addEventListener('editTodo', (e) => {
-  const { todo, card } = e.detail;
+  const { todo } = e.detail;
   todoModal.title = 'Editing todo';
   todoModal.confirmButton.innerText = 'Save';
   todoModal.show(todo, (editedTodo) => {
-    getTodos().splice(getTodos().findIndex((t) => t === todo), 1);
-    todoRenderer.removeCard(card);
-    getTodos().push(editedTodo);
-    todoRenderer.renderTodo(editedTodo);
-    KeedoStorage.saveTodos();
+    updateDoc(getTodoDocPath(todo.id), {
+      ...editedTodo,
+      id: todo.id, // stay consistent with id since editedTodo is a modified COPY of the original todo AND it makes sure to remove the old unedited one
+    });
   });
 });
 
 main.addEventListener('deleteTodo', (e) => {
-  const { todo, card } = e.detail;
-  const indexToRemove = getTodos().findIndex((t) => t === todo);
-  getTodos().splice(indexToRemove, 1);
-  todoRenderer.removeCard(card);
-  KeedoStorage.saveTodos();
+  const { todo } = e.detail;
+  deleteDoc(getTodoDocPath(todo.id));
 });
 
 main.addEventListener('changeTodoPriority', (e) => {
-  const { todo, card, newPriority } = e.detail;
-  todo.priority = newPriority;
-  todoRenderer.removeCard(card);
-  todoRenderer.renderTodo(todo);
-  KeedoStorage.saveTodos();
+  const { todo, newPriority } = e.detail;
+  updateDoc(getTodoDocPath(todo.id), {
+    priority: newPriority,
+  });
 });
 
 const saveTodoDB = async (todo) => {
@@ -315,7 +317,7 @@ const saveTodoDB = async (todo) => {
   }
 
   try {
-    await setDoc(doc(getFirestore(), getUserTodosPath(), todo.id), {
+    await setDoc(getTodoDocPath(todo.id), {
       ...todo,
       timestamp: serverTimestamp(),
       createdByUserId: getUserId(),
@@ -339,9 +341,7 @@ main.addEventListener('editWriteTodoInput', (e) => {
   todoModal.title = 'Creating todo';
   todoModal.confirmButton.innerText = 'Create';
   todoModal.show({ title: e.detail, project: todoRenderer.currentProject?.name }, (todo) => {
-    getTodos().push(todo);
-    todoRenderer.renderTodo(todo);
-    KeedoStorage.saveTodos();
+    saveTodoDB(todo);
   });
 });
 
