@@ -2,9 +2,9 @@ import ProjectModal from './Modal/ProjectModal';
 
 let projectModal = null;
 const primaryNav = document.querySelector('.primary-nav');
-export default function (projects) {
-  projectModal = new ProjectModal(document.querySelector('.project-modal'), projects);
-  primaryNav.renderProjects(projects);
+export default function (getProjectsCallback) {
+  projectModal = new ProjectModal(document.querySelector('.project-modal'), getProjectsCallback);
+  primaryNav.renderProjects(getProjectsCallback());
   return primaryNav;
 }
 

@@ -199,7 +199,7 @@ const getTodoDocPath = (id) => doc(getFirestore(), getUserTodosPath(), id);
 const getProjectDocPath = (name) => doc(getFirestore(), getUserProjectsPath(), name);
 
 const main = document.querySelector('main');
-const primaryNav = getPrimaryNav(getProjects());
+const primaryNav = getPrimaryNav(getProjects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', getProjects());
 const todoRenderer = new TodoRenderer(document.querySelector('.todos'), getTodos());
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));

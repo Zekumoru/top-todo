@@ -3,15 +3,15 @@ import Project from '../Project';
 import Modal from './Modal';
 
 export default class extends Modal {
-  #projects;
+  #getProjects;
   #createInput;
   #createButton;
   #enterButton;
   #list;
 
-  constructor(element, projects) {
+  constructor(element, getProjectsCallback) {
     super(element);
-    this.#projects = projects;
+    this.#getProjects = getProjectsCallback;
     this.#createInput = element.querySelector('.create-input');
     this.#createButton = element.querySelector('button.create');
     this.#enterButton = element.querySelector('button.enter');
@@ -23,7 +23,7 @@ export default class extends Modal {
   }
 
   show() {
-    this.#renderList(this.#projects);
+    this.#renderList(this.#getProjects());
     super.show();
   }
 
@@ -60,7 +60,7 @@ export default class extends Modal {
         return;
       }
       if (input.value === project.name) return;
-      if (this.#projects.some((p) => p.name === input.value)) {
+      if (this.#getProjects().some((p) => p.name === input.value)) {
         input.value = project.name;
         return;
       }
@@ -211,7 +211,7 @@ export default class extends Modal {
   #createNewProject() {
     if (!this.#createInput.value) return;
     this.#createInput.value = this.#createInput.value.trim();
-    if (this.#projects.some((p) => p.name === this.#createInput.value)) return;
+    if (this.#getProjects().some((p) => p.name === this.#createInput.value)) return;
     const project = new Project(this.#createInput.value);
 
     const createProjectEvent = new CustomEvent('createProject', {
