@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { getUserId, isUserSignedIn } from "./firebase-utils";
 import getPrimaryNav from "./getPrimaryNav";
 import KeedoStorage from "./KeedoStorage";
@@ -63,18 +63,24 @@ const onProjectsChange = (type, project) => {
     primaryNav.addProject(project);
     return;
   }
-  
+  console.warn('rename operation underway');
   // when a project has been renamed
   const oldProject = projects[index];
+  const navTab = primaryNav.getProjectListItems()[index];
+
   projects[index] = project;
-  primaryNav.getProjectListItems()[index].textContent = project.name;
+  navTab.textContent = project.name
+
   getTodos().forEach((todo) => {
     if (todo.project !== oldProject.name) return;
     updateTodo(todo, {
       project: project.name,
     });
   });
-  todoRenderer.renderProject(project, getTodos());
+
+  if (navTab === primaryNav.getCurrentTab()) {
+    todoRenderer.renderProject(project, getTodos());
+  }
 };
 
 const initializeProjects = async () => {
@@ -122,11 +128,19 @@ const updateProject = (project, fields) => {
     return;
   }
 
-  createProjectDoc({
-    ...project,
+  // Rename operation
+  if (fields.name && fields.name !== project.name) {
+    createProjectDoc({
+      ...project,
+      ...fields,
+    });
+    deleteDoc(getProjectDocPath(project.name));
+    return;
+  }
+
+  updateDoc(getProjectDocPath(project.name), {
     ...fields,
   });
-  deleteDoc(getProjectDocPath(project.name));
 };
 
 const deleteProject = (project) => {

@@ -42,6 +42,8 @@ primaryNav.userProfileTab = userProfileTab
 primaryNav.userProfileTab.pic = userProfileTab.querySelector('.user-pic');
 primaryNav.userProfileTab.name = userProfileTab.querySelector('.user-name');
 
+primaryNav.getCurrentTab = () => primaryNav.querySelector('li.current');
+
 primaryNav.isOpen = function () {
   return (primaryNav.style.left === '0px');
 };
