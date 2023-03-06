@@ -132,7 +132,7 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo } = (() => {
   };
 })();
 
-const { getProjects, loadProjects } = (() => {
+const { getProjects, loadProjects, addProject } = (() => {
   let projects = KeedoStorage.loadProjects();
   let unsubscribeSnapshot = null;
 
@@ -145,18 +145,31 @@ const { getProjects, loadProjects } = (() => {
   const onProjectsChange = (type, project) => {
     if (type === 'added') {
       projects.push(project);
+      primaryNav.addProject(project);
     }
-
-    // type === 'modified'
-    primaryNav.addProject(project);
   };
 
   const initializeProjects = async () => {
     const doc = await getDoc(getProjectDocPath('default'));
-    if (doc.data() !== 'undefined') return;
+    if (doc.data() !== undefined) return;
 
     setDoc(getProjectDocPath('default'), {
-      ...(new Project('default')),
+      ...(new Project('default', 0)),
+      timestamp: serverTimestamp(),
+      createdByUserId: getUserId(),
+    });
+  };
+
+  const addProject = (project) => {
+    if (!isUserSignedIn()) {
+      projects.push(project);
+      primaryNav.addProject(project);
+      KeedoStorage.saveProjects();
+      return;
+    }
+
+    setDoc(getProjectDocPath(project.name), {
+      ...project,
       timestamp: serverTimestamp(),
       createdByUserId: getUserId(),
     });
@@ -186,6 +199,7 @@ const { getProjects, loadProjects } = (() => {
   const getProjects = () => projects;
   
   return {
+    addProject,
     loadProjects,
     getProjects,
   }
@@ -244,7 +258,7 @@ document.addEventListener('hideModal', () => {
   primaryNav.inert = false;
 });
 
-document.addEventListener('eraseAllData', () => {
+document.addEventListener('eraseAllData', () => { // TODO: TO IMPLEMENT FOR FIREBASE!!
   KeedoStorage.clear();
   todoRenderer.render(getTodos());
   primaryNav.renderProjects(getProjects());
@@ -252,9 +266,7 @@ document.addEventListener('eraseAllData', () => {
 
 document.addEventListener('createProject', (e) => {
   const { project } = e.detail;
-  getProjects().push(project);
-  primaryNav.addProject(project);
-  KeedoStorage.saveProjects();
+  addProject(project);
 });
 
 document.addEventListener('editProject', (e) => {
