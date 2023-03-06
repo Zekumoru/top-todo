@@ -56,6 +56,7 @@ const { addTodo, getTodos, loadTodos, updateTodo, deleteTodo } = (() => {
       return;
     }
 
+    // type === 'modified'
     const modifiedTodoIndex = todos.findIndex((t) => t.id === todo.id);
     todos[modifiedTodoIndex] = todo;
     todoRenderer.renderTodo(todo);
@@ -145,6 +146,9 @@ const { getProjects, loadProjects } = (() => {
     if (type === 'added') {
       projects.push(project);
     }
+
+    // type === 'modified'
+    primaryNav.addProject(project);
   };
 
   const initializeProjects = async () => {
@@ -462,6 +466,7 @@ const authStateObserver = (user) => {
     loadTodos();
     loadProjects();
     todoRenderer.render(getTodos());
+    primaryNav.renderProjects(getProjects(), 'default');
     return;
   }
   
@@ -471,6 +476,7 @@ const authStateObserver = (user) => {
   loadTodos();
   loadProjects();
   todoRenderer.render(getTodos());
+  primaryNav.renderProjects(getProjects(), 'default');
 }
 
 initializeApp(firebaseConfig);
