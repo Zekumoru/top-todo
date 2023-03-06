@@ -31,7 +31,7 @@ const authStateObserver = (user) => {
     loadTodos();
     loadProjects();
     todoRenderer.render(getTodos());
-    primaryNav.renderProjects(getProjects(), 'default');
+    primaryNav.renderProjects(getProjects());
     return;
   }
   
@@ -41,7 +41,7 @@ const authStateObserver = (user) => {
   loadTodos();
   loadProjects();
   todoRenderer.render(getTodos());
-  primaryNav.renderProjects(getProjects(), 'default');
+  primaryNav.renderProjects(getProjects());
 }
 
 export default authStateObserver;
