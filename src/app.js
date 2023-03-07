@@ -17,7 +17,7 @@ import Todo from './scripts/Todo';
 import KeedoStorage from './scripts/KeedoStorage';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
-import { addProject, deleteProject, getProjects, loadProjects, renameProject, swapProjects } from './scripts/projects-operations';
+import { addProject, deleteProject, getProjects, loadProjects, renameProject, sortProjects } from './scripts/projects-operations';
 import { addTodo, deleteTodo, getTodos, loadTodos, todoRenderer, updateTodo } from './scripts/todos-operations';
 import { signInUser, signOutUser } from './scripts/firebase-utils';
 import authStateObserver from './scripts/authStateObserver';
@@ -85,9 +85,7 @@ document.addEventListener('editProject', (e) => {
 
 document.addEventListener('sortProject', (e) => {
   const { newIndex, oldIndex } = e.detail;
-  const p1 = getProjects()[newIndex];
-  const p2 = getProjects()[oldIndex];
-  swapProjects(p1, p2);
+  sortProjects(newIndex, oldIndex);
 });
 
 document.addEventListener('deleteProject', (e) => {

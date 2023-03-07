@@ -1,8 +1,9 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc, where, writeBatch } from "firebase/firestore";
+import { collection, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, updateDoc, writeBatch } from "firebase/firestore";
 import { getUserId, isUserSignedIn } from "./firebase-utils";
 import getPrimaryNav from "./getPrimaryNav";
 import KeedoStorage from "./KeedoStorage";
 import Project from "./Project";
+import createProjectPosition from "./createProjectPosition";
 import { getTodos, todoRenderer, updateTodo } from './todos-operations';
 
 let projects = KeedoStorage.loadProjects();
@@ -19,18 +20,39 @@ const primaryNav = getPrimaryNav(getProjects);
 
 const getUserProjectsPath = () => `users/${getUserId()}/projects`;
 const getProjectDocPath = (id) => doc(getFirestore(), getUserProjectsPath(), id);
+const getProjectsDocRef = () => doc(getFirestore(), getUserProjectsPath(), 'projects');
 
-const createProjectDoc = (project) => {
-  setDoc(getProjectDocPath(project.id), {
-    ...project,
-    timestamp: serverTimestamp(),
-    createdByUserId: getUserId(),
-  });
+const getMetadata = () => ({
+  timestamp: serverTimestamp(),
+  createdByUserId: getUserId(),
+});
+
+const performBatch = (callback) => {
+  if (typeof callback !== 'function') return;
+
+  const batch = writeBatch(getFirestore());
+  callback(batch);
+  batch.commit();
 };
 
-const onProjectsChange = (type, project) => {
+const handleProjectsChange = (type, newProjects) => {
+  if (type !== 'modified') return;
+  if (newProjects.length !== projects.length) return;
+
+  const sorted = projects.reduce((sorted, project, index) => {
+    if (sorted) return true;
+    return project.id !== newProjects[index].id;
+  }, false);
+
+  if (!sorted) return;
+
+  projects = newProjects;
+  primaryNav.renderProjects(projects);
+};
+
+const handleProjectChange = (type, project) => {
   if (type === 'added') {
-    projects.push(project);
+    projects.push(createProjectPosition(project));
     primaryNav.addProject(project);
     return;
   }
@@ -42,50 +64,73 @@ const onProjectsChange = (type, project) => {
   }
 
   const renamedIndex = projects.findIndex((p) => p.id === project.id && p.name !== project.name);
-  if (renamedIndex !== -1) {
-    const oldProjectName = projects[renamedIndex].name;
-    projects[renamedIndex] = project;
-    getTodos().forEach((todo) => {
-      if (todo.project !== oldProjectName) return;
-      updateTodo(todo, {
-        project: project.name,
-      });
-    });
-    
-    const projectListItem = primaryNav.getProject(project);
-    projectListItem.textContent = project.name;
-    if (projectListItem.classList.contains('current')) {
-      todoRenderer.renderProject(project, getTodos());
-    }
-    
-    return;
-  }
+  if (renamedIndex === -1) return;
 
-  const firstSwappedIndex = projects.findIndex((p) => p.id === project.id && p.position !== project.position);
-  if (firstSwappedIndex !== -1) {
-    const secondSwappedIndex = projects.findIndex((p) => p.position === project.position);
-    projects[secondSwappedIndex].position = projects[firstSwappedIndex].position;
-    [projects[firstSwappedIndex], projects[secondSwappedIndex]] = [projects[secondSwappedIndex], project];
-    primaryNav.renderProjects(projects);
+  const oldProjectName = projects[renamedIndex].name;
+  projects[renamedIndex] = project;
+  getTodos().forEach((todo) => {
+    if (todo.project !== oldProjectName) return;
+    updateTodo(todo, {
+      project: project.name,
+    });
+  });
+  
+  const projectListItem = primaryNav.getProject(project);
+  projectListItem.textContent = project.name;
+  if (projectListItem.classList.contains('current')) {
+    todoRenderer.renderProject(project, getTodos());
   }
 };
 
-const initializeProjects = async () => {
-  const querySnapshot = await getDocs(query(collection(getFirestore(), getUserProjectsPath()), where('name', '==', 'default'), limit(1)));
-  if (querySnapshot.size > 0) return;
+const handleChange = (type, projectOrProjects) => {
+  if ('projects' in projectOrProjects) {
+    handleProjectsChange(type, projectOrProjects.projects);
+    return;
+  }
+  
+  handleProjectChange(type, projectOrProjects);
+};
 
-  createProjectDoc(new Project('default', 0));
+const initializeProjects = async () => {
+  const projectsDoc = await getDoc(getProjectsDocRef());
+  if (projectsDoc.exists()) return;
+
+  const defaultProject = new Project('default');
+
+  performBatch((batch) => {
+    batch.set(getProjectDocPath(defaultProject.id), {
+      ...getMetadata(),
+      ...defaultProject,
+    });
+  
+    batch.set(getProjectsDocRef(), {
+      ...getMetadata(),
+      projects: [ createProjectPosition(defaultProject) ],
+    });
+  });
 };
 
 const addProject = (project) => {
   if (!isUserSignedIn()) {
-    onProjectsChange('added', project);
+    handleChange('added', project);
     KeedoStorage.projects = projects;
     KeedoStorage.saveProjects();
     return;
   }
 
-  createProjectDoc(project);
+  performBatch((batch) => {
+    batch.set(getProjectDocPath(project.id), {
+      ...getMetadata(),
+      ...project,
+    });
+  
+    batch.update(getProjectsDocRef(), {
+      projects: [
+        ...projects,
+        createProjectPosition(project),
+      ],
+    });
+  });
 };
 
 const loadProjects = async () => {
@@ -101,50 +146,83 @@ const loadProjects = async () => {
 
   projects = [];
   await initializeProjects();
-  unsubscribeSnapshot = onSnapshot(query(collection(getFirestore(), getUserProjectsPath()), orderBy('position')), (snapshot) => {
+  unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserProjectsPath()), (snapshot) => {
+    let overrideProjects = () => {};
     snapshot.docChanges().forEach((change) => {
-      const project = change.doc.data();
-      onProjectsChange(change.type, project);
+      const data = change.doc.data();
+      if (change.type === 'added' && 'projects' in data) {
+        overrideProjects = () => {
+          projects = data.projects;
+          primaryNav.renderProjects(projects);
+        };
+      }
+      handleChange(change.type, data);
     });
+    overrideProjects();
   });
 };
 
 const renameProject = (project, newName) => {
   if (!isUserSignedIn()) {
-    console.error('Renaming project using local storage is currently disabled.');
-    return;
-  }
-
-  updateDoc(getProjectDocPath(project.id), {
-    name: newName,
-  });
-};
-
-const swapProjects = (p1, p2) => {
-  if (!isUserSignedIn()) {
-    console.error('Swapping projects using local storage is currently disabled.');
-    return;
-  }
-
-  const batch = writeBatch(getFirestore());
-  batch.update(getProjectDocPath(p1.id), {
-    position: p2.position,
-  });
-  batch.update(getProjectDocPath(p2.id), {
-    position: p1.position,
-  });
-  batch.commit();
-}
-
-const deleteProject = (project) => {
-  if (!isUserSignedIn()) {
-    onProjectsChange('removed', project);
+    handleChange('modified', {
+      ...project,
+      name: newName,
+    });
     KeedoStorage.projects = projects;
     KeedoStorage.saveProjects();
     return;
   }
 
-  deleteDoc(getProjectDocPath(project.id));
+  performBatch((batch) => {
+    batch.update(getProjectDocPath(project.id), {
+      name: newName,
+    });
+
+    batch.update(getProjectsDocRef(), {
+      projects: projects.map((p) => {
+        if (p.id === project.id) {
+          return {
+            ...p,
+            name: newName,
+          };
+        }
+        return p;
+      }),
+    });
+  });
+};
+
+const sortProjects = (newIndex, oldIndex) => {
+  if (!isUserSignedIn()) {
+    console.warn('Sorting currently disabled for local storage');
+    return;
+  }
+
+  const project = projects[oldIndex];
+  const filteredOut = projects.filter((p, i) => i !== oldIndex);
+  updateDoc(getProjectsDocRef(), {
+    projects: [
+      ...filteredOut.slice(0, newIndex),
+      project,
+      ...filteredOut.slice(newIndex),
+    ],
+  });
 }
 
-export { getProjects, loadProjects, addProject, renameProject, swapProjects, deleteProject };
+const deleteProject = (project) => {
+  if (!isUserSignedIn()) {
+    handleChange('removed', project);
+    KeedoStorage.projects = projects;
+    KeedoStorage.saveProjects();
+    return;
+  }
+
+  performBatch((batch) => {
+    batch.delete(getProjectDocPath(project.id));
+    batch.update(getProjectsDocRef(), {
+      projects: projects.filter((p) => p.id !== project.id),
+    });
+  });
+}
+
+export { getProjects, loadProjects, addProject, renameProject, sortProjects, deleteProject };
