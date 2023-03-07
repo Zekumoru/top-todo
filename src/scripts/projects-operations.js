@@ -1,8 +1,7 @@
-import { collection, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, updateDoc, writeBatch } from "firebase/firestore";
-import { getUserId, isUserSignedIn } from "./firebase-utils";
+import { collection, doc, getDoc, getFirestore, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
+import { getUserId, isUserSignedIn, performBatch } from "./firebase-utils";
 import getPrimaryNav from "./getPrimaryNav";
 import KeedoStorage from "./KeedoStorage";
-import Project from "./Project";
 import createProjectPosition from "./createProjectPosition";
 import { getTodos, todoRenderer, updateTodo } from './todos-operations';
 
@@ -26,14 +25,6 @@ const getMetadata = () => ({
   timestamp: serverTimestamp(),
   createdByUserId: getUserId(),
 });
-
-const performBatch = (callback) => {
-  if (typeof callback !== 'function') return;
-
-  const batch = writeBatch(getFirestore());
-  callback(batch);
-  batch.commit();
-};
 
 const handleProjectsChange = (type, newProjects) => {
   if (type !== 'modified') return;
@@ -95,17 +86,17 @@ const initializeProjects = async () => {
   const projectsDoc = await getDoc(getProjectsDocRef());
   if (projectsDoc.exists()) return;
 
-  const defaultProject = new Project('default');
-
   performBatch((batch) => {
-    batch.set(getProjectDocPath(defaultProject.id), {
-      ...getMetadata(),
-      ...defaultProject,
+    projects.forEach((project) => {
+      batch.set(getProjectDocPath(project.id), {
+        ...getMetadata(),
+        ...project,
+      });
     });
-  
+
     batch.set(getProjectsDocRef(), {
       ...getMetadata(),
-      projects: [ createProjectPosition(defaultProject) ],
+      projects: projects.map((p) => createProjectPosition(p)),
     });
   });
 };
@@ -144,8 +135,9 @@ const loadProjects = async () => {
     unsubscribeSnapshot();
   }
 
-  projects = [];
   await initializeProjects();
+
+  projects = [];
   unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserProjectsPath()), (snapshot) => {
     let overrideProjects = () => {};
     snapshot.docChanges().forEach((change) => {

@@ -1,5 +1,5 @@
-import { collection, deleteDoc, doc, getFirestore, onSnapshot, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
-import { getUserId, isUserSignedIn } from "./firebase-utils";
+import { collection, deleteDoc, doc, getDocs, getFirestore, limit, onSnapshot, query, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { getUserId, isUserSignedIn, performBatch } from "./firebase-utils";
 import KeedoStorage from "./KeedoStorage";
 import TodoRenderer from "./TodoRenderer/TodoRenderer";
 
@@ -33,6 +33,21 @@ const onTodosChange = (type, todo) => {
   todoRenderer.renderTodo(todo);
 };
 
+const initializeTodos = async () => {
+  const todosDocs = await getDocs(query(collection(getFirestore(), getUserTodosPath()), limit(1)));
+  if (todosDocs.size > 0) return;
+
+  performBatch((batch) => {
+    todos.forEach((todo) => {
+      batch.set(getTodoDocPath(todo.id), {
+        ...todo,
+        timestamp: serverTimestamp(),
+        createdByUserId: getUserId(),
+      });
+    });
+  });
+};
+
 const addTodo = (todo) => {
   if (!isUserSignedIn()) {
     onTodosChange('added', todo);
@@ -47,7 +62,7 @@ const addTodo = (todo) => {
   });
 };
 
-const loadTodos = () => {
+const loadTodos = async () => {
   if (!isUserSignedIn()) {
     todos = KeedoStorage.loadTodos();
     KeedoStorage.todos = todos;
@@ -57,6 +72,8 @@ const loadTodos = () => {
   if (typeof unsubscribeSnapshot === 'function') {
     unsubscribeSnapshot();
   }
+
+  await initializeTodos();
 
   todos = [];
   unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserTodosPath()), (snapshot) => {
