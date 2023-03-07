@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc, where, writeBatch } from "firebase/firestore";
 import { getUserId, isUserSignedIn } from "./firebase-utils";
 import getPrimaryNav from "./getPrimaryNav";
 import KeedoStorage from "./KeedoStorage";
@@ -18,10 +18,10 @@ const getProjects = () => projects;
 const primaryNav = getPrimaryNav(getProjects);
 
 const getUserProjectsPath = () => `users/${getUserId()}/projects`;
-const getProjectDocPath = (name) => doc(getFirestore(), getUserProjectsPath(), name);
+const getProjectDocPath = (id) => doc(getFirestore(), getUserProjectsPath(), id);
 
 const createProjectDoc = (project) => {
-  setDoc(getProjectDocPath(project.name), {
+  setDoc(getProjectDocPath(project.id), {
     ...project,
     timestamp: serverTimestamp(),
     createdByUserId: getUserId(),
@@ -38,15 +38,29 @@ const onProjectsChange = (type, project) => {
   if (type === 'removed') {
     projects = projects.filter((p) => p.name !== project.name);
     primaryNav.removeProject(project);
-    
+    return;
+  }
+
+  const renamedIndex = projects.findIndex((p) => p.id === project.id && p.name !== project.name);
+  if (renamedIndex !== -1) {
+    const oldProjectName = projects[renamedIndex].name;
+    projects[renamedIndex] = project;
+    primaryNav.getProject(project).textContent = project.name;
+
+    getTodos().forEach((todo) => {
+      if (todo.project !== oldProjectName) return;
+      updateTodo(todo, {
+        project: project.name,
+      });
+    })
   }
 };
 
 const initializeProjects = async () => {
-  const doc = await getDoc(getProjectDocPath('default'));
-  if (doc.data() !== undefined) return;
+  const querySnapshot = await getDocs(query(collection(getFirestore(), getUserProjectsPath()), where('name', '==', 'default'), limit(1)));
+  if (querySnapshot.size > 0) return;
 
-  createProjectDoc(new Project('default', 0))
+  createProjectDoc(new Project('default', 0));
 };
 
 const addProject = (project) => {
@@ -60,7 +74,7 @@ const addProject = (project) => {
   createProjectDoc(project);
 };
 
-const loadProjects = () => {
+const loadProjects = async () => {
   if (!isUserSignedIn()) {
     projects = KeedoStorage.loadProjects();
     KeedoStorage.projects = projects;
@@ -72,7 +86,7 @@ const loadProjects = () => {
   }
 
   projects = [];
-  initializeProjects();
+  await initializeProjects();
   unsubscribeSnapshot = onSnapshot(query(collection(getFirestore(), getUserProjectsPath()), orderBy('position')), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       const project = change.doc.data();
@@ -84,8 +98,12 @@ const loadProjects = () => {
 const renameProject = (project, newName) => {
   if (!isUserSignedIn()) {
     console.error('Renaming project using local storage is currently disabled.');
-    
+    return;
   }
+
+  updateDoc(getProjectDocPath(project.id), {
+    name: newName,
+  });
 };
 
 const swapProjects = (p1, p2) => {
@@ -103,7 +121,7 @@ const deleteProject = (project) => {
     return;
   }
 
-  deleteDoc(getProjectDocPath(project.name));
+  deleteDoc(getProjectDocPath(project.id));
 }
 
 export { getProjects, loadProjects, addProject, renameProject, swapProjects, deleteProject };
