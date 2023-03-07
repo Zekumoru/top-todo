@@ -54,7 +54,29 @@ primaryNav.getProjectListItems = function () {
 
 primaryNav.addProject = function (project) {
   const projectListItem = createProjectListItem(project);
+  if (project.name === 'default') {
+    projectListItem.classList.add('default');
+  }
+  
   projectList.appendChild(projectListItem);
+};
+
+primaryNav.removeProject = function (project) {
+  let projectToRemove = null;
+
+  for (let i = 0; i < projectList.children.length; i++) {
+    const projectListItem = projectList.children[i];
+    if (projectListItem.getProjectName() === project.name) {
+      projectToRemove = projectListItem;
+      break;
+    }
+  }
+
+  if (projectToRemove === null) {
+    throw new Error(`Error: Cannot remove project ${project.name} because it does not exist in the nav project list.`)
+  } 
+
+  projectToRemove.remove();
 };
 
 primaryNav.renderProjects = function (projects, selectProject) {
@@ -131,6 +153,7 @@ function createProjectListItem(project) {
   const projectListItem = document.createElement('li');
   projectListItem.tabIndex = '0';
   projectListItem.innerText = project.name;
+  projectListItem.getProjectName = () => project.name;
 
   projectListItem.addEventListener('click', () => selectTab(projectListItem));
   projectListItem.addEventListener('keyup', (e) => {
