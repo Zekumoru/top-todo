@@ -45,14 +45,28 @@ const onProjectsChange = (type, project) => {
   if (renamedIndex !== -1) {
     const oldProjectName = projects[renamedIndex].name;
     projects[renamedIndex] = project;
-    primaryNav.getProject(project).textContent = project.name;
-
     getTodos().forEach((todo) => {
       if (todo.project !== oldProjectName) return;
       updateTodo(todo, {
         project: project.name,
       });
-    })
+    });
+    
+    const projectListItem = primaryNav.getProject(project);
+    projectListItem.textContent = project.name;
+    if (projectListItem.classList.contains('current')) {
+      todoRenderer.renderProject(project, getTodos());
+    }
+    
+    return;
+  }
+
+  const firstSwappedIndex = projects.findIndex((p) => p.id === project.id && p.position !== project.position);
+  if (firstSwappedIndex !== -1) {
+    const secondSwappedIndex = projects.findIndex((p) => p.position === project.position);
+    projects[secondSwappedIndex].position = projects[firstSwappedIndex].position;
+    [projects[firstSwappedIndex], projects[secondSwappedIndex]] = [projects[secondSwappedIndex], project];
+    primaryNav.renderProjects(projects);
   }
 };
 
@@ -109,8 +123,17 @@ const renameProject = (project, newName) => {
 const swapProjects = (p1, p2) => {
   if (!isUserSignedIn()) {
     console.error('Swapping projects using local storage is currently disabled.');
-    
+    return;
   }
+
+  const batch = writeBatch(getFirestore());
+  batch.update(getProjectDocPath(p1.id), {
+    position: p2.position,
+  });
+  batch.update(getProjectDocPath(p2.id), {
+    position: p1.position,
+  });
+  batch.commit();
 }
 
 const deleteProject = (project) => {
