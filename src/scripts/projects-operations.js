@@ -193,19 +193,23 @@ const renameProject = (project, newName) => {
 };
 
 const sortProjects = (newIndex, oldIndex) => {
+  const project = projects[oldIndex];
+  const filteredOut = projects.filter((p, i) => i !== oldIndex);
+  const sortedProjects = [
+    ...filteredOut.slice(0, newIndex),
+    project,
+    ...filteredOut.slice(newIndex),
+  ];
+
   if (!isUserSignedIn()) {
-    console.warn('Sorting currently disabled for local storage');
+    handleChange('modified', { projects: sortedProjects });
+    KeedoStorage.projects = projects;
+    KeedoStorage.saveProjects();
     return;
   }
 
-  const project = projects[oldIndex];
-  const filteredOut = projects.filter((p, i) => i !== oldIndex);
   updateDoc(getProjectsDocRef(), {
-    projects: [
-      ...filteredOut.slice(0, newIndex),
-      project,
-      ...filteredOut.slice(newIndex),
-    ],
+    projects: sortedProjects,
   });
 }
 
