@@ -17,9 +17,9 @@ import Todo from './scripts/Todo';
 import KeedoStorage from './scripts/KeedoStorage';
 import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
+import { addProject, deleteProject, getProjects, loadProjects, renameProject } from './scripts/projects-operations';
 import { addTodo, deleteTodo, getTodos, loadTodos, todoRenderer, updateTodo } from './scripts/todos-operations';
 import { signInUser, signOutUser } from './scripts/firebase-utils';
-import { addProject, deleteProject, getProjects, loadProjects, updateProject } from './scripts/projects-operations';
 import authStateObserver from './scripts/authStateObserver';
 
 const main = document.querySelector('main');
@@ -80,18 +80,15 @@ document.addEventListener('createProject', (e) => {
 
 document.addEventListener('editProject', (e) => {
   const { project, newName } = e.detail;
-  updateProject(project, {
-    name: newName,
-  });
+  renameProject(project, newName);
 });
 
 document.addEventListener('sortProject', (e) => {
   const { newIndex, oldIndex } = e.detail;
-  const project = getProjects()[oldIndex];
-  getProjects().splice(oldIndex, 1);
-  getProjects().splice(newIndex, 0, project);
-  primaryNav.renderProjects(getProjects(), todoRenderer.currentProject?.name);
-  KeedoStorage.saveProjects();
+  const p1 = getProjects()[newIndex];
+  const p2 = getProjects()[oldIndex];
+  
+  console.error('Swapping currently disabled');
 });
 
 document.addEventListener('deleteProject', (e) => {
