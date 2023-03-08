@@ -51,6 +51,12 @@ const handleProjectChange = (type, project) => {
   if (type === 'removed') {
     projects = projects.filter((p) => p.name !== project.name);
     primaryNav.removeProject(project);
+    getTodos().forEach((todo) => {
+      if (todo.project !== project.name) return;
+      updateTodo(todo, {
+        project: 'default',
+      });
+    });
     return;
   }
 
