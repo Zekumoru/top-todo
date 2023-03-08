@@ -15,7 +15,6 @@ import writeTodoBar from './scripts/writeTodoBar';
 import TodoModal from './scripts/Modal/TodoModal';
 import Todo from './scripts/Todo';
 import KeedoStorage from './scripts/KeedoStorage';
-import loadTutorial from './scripts/loadTutorial';
 import AboutModal from './scripts/Modal/AboutModal';
 import { addProject, deleteProject, getProjects, loadProjects, renameProject, sortProjects } from './scripts/projects-operations';
 import { addTodo, deleteTodo, getTodos, loadTodos, todoRenderer, updateTodo } from './scripts/todos-operations';
@@ -26,12 +25,6 @@ const main = document.querySelector('main');
 const primaryNav = getPrimaryNav(getProjects);
 const todoModal = new TodoModal(document.querySelector('.todo-modal'), '', getProjects);
 const aboutModal = new AboutModal(document.querySelector('.about-modal'));
-
-if (!KeedoStorage.tutorialShown) {
-  loadTutorial(() => {
-    KeedoStorage.tutorialShown = true;
-  });
-}
 
 document.addEventListener('click', (e) => {
   const popup = main.querySelector('.pop-up');
