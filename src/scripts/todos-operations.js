@@ -76,6 +76,7 @@ const loadTodos = async () => {
   await initializeTodos();
 
   todos = [];
+  todoRenderer.render(todos);
   unsubscribeSnapshot = onSnapshot(collection(getFirestore(), getUserTodosPath()), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       const todo = change.doc.data();
