@@ -29,7 +29,7 @@ export default class extends Modal {
         <p>Thank you and I hope you like my own version of the todo-list project! :D</p>
         <p><span style="font-weight: 600;">Fun fact:</span> I often use Google Keep for making my notes hence the look of this website is heavily influenced by it. In fact, Keedo derives from 'Kee' from 'Keep' and 'do' from 'to do'.</p>
         <p><span style="font-weight: 600;">Credits:</span> Keedo's logo is photoshopped by me using Google Keep's icon and images from Freepik. The hand icons used in the tutorial came from Freepik also.</p>
-        <p><a class="erase-all-data" style="color: red;">Erase all data</a><span class="erase-status" style="display: none;"> Erased successfully</span></p>
+        <p><a class="erase-all-data" style="color: red;">Erase all data (local storage only)</a><span class="erase-status" style="display: none;"> Erased successfully</span></p>
       </div>
     `;
     this.#setButtonsEvent();
